@@ -1,0 +1,18 @@
+.c-btn {
+  &-view-more {
+    display: block;
+    width: 70%;
+    margin: 3rem auto;
+    border: 1px solid $color-primary;
+    padding: 0.4rem 0;
+    border-radius: 999rem;
+    transition: all 0.3s;
+    text-align: center;
+    @include mincho;
+
+    &:hover {
+      background-color: $color-primary;
+      color: white;
+    }
+  }
+}

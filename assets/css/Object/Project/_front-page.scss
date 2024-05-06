@@ -1,0 +1,164 @@
+.p-front-page {
+  $this: &;
+
+  // kv ----------------
+  &-kv {
+    padding-top: 8rem;
+    h1 {
+      @include objective;
+      font-size: 8rem;
+      line-height: 1.5;
+      margin-top: 8rem;
+    }
+
+    span {
+      @include objective;
+      font-size: 2rem;
+      line-height: 1;
+    }
+
+    ul {
+      margin-top: 5rem;
+      margin-left: 2rem;
+      li {
+        list-style: circle;
+
+        &:not(:first-child) {
+          margin-top: 0.8rem;
+        }
+      }
+    }
+  }
+
+  // message --------------------
+  &-message {
+    main {
+      width: 70%;
+      margin: 0 auto;
+      h3 {
+        font-size: 4.8rem;
+        padding-bottom: 3rem;
+      }
+
+      p {
+        font-size: 2.4rem;
+        line-height: 2;
+      }
+
+      aside {
+        @include objective;
+        text-align: right;
+        margin-top: 2rem;
+        font-size: 2rem;
+      }
+    }
+  }
+
+  //works -------------------------
+  &-works {
+    $works: &;
+
+    ul {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.33%;
+      row-gap: 2rem;
+      li {
+        width: 32%;
+        aspect-ratio: 3/2;
+        position: relative;
+        box-shadow: 0.5rem 0.5rem 0.8rem #ddd;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        #{$works}__detail {
+          opacity: 0;
+          transition: all 0.3s;
+
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          top: 0;
+          left: 0;
+          background-color: rgba(0, 0, 0, 0.8);
+          padding: 3rem;
+
+          &:hover {
+            opacity: 1;
+            transform: scale(90%);
+          }
+          h3 {
+            color: white;
+          }
+
+          span {
+            color: white;
+          }
+        }
+      }
+    }
+  }
+
+  //about -------------------------
+  &-about {
+    &__card {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: white;
+      border-radius: 2rem;
+      padding: 3rem 0;
+      gap: 3rem;
+      img {
+        width: 15rem;
+        height: 15rem;
+        object-fit: cover;
+        border-radius: 999rem;
+      }
+
+      &-profile {
+        h3 {
+          display: inline-block;
+          padding: 1.5rem 0;
+        }
+
+        span {
+          display: inline-block;
+          margin-left: 2rem;
+        }
+
+        p {
+        }
+      }
+    }
+  }
+
+  &-contact {
+    padding: 0;
+    width: 100%;
+    height: 50vh;
+    background-color: $color-primary;
+    color: white;
+    a {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      font-size: 6rem;
+      transition: all 0.4s;
+
+      &:hover {
+        background-color: #ccc;
+        color: $color-primary;
+        font-size: 7rem;
+      }
+      h2 {
+        width: 100%;
+        text-align: center;
+      }
+    }
+  }
+}

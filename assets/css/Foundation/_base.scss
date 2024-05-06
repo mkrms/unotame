@@ -21,16 +21,13 @@ html {
   @include sp {
     font-size: calc(10 / 375 * 100vw);
   }
-  @include ov-pc {
-    font-size: 10px;
-  }
 }
 
 body {
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   line-height: 1.75;
   overflow-x: hidden;
-  background-color: #f2f5f5;
+  background-color: $color-bg;
   color: $color-primary;
 
   @include sp {
@@ -68,28 +65,5 @@ h3 {
 
   @include sp {
     width: calc(100% - 4rem);
-  }
-}
-
-.section__header {
-  padding-top: 8rem;
-  padding-bottom: 5rem;
-  display: flex;
-  align-items: center;
-
-  h2 {
-    padding-right: 5rem;
-    margin-right: 5rem;
-    border-right: 2px solid $color-primary;
-
-    @include sp {
-      padding-right: 2rem;
-      margin-right: 2rem;
-    }
-  }
-  span {
-    display: block;
-    font-size: 1.4rem;
-    font-weight: bold;
   }
 }

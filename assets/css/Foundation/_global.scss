@@ -1,0 +1,68 @@
+$color-primary: #5a686e;
+$color-secondary: #0065a8;
+$color-bg: #eefbff;
+
+/* mixin breakpoint*/
+
+$BREAKPOINT_PC: 1366px;
+$BREAKPOINT_SP: 768px;
+
+@mixin ov-pc {
+  @media screen and (min-width: $BREAKPOINT_PC) {
+    @content;
+  }
+}
+
+@mixin pc {
+  @media screen and (max-width: $BREAKPOINT_PC) {
+    @content;
+  }
+}
+
+@mixin ov-sp {
+  @media screen and (min-width: $BREAKPOINT_SP) {
+    @content;
+  }
+}
+
+@mixin sp {
+  @media screen and (max-width: $BREAKPOINT_SP) {
+    @content;
+  }
+}
+
+// fonts ----------------------------------------------------------------
+
+@font-face {
+  font-family: "objective";
+  src: url("../fonts/Objective-Regular.otf") format("opentype");
+  font-weight: 400;
+}
+@font-face {
+  font-family: "objective";
+  src: url("../fonts/Objective-Medium.otf") format("opentype");
+  font-weight: 500;
+}
+@font-face {
+  font-family: "objective";
+  src: url("../fonts/Objective-Black.otf") format("opentype");
+  font-weight: 700;
+}
+
+@mixin objective {
+  font-family: "objective", sans-serif;
+  font-weight: bold;
+}
+
+.objective {
+  font-family: "objective", sans-serif;
+  font-weight: bold;
+}
+
+@mixin mincho {
+  font-family: "yu-mincho-pr6n", sans-serif;
+}
+
+.mincho {
+  font-family: "yu-mincho-pr6n", sans-serif;
+}

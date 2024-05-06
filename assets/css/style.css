@@ -1,0 +1,124 @@
+/* mixin breakpoint*/
+@font-face {
+  font-family: "objective";
+  src: url("../fonts/Objective-Regular.otf") format("opentype");
+  font-weight: 400;
+}
+@font-face {
+  font-family: "objective";
+  src: url("../fonts/Objective-Medium.otf") format("opentype");
+  font-weight: 500;
+}
+@font-face {
+  font-family: "objective";
+  src: url("../fonts/Objective-Black.otf") format("opentype");
+  font-weight: 700;
+}
+.objective {
+  font-family: "objective", sans-serif;
+  font-weight: bold;
+}
+
+.mincho {
+  font-family: "yu-mincho-pr6n", sans-serif;
+}
+
+/* mixin display-none*/
+@media screen and (max-width: 768px) {
+  .sp-none {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .pc-none {
+    display: none;
+  }
+}
+
+html {
+  font-family: -apple-system, BlinkMacSystemFont, Roboto, "Segoe UI", "Helvetica Neue", HelveticaNeue, YuGothic, "Yu Gothic Medium", "Yu Gothic", Verdana, Meiryo, sans-serif;
+  font-weight: 400;
+  font-size: 0.7320644217vw;
+}
+@media screen and (max-width: 768px) {
+  html {
+    font-size: 2.6666666667vw;
+  }
+}
+@media screen and (min-width: 1366px) {
+  html {
+    font-size: 10px;
+  }
+}
+
+body {
+  font-size: 1.4rem;
+  line-height: 1.75;
+  overflow-x: hidden;
+  background-color: #f2f5f5;
+  color: #5a686e;
+}
+@media screen and (max-width: 768px) {
+  body {
+    font-size: 1.2rem;
+  }
+}
+
+h1,
+h2,
+h3 {
+  font-weight: bold;
+}
+
+@media screen and (max-width: 768px) {
+  h2 {
+    font-size: 2.8rem;
+  }
+}
+
+h3 {
+  font-size: 2rem;
+}
+@media screen and (max-width: 768px) {
+  h3 {
+    font-size: 1.8rem;
+  }
+}
+
+.bg-color {
+  background-color: #eefbff;
+}
+
+.container {
+  width: 82%;
+  margin: 0 auto;
+}
+@media screen and (max-width: 768px) {
+  .container {
+    width: calc(100% - 4rem);
+  }
+}
+
+.section__header {
+  padding-top: 8rem;
+  padding-bottom: 5rem;
+  display: flex;
+  align-items: center;
+}
+.section__header h2 {
+  padding-right: 5rem;
+  margin-right: 5rem;
+  border-right: 2px solid #5a686e;
+}
+@media screen and (max-width: 768px) {
+  .section__header h2 {
+    padding-right: 2rem;
+    margin-right: 2rem;
+  }
+}
+.section__header span {
+  display: block;
+  font-size: 1.4rem;
+  font-weight: bold;
+}/*# sourceMappingURL=style.css.map */

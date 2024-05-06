@@ -1,0 +1,7 @@
+{
+  "liveSassCompile.settings.formats": [
+    {
+      "savePath": "/assets/css",
+    }
+  ],
+}

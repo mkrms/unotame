@@ -1,0 +1,95 @@
+/* mixin display-none*/
+
+.sp-none {
+  @include sp {
+    display: none;
+  }
+}
+
+.pc-none {
+  @include ov-sp {
+    display: none;
+  }
+}
+
+html {
+  font-family: -apple-system, BlinkMacSystemFont, Roboto, "Segoe UI", "Helvetica Neue", HelveticaNeue, YuGothic,
+    "Yu Gothic Medium", "Yu Gothic", Verdana, Meiryo, sans-serif;
+  font-weight: 400;
+  font-size: calc(10 / 1366 * 100vw); //10px = 1rem
+
+  @include sp {
+    font-size: calc(10 / 375 * 100vw);
+  }
+  @include ov-pc {
+    font-size: 10px;
+  }
+}
+
+body {
+  font-size: 1.4rem;
+  line-height: 1.75;
+  overflow-x: hidden;
+  background-color: #f2f5f5;
+  color: $color-primary;
+
+  @include sp {
+    font-size: 1.2rem;
+  }
+}
+
+h1,
+h2,
+h3 {
+  font-weight: bold;
+}
+
+h2 {
+  @include sp {
+    font-size: 2.8rem;
+  }
+}
+
+h3 {
+  font-size: 2rem;
+
+  @include sp {
+    font-size: 1.8rem;
+  }
+}
+
+.bg-color {
+  background-color: $color-bg;
+}
+
+.container {
+  width: 82%;
+  margin: 0 auto;
+
+  @include sp {
+    width: calc(100% - 4rem);
+  }
+}
+
+.section__header {
+  padding-top: 8rem;
+  padding-bottom: 5rem;
+  display: flex;
+  align-items: center;
+
+  h2 {
+    padding-right: 5rem;
+    margin-right: 5rem;
+    border-right: 2px solid $color-primary;
+
+    @include sp {
+      padding-right: 2rem;
+      margin-right: 2rem;
+    }
+  }
+  span {
+    display: block;
+    font-size: 1.4rem;
+    font-weight: bold;
+  }
+}

@@ -7,6 +7,10 @@
   align-items: center;
   padding: 0 10rem;
   z-index: 99;
+
+  @include sp {
+    padding: 0 0.5rem;
+  }
   &__logo {
     &-img {
       height: 8rem;
@@ -19,6 +23,10 @@
     &__list {
       display: flex;
       gap: 2rem;
+
+      @include sp {
+        display: none;
+      }
       &__item {
         display: flex;
         align-items: center;

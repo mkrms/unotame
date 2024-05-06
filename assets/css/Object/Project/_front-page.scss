@@ -9,6 +9,11 @@
       font-size: 8rem;
       line-height: 1.5;
       margin-top: 8rem;
+
+      @include sp {
+        margin-top: 5rem;
+        line-height: 1.2;
+      }
     }
 
     span {
@@ -35,14 +40,26 @@
     main {
       width: 70%;
       margin: 0 auto;
+
+      @include sp {
+        width: 100%;
+      }
       h3 {
         font-size: 4.8rem;
         padding-bottom: 3rem;
+
+        @include sp {
+          font-size: 2.8rem;
+        }
       }
 
       p {
         font-size: 2.4rem;
         line-height: 2;
+
+        @include sp {
+          font-size: 1.4rem;
+        }
       }
 
       aside {
@@ -50,6 +67,10 @@
         text-align: right;
         margin-top: 2rem;
         font-size: 2rem;
+
+        @include sp {
+          font-size: 1.2rem;
+        }
       }
     }
   }
@@ -68,6 +89,10 @@
         aspect-ratio: 3/2;
         position: relative;
         box-shadow: 0.5rem 0.5rem 0.8rem #ddd;
+
+        @include sp {
+          width: 100%;
+        }
         img {
           width: 100%;
           height: 100%;
@@ -86,16 +111,31 @@
           background-color: rgba(0, 0, 0, 0.8);
           padding: 3rem;
 
+          @include sp {
+            position: static;
+            height: auto;
+            background-color: unset;
+            padding: 1rem 2rem;
+            opacity: 1;
+          }
           &:hover {
             opacity: 1;
             transform: scale(90%);
           }
           h3 {
             color: white;
+
+            @include sp {
+              color: $color-primary;
+            }
           }
 
           span {
             color: white;
+
+            @include sp {
+              color: $color-primary;
+            }
           }
         }
       }
@@ -110,8 +150,12 @@
       justify-content: center;
       background-color: white;
       border-radius: 2rem;
-      padding: 3rem 0;
+      padding: 3rem;
       gap: 3rem;
+
+      @include sp {
+        flex-direction: column;
+      }
       img {
         width: 15rem;
         height: 15rem;
@@ -120,6 +164,9 @@
       }
 
       &-profile {
+        @include sp {
+          text-align: center;
+        }
         h3 {
           display: inline-block;
           padding: 1.5rem 0;

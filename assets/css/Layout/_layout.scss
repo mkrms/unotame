@@ -1,6 +1,10 @@
 .l-container {
   width: 65%;
   margin: 0 auto;
+
+  @include sp {
+    width: 95%;
+  }
 }
 
 .l-section-title {
@@ -13,6 +17,10 @@
 
 section {
   padding: 5rem 0;
+
+  @include sp {
+    padding: 3rem 0;
+  }
 }
 
 .l-page {

@@ -1,4 +1,7 @@
 <?php get_header() ?>
+<div class="loader-bg">
+  <div class="loader"></div>
+</div>
 
 <section class="p-front-page-kv l-container">
   <h1>Niiyama Keisuke</h1>
@@ -61,7 +64,7 @@
   <?php
   $args = array(
     'post_type' => 'post',
-    'posts_per_page' => 5,
+    'posts_per_page' => 6,
     'post_status' => 'publish'
   );
   $query = new WP_Query($args);
@@ -76,7 +79,7 @@
 
         <li>
           <a href="<?php echo get_the_permalink() ?>">
-            <img src="<?php echo get_template_directory_uri(); ?>/assets/img/img-works-unotame.png" alt="">
+            <img src="<?php echo get_the_post_thumbnail_url() ?>" alt="">
             <div class="p-front-page-works__detail">
               <h3><?php echo get_the_title() ?></h3>
               <span><?php echo $cat_name ?></span>
@@ -111,15 +114,6 @@
       </p>
     </div>
   </div>
-
-  <a href="<?php echo esc_url(home_url('works')); ?>" class="c-btn-view-more">View More</a>
-
-</section>
-
-<section class="p-front-page-contact">
-  <a href="<?php echo home_url() ?>">
-    <h2>CONTACT</h2>
-  </a>
 </section>
 
 <?php get_footer() ?>

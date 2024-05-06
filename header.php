@@ -13,9 +13,6 @@
 </head>
 
 <body>
-  <div class="loader-bg">
-    <div class="loader"></div>
-  </div>
 
   <header id="header" class="l-header">
     <a href="<?php echo home_url() ?>" class="l-header__logo">
@@ -28,7 +25,10 @@
           <a href="<?php echo home_url() ?>" class="header__nav__list__item-link">ABOUT</a>
         </li>
         <li class="l-header__nav__list__item">
-          <a href="<?php echo home_url() ?>" class="header__nav__list__item-link">WORKS</a>
+          <a href="<?php echo home_url("works") ?>" class="header__nav__list__item-link">WORKS</a>
+        </li>
+        <li class="l-header__nav__list__item">
+          <a href="<?php echo home_url("contact") ?>" class="header__nav__list__item-link">CONTACT</a>
         </li>
       </ul>
     </nav>

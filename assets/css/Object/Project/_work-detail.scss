@@ -1,0 +1,65 @@
+.p-work-detail {
+  &__content {
+    img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      box-shadow: 0 0 0.8rem #ddd;
+    }
+    span {
+      display: block;
+      padding: 1.5rem 0;
+      width: 100%;
+      text-align: right;
+    }
+
+    p {
+    }
+  }
+
+  &__latest {
+    $this: &;
+    ul {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.33%;
+      row-gap: 2rem;
+      li {
+        width: 32%;
+        aspect-ratio: 3/2;
+        position: relative;
+        box-shadow: 0.5rem 0.5rem 0.8rem #ddd;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        #{$this}__detail {
+          opacity: 0;
+          transition: all 0.3s;
+
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          top: 0;
+          left: 0;
+          background-color: rgba(0, 0, 0, 0.8);
+          padding: 3rem;
+
+          &:hover {
+            opacity: 1;
+            transform: scale(90%);
+          }
+          h3 {
+            color: white;
+          }
+
+          span {
+            color: white;
+          }
+        }
+      }
+    }
+  }
+}

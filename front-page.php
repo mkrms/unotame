@@ -117,7 +117,7 @@
       <a href="https://x.com/niiyamakeisuke/">
         <img src="<?php echo get_template_directory_uri(); ?>/assets/img/logo-black.png" alt="">
       </a>
-      <a href="https://zenn.dev/mkrms/">
+      <a href="https://zenn.dev/niiyama_k">
         <img src="<?php echo get_template_directory_uri(); ?>/assets/img/logo-only.svg" alt="">
       </a>
       <a href="https://qiita.com/unotame/">

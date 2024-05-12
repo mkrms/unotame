@@ -113,6 +113,24 @@
         2024年現在、会社員 兼 フリーランスとしてIT全般の業務に従事。
       </p>
     </div>
+    <div class="p-front-page-about__card__logos">
+      <a href="https://x.com/niiyamakeisuke/">
+        <img src="<?php echo get_template_directory_uri(); ?>/assets/img/logo-black.png" alt="">
+      </a>
+      <a href="https://zenn.dev/mkrms/">
+        <img src="<?php echo get_template_directory_uri(); ?>/assets/img/logo-only.svg" alt="">
+      </a>
+      <a href="https://qiita.com/unotame/">
+        <img src="<?php echo get_template_directory_uri(); ?>/assets/img/qiita-icon.png" alt="">
+      </a>
+      <a href="https://note.com/unotame/">
+        <img src="<?php echo get_template_directory_uri(); ?>/assets/img/square.svg" alt="">
+      </a>
+      <a href="https://github.com/mkrms">
+        <img src="<?php echo get_template_directory_uri(); ?>/assets/img/github-mark.png" alt="">
+      </a>
+    </div>
+
   </div>
 </section>
 

@@ -35,3 +35,14 @@ section {
     @include mincho;
   }
 }
+
+.l-single {
+  &__wrapper {
+    width: 55%;
+    padding: 8rem 0;
+
+    @include sp {
+      width: 95%;
+    }
+  }
+}

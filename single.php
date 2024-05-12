@@ -1,21 +1,25 @@
 <?php get_header() ?>
 
-<div class="l-page__wrapper l-container">
+<div class="l-single__wrapper l-container">
   <h1 class="l-page-title"><?php echo the_title(); ?></h1>
 
   <div class="p-work-detail">
 
     <div class="p-work-detail__content">
-      <?php
-      $cats = get_the_category();
-      $cat = $cats[0];
-      $cat_name = $cat->name;
-      ?>
-      <img src="<?php echo the_post_thumbnail_url(); ?>" alt="">
+      <div class="p-work-detail__content__header">
+        <?php
+        $cats = get_the_category();
+        $cat = $cats[0];
+        $cat_name = $cat->name;
+        ?>
+        <img src="<?php echo the_post_thumbnail_url(); ?>" alt="">
 
-      <span>カテゴリー：<?php echo $cat_name; ?></span>
+        <span>カテゴリー：<?php echo $cat_name; ?></span>
+      </div>
 
-      <p><?php the_content(); ?></p>
+      <div class="p-work-detail__content__body">
+        <?php the_content(); ?>
+      </div>
     </div>
 
     <div class="p-work-detail__latest">

@@ -215,6 +215,16 @@ section {
   font-family: "yu-mincho-pr6n", sans-serif;
 }
 
+.l-single__wrapper {
+  width: 55%;
+  padding: 8rem 0;
+}
+@media screen and (max-width: 768px) {
+  .l-single__wrapper {
+    width: 95%;
+  }
+}
+
 .c-btn-view-more {
   display: block;
   width: 70%;
@@ -414,6 +424,7 @@ section {
   align-items: center;
   justify-content: center;
   background-color: white;
+  flex-wrap: wrap;
   border-radius: 2rem;
   padding: 3rem;
   gap: 3rem;
@@ -423,7 +434,7 @@ section {
     flex-direction: column;
   }
 }
-.p-front-page-about__card img {
+.p-front-page-about__card > img {
   width: 15rem;
   height: 15rem;
   object-fit: cover;
@@ -442,6 +453,23 @@ section {
   display: inline-block;
   margin-left: 2rem;
 }
+.p-front-page-about__card__logos {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+}
+.p-front-page-about__card__logos a {
+  display: block;
+  width: 3rem;
+  aspect-ratio: 1/1;
+}
+.p-front-page-about__card__logos a img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
 .p-works {
   display: flex;
   justify-content: space-between;
@@ -558,17 +586,41 @@ section {
   color: white;
 }
 
-.p-work-detail__content img {
+.p-work-detail__content__header img {
   width: 100%;
   height: auto;
   object-fit: cover;
   box-shadow: 0 0 0.8rem #ddd;
 }
-.p-work-detail__content span {
+.p-work-detail__content__header span {
   display: block;
   padding: 1.5rem 0;
   width: 100%;
   text-align: right;
+}
+.p-work-detail__content__body h2 {
+  font-size: 3.6rem;
+  border-bottom: solid 3px black;
+  margin-top: 5rem;
+  margin-bottom: 3rem;
+}
+.p-work-detail__content__body h3 {
+  font-size: 2rem;
+  padding: 0.25rem 0.5rem; /*上下 左右の余白*/
+  border-left: solid 0.5rem #333; /*左線*/
+  margin: 2rem 0;
+}
+.p-work-detail__content__body ul,
+.p-work-detail__content__body ol {
+  padding: 3rem; /*ボックス内の余白*/
+  border: solid 3px #333; /*線の種類 太さ 色*/
+}
+.p-work-detail__content__body ul li,
+.p-work-detail__content__body ol li {
+  list-style-type: disc;
+  list-style-position: inside;
+  line-height: 1.5;
+  padding: 0.5rem 0;
 }
 .p-work-detail__latest ul {
   display: flex;

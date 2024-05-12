@@ -1,19 +1,48 @@
 .p-work-detail {
   &__content {
-    img {
-      width: 100%;
-      height: auto;
-      object-fit: cover;
-      box-shadow: 0 0 0.8rem #ddd;
-    }
-    span {
-      display: block;
-      padding: 1.5rem 0;
-      width: 100%;
-      text-align: right;
+    &__header {
+      img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        box-shadow: 0 0 0.8rem #ddd;
+      }
+      span {
+        display: block;
+        padding: 1.5rem 0;
+        width: 100%;
+        text-align: right;
+      }
     }
 
-    p {
+    &__body {
+      h2 {
+        font-size: 3.6rem;
+        border-bottom: solid 3px black;
+        margin-top: 5rem;
+        margin-bottom: 3rem;
+      }
+
+      h3 {
+        font-size: 2rem;
+        padding: 0.25rem 0.5rem; /*上下 左右の余白*/
+        border-left: solid 0.5rem $color-primary; /*左線*/
+        margin: 2rem 0;
+      }
+
+      ul,
+      ol {
+        padding: 3rem; /*ボックス内の余白*/
+        border: solid 3px $color-primary; /*線の種類 太さ 色*/
+      }
+
+      ul li,
+      ol li {
+        list-style-type: disc;
+        list-style-position: inside;
+        line-height: 1.5;
+        padding: 0.5rem 0;
+      }
     }
   }
 

@@ -114,19 +114,19 @@
       </p>
     </div>
     <div class="p-front-page-about__card__logos">
-      <a href="https://x.com/niiyamakeisuke/">
+      <a href="https://x.com/niiyamakeisuke/" target="_blank">
         <img src="<?php echo get_template_directory_uri(); ?>/assets/img/logo-black.png" alt="">
       </a>
-      <a href="https://zenn.dev/niiyama_k">
+      <a href="https://zenn.dev/niiyama_k" target="_blank">
         <img src="<?php echo get_template_directory_uri(); ?>/assets/img/logo-only.svg" alt="">
       </a>
-      <a href="https://qiita.com/unotame/">
+      <a href="https://qiita.com/unotame/" target="_blank">
         <img src="<?php echo get_template_directory_uri(); ?>/assets/img/qiita-icon.png" alt="">
       </a>
-      <a href="https://note.com/unotame/">
+      <a href="https://note.com/unotame/" target="_blank">
         <img src="<?php echo get_template_directory_uri(); ?>/assets/img/square.svg" alt="">
       </a>
-      <a href="https://github.com/mkrms">
+      <a href="https://github.com/mkrms" target="_blank">
         <img src="<?php echo get_template_directory_uri(); ?>/assets/img/github-mark.png" alt="">
       </a>
     </div>

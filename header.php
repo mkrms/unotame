@@ -13,7 +13,7 @@
   <meta property="og:image" content="http://unotame.com/wp-content/themes/unotame/assets/img/unotame-logo-square.png">
 
   <link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/assets/css/destyle.css">
-  <link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/assets/css/style.css">
+  <link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/assets/css/style.css?v=1.2">
 
   <?php wp_head(); ?>
 </head>

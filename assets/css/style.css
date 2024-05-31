@@ -374,12 +374,15 @@ section {
     width: 100%;
   }
 }
-.p-front-page-works ul li img {
+.p-front-page-works ul li a {
+  display: block;
+}
+.p-front-page-works ul li a img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-.p-front-page-works ul li .p-front-page-works__detail {
+.p-front-page-works ul li a .p-front-page-works__detail {
   opacity: 0;
   transition: all 0.3s;
   position: absolute;
@@ -391,31 +394,31 @@ section {
   padding: 3rem;
 }
 @media screen and (max-width: 768px) {
-  .p-front-page-works ul li .p-front-page-works__detail {
+  .p-front-page-works ul li a .p-front-page-works__detail {
     position: static;
-    height: auto;
+    height: fit-content;
     background-color: unset;
     padding: 1rem 2rem;
     opacity: 1;
   }
 }
-.p-front-page-works ul li .p-front-page-works__detail:hover {
+.p-front-page-works ul li a .p-front-page-works__detail:hover {
   opacity: 1;
   transform: scale(90%);
 }
-.p-front-page-works ul li .p-front-page-works__detail h3 {
+.p-front-page-works ul li a .p-front-page-works__detail h3 {
   color: white;
 }
 @media screen and (max-width: 768px) {
-  .p-front-page-works ul li .p-front-page-works__detail h3 {
+  .p-front-page-works ul li a .p-front-page-works__detail h3 {
     color: #333;
   }
 }
-.p-front-page-works ul li .p-front-page-works__detail span {
+.p-front-page-works ul li a .p-front-page-works__detail span {
   color: white;
 }
 @media screen and (max-width: 768px) {
-  .p-front-page-works ul li .p-front-page-works__detail span {
+  .p-front-page-works ul li a .p-front-page-works__detail span {
     color: #333;
   }
 }
@@ -503,12 +506,15 @@ section {
     width: 100%;
   }
 }
-.p-works__body li img {
+.p-works__body li a {
+  display: block;
+}
+.p-works__body li a img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-.p-works__body li .p-works__detail {
+.p-works__body li a .p-works__detail {
   opacity: 0;
   transition: all 0.3s;
   position: absolute;
@@ -520,31 +526,31 @@ section {
   padding: 3rem;
 }
 @media screen and (max-width: 768px) {
-  .p-works__body li .p-works__detail {
+  .p-works__body li a .p-works__detail {
     position: static;
-    height: auto;
+    height: fit-content;
     background-color: unset;
     padding: 1rem 2rem;
     opacity: 1;
   }
 }
-.p-works__body li .p-works__detail:hover {
+.p-works__body li a .p-works__detail:hover {
   opacity: 1;
   transform: scale(90%);
 }
-.p-works__body li .p-works__detail h3 {
+.p-works__body li a .p-works__detail h3 {
   color: white;
 }
 @media screen and (max-width: 768px) {
-  .p-works__body li .p-works__detail h3 {
+  .p-works__body li a .p-works__detail h3 {
     color: #333;
   }
 }
-.p-works__body li .p-works__detail span {
+.p-works__body li a .p-works__detail span {
   color: white;
 }
 @media screen and (max-width: 768px) {
-  .p-works__body li .p-works__detail span {
+  .p-works__body li a .p-works__detail span {
     color: #333;
   }
 }
@@ -639,12 +645,15 @@ section {
     width: 100%;
   }
 }
-.p-work-detail__latest ul li img {
+.p-work-detail__latest ul li a {
+  display: block;
+}
+.p-work-detail__latest ul li a img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-.p-work-detail__latest ul li .p-work-detail__latest__detail {
+.p-work-detail__latest ul li a .p-work-detail__latest__detail {
   opacity: 0;
   transition: all 0.3s;
   position: absolute;
@@ -656,23 +665,23 @@ section {
   padding: 3rem;
 }
 @media screen and (max-width: 768px) {
-  .p-work-detail__latest ul li .p-work-detail__latest__detail {
+  .p-work-detail__latest ul li a .p-work-detail__latest__detail {
     position: static;
-    height: auto;
+    height: fit-content;
     background-color: unset;
     padding: 1rem 2rem;
     opacity: 1;
   }
 }
-.p-work-detail__latest ul li .p-work-detail__latest__detail:hover {
+.p-work-detail__latest ul li a .p-work-detail__latest__detail:hover {
   opacity: 1;
   transform: scale(90%);
 }
-.p-work-detail__latest ul li .p-work-detail__latest__detail h3 {
+.p-work-detail__latest ul li a .p-work-detail__latest__detail h3 {
   color: white;
 }
 @media screen and (max-width: 768px) {
-  .p-work-detail__latest ul li .p-work-detail__latest__detail h3 {
+  .p-work-detail__latest ul li a .p-work-detail__latest__detail h3 {
     color: #333;
   }
 }

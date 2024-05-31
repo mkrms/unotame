@@ -93,48 +93,52 @@
         @include sp {
           width: 100%;
         }
-        img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
 
-        #{$works}__detail {
-          opacity: 0;
-          transition: all 0.3s;
-
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          top: 0;
-          left: 0;
-          background-color: rgba(0, 0, 0, 0.8);
-          padding: 3rem;
-
-          @include sp {
-            position: static;
-            height: auto;
-            background-color: unset;
-            padding: 1rem 2rem;
-            opacity: 1;
+        a {
+          display: block;
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
           }
-          &:hover {
-            opacity: 1;
-            transform: scale(90%);
-          }
-          h3 {
-            color: white;
+
+          #{$works}__detail {
+            opacity: 0;
+            transition: all 0.3s;
+
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 3rem;
 
             @include sp {
-              color: $color-primary;
+              position: static;
+              height: fit-content;
+              background-color: unset;
+              padding: 1rem 2rem;
+              opacity: 1;
             }
-          }
+            &:hover {
+              opacity: 1;
+              transform: scale(90%);
+            }
+            h3 {
+              color: white;
 
-          span {
-            color: white;
+              @include sp {
+                color: $color-primary;
+              }
+            }
 
-            @include sp {
-              color: $color-primary;
+            span {
+              color: white;
+
+              @include sp {
+                color: $color-primary;
+              }
             }
           }
         }

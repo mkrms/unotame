@@ -1,15 +1,11 @@
 ---
-// 仮ページ。トップページ仕様の実装で置き換える。
-import '../styles/style.scss';
+// 仮ページ。トップページ仕様の実装で中身（KV・Message・Works・About）を作る。
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<html lang="ja">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>UNOTAME</title>
-  </head>
-  <body>
-    <h1>UNOTAME</h1>
-  </body>
-</html>
+<BaseLayout loader>
+  <div class="l-page__wrapper l-container">
+    <h1 class="l-page-title">UNOTAME</h1>
+    <p>トップページは準備中です。</p>
+  </div>
+</BaseLayout>

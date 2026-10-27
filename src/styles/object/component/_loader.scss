@@ -1,0 +1,81 @@
+// ローダー（トップだけ）。legacy の .loader-bg / .loader / @keyframes l2 から移植し、
+// layout.md の状態クラス・保険のアニメーション・prefers-reduced-motion を追加した。
+// 時間は legacy の jQuery（load 後: 丸は 600ms 待って 600ms、背景は 900ms 待って 800ms／5 秒で 600ms）を再現する。
+
+.c-loader {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  background-color: #f5f5f5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  // JS が途中で失敗しても 7 秒後には消す保険。JS が正常なら、load が 5 秒の直前に来た場合でも
+  // 900ms 待ち＋800ms のフェードが 6.7 秒までに終わるので、フェードの途中で保険が効くことはない
+  animation: c-loader-failsafe 0s 7s forwards;
+
+  &.is-loaded {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 800ms 900ms;
+  }
+
+  &.is-timeout {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 600ms;
+  }
+
+  // 動きを減らす設定では出さない（layout.md L-2）
+  @media (prefers-reduced-motion: reduce) {
+    display: none;
+  }
+}
+
+.c-loader__dot {
+  width: 20px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #000;
+  box-shadow: 0 0 0 0 #0004;
+  animation: c-loader-pulse 1.5s infinite linear;
+  position: relative;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: 0 0 0 0 #0004;
+    animation: inherit;
+    animation-delay: -0.5s;
+  }
+
+  &::after {
+    animation-delay: -1s;
+  }
+
+  .c-loader.is-loaded & {
+    opacity: 0;
+    transition: opacity 600ms 600ms;
+  }
+}
+
+@keyframes c-loader-pulse {
+  100% {
+    box-shadow: 0 0 0 40px #0000;
+  }
+}
+
+@keyframes c-loader-failsafe {
+  to {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+  }
+}

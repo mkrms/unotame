@@ -1,6 +1,22 @@
-// エントリ。各レイヤ（foundation / layout / object）を @use で読む。
-@use 'foundation/variables' as *;
+// エントリ。@use の並び＝CSS の出力順（style-migration）。
+// destyle は BaseLayout.astro で先に import 済み。
+// CSS を出力するパーシャルを @use するのはこのファイルだけにする。
 
-body {
-  color: $color-primary;
-}
+// Foundation
+@use 'foundation/fonts';
+@use 'foundation/base';
+
+// Layout
+@use 'layout/header';
+@use 'layout/footer';
+@use 'layout/layout';
+
+// Object / Component
+@use 'object/component/button';
+@use 'object/component/loader';
+@use 'object/component/work-card';
+
+// Object / Project（p-front-page / p-works / p-work-detail）は各ページの実装で追加する。
+
+// Object / Utility（最後に置き、ほかのレイヤより優先させる）
+@use 'object/utility/display';

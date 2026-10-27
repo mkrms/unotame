@@ -1,0 +1,18 @@
+// Objective（OTF のまま。WOFF2 化と font-display は P2）。
+@font-face {
+  font-family: objective;
+  src: url('../../assets/fonts/Objective-Regular.otf') format('opentype');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: objective;
+  src: url('../../assets/fonts/Objective-Medium.otf') format('opentype');
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: objective;
+  src: url('../../assets/fonts/Objective-Black.otf') format('opentype');
+  font-weight: 700;
+}

@@ -1,0 +1,79 @@
+// 実績カード 1 枚分（トップ・一覧・詳細の Latest で共通。style-migration S-3）。
+// legacy の _front-page.scss / _works.scss / _work-detail.scss で重複していたカード部分をまとめた。
+// 並べ方（グリッド・列数・li の幅）は各 Project に残す。
+@use '../../foundation/variables' as *;
+@use '../../foundation/mixins' as *;
+
+.c-work-card {
+  display: block;
+  position: relative;
+
+  &__img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+
+    // legacy では li（3:2）に付いていた影。SP で帯が画像の下に出ても、影は画像の範囲だけに付く
+    box-shadow: 0.5rem 0.5rem 0.8rem #ddd;
+  }
+
+  &__detail {
+    opacity: 0;
+    transition: all 0.3s;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgb(0 0 0 / 80%);
+    padding: 3rem;
+
+    @include sp {
+      position: static;
+      height: fit-content;
+      background-color: unset;
+      padding: 1rem 2rem;
+      opacity: 1;
+    }
+  }
+
+  // 帯はホバーに加えてキーボードのフォーカス時にも同じように出す（top-page の WorkCard 要件）
+  &:hover &__detail,
+  &:focus-visible &__detail {
+    opacity: 1;
+    transform: scale(90%);
+  }
+
+  // 見出しレベル（h2 / h3）が変わっても legacy の h3 と同じ大きさにする
+  &__title {
+    font-size: 2rem;
+    color: white;
+
+    @include sp {
+      font-size: 1.8rem;
+      color: $color-primary;
+    }
+  }
+
+  &__category {
+    color: white;
+
+    @include sp {
+      color: $color-primary;
+    }
+  }
+
+  // 帯の動きは動きを減らす設定で止める（top-page の WorkCard 要件）
+  @media (prefers-reduced-motion: reduce) {
+    &__detail {
+      transition: none;
+    }
+
+    &:hover &__detail,
+    &:focus-visible &__detail {
+      transform: none;
+    }
+  }
+}

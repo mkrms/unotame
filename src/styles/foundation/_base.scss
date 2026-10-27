@@ -1,0 +1,61 @@
+// 要素の基本スタイル。legacy/assets/css/Foundation/_base.scss と Layout/_layout.scss の section から移植。
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// 作者 CSS の display に hidden 属性が負けないようにする（works-list L-8）
+[hidden] {
+  display: none !important;
+}
+
+html {
+  font-family:
+    -apple-system, BlinkMacSystemFont, Roboto, 'Segoe UI', 'Helvetica Neue', HelveticaNeue,
+    YuGothic, 'Yu Gothic Medium', 'Yu Gothic', Verdana, Meiryo, sans-serif;
+  font-weight: 400;
+  font-size: calc(10 / 1366 * 100vw); // 10px = 1rem
+  scroll-padding-top: 8rem; // 固定ヘッダーでアンカー先が隠れないように（layout.md）
+
+  @include sp {
+    font-size: calc(10 / 375 * 100vw);
+  }
+}
+
+body {
+  font-size: 1.6rem;
+  line-height: 1.75;
+  overflow-x: hidden;
+  background-color: $color-bg;
+  color: $color-primary;
+
+  @include sp {
+    font-size: 1.2rem;
+  }
+}
+
+h1,
+h2,
+h3 {
+  font-weight: bold;
+}
+
+h2 {
+  @include sp {
+    font-size: 2.8rem;
+  }
+}
+
+h3 {
+  font-size: 2rem;
+
+  @include sp {
+    font-size: 1.8rem;
+  }
+}
+
+section {
+  padding: 5rem 0;
+
+  @include sp {
+    padding: 3rem 0;
+  }
+}

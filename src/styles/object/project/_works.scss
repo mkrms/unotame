@@ -1,0 +1,82 @@
+// 実績一覧（p-works）。legacy/assets/css/Object/Project/_works.scss から移植。
+// 実績カード 1 枚分は object/component/_work-card.scss（S-3）。ここには並べ方と絞り込み UI を置く。
+// works-list L-8: legacy の li { display: none }・.is-show・.is-active は移さない。
+// 非表示は hidden 属性（foundation の [hidden]）、選択中のボタンは [aria-pressed='true'] で装飾する。
+@use '../../foundation/variables' as *;
+@use '../../foundation/mixins' as *;
+
+.p-works {
+  display: flex;
+
+  // 絞り込みは DOM では一覧より前。PC は legacy どおり右側（row-reverse）、SP は上（legacy の column-reverse と同じ見え方）
+  flex-direction: row-reverse;
+  justify-content: space-between;
+
+  @include sp {
+    flex-direction: column;
+  }
+
+  // 一覧（legacy の __body）
+  &__list {
+    width: 80%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2%;
+    row-gap: 2rem;
+
+    @include sp {
+      width: 100%;
+    }
+  }
+
+  // カードの影・比率は c-work-card 側（画像）
+  &__item {
+    width: 44%;
+
+    @include sp {
+      width: 100%;
+    }
+  }
+
+  // 絞り込み（legacy の __sidebar）
+  &__filter {
+    width: 20%;
+    padding-left: 1rem;
+    border-left: 1px solid $color-primary;
+
+    @include sp {
+      width: 100%;
+      margin-bottom: 3rem;
+    }
+  }
+
+  // legacy の <span>Category</span>。h2 の基本スタイル（SP 2.8rem）に負けないよう大きさを指定する
+  &__filter-title {
+    @include objective;
+
+    display: block;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  &__filter-button {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 1rem;
+    text-align: left;
+    cursor: pointer;
+
+    // 矢印は飾りなので読み上げさせない（代替テキストを空にする）
+    &::after {
+      // 代替テキスト構文（/ ''）に未対応のブラウザ向けのフォールバック
+      content: '→';
+      content: '→' / '';
+    }
+
+    &[aria-pressed='true'] {
+      background-color: $color-primary;
+      color: white;
+    }
+  }
+}

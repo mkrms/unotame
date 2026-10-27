@@ -1,0 +1,55 @@
+---
+// 実績一覧のカテゴリ絞り込み UI（works-list）。ボタン群と結果件数の読み上げ（role="status"）。
+// 静的 HTML では「全て」が選択状態。挙動は works-filter-controller.ts（素の TS）を <script> で起動する。
+// JS が無効なときもボタンは表示したまま（押しても変化しない。L-4）。
+// 親（ページ側）は、このコンポーネントと一覧を含む要素に data-works-filter-root（WORKS_FILTER_ROOT_ATTR）を付けること。
+// 付いていないと <script> が対象を見つけられず、絞り込みが動かない。
+import type { Category } from '../../lib/domain/work';
+
+type Props = {
+  /** getCategoriesInUse() の順（実績 1 件以上のカテゴリ） */
+  categories: Category[];
+};
+
+const { categories } = Astro.props;
+---
+
+<div class="p-works__filter" role="group" aria-labelledby="works-filter-heading">
+  <h2 id="works-filter-heading" class="p-works__filter-title">
+    Category
+  </h2>
+  <ul class="p-works__filter-list">
+    {/* 「全て」は 'all' ではなく data-filter="" で表す（all というカテゴリ slug も作れるため） */}
+    <li>
+      <button type="button" class="p-works__filter-button" data-filter="" aria-pressed="true">
+        全て
+      </button>
+    </li>
+    {categories.map((category) => (
+      <li>
+        <button
+          type="button"
+          class="p-works__filter-button"
+          data-filter={category.slug}
+          aria-pressed="false"
+        >
+          {category.name}
+        </button>
+      </li>
+    ))}
+  </ul>
+</div>
+<p class="u-visually-hidden" role="status" data-works-filter-status></p>
+
+<script>
+  import { WORKS_FILTER_ROOT_ATTR } from '../../lib/works-filter';
+  import { initWorksFilter } from './works-filter-controller';
+
+  for (const root of document.querySelectorAll<HTMLElement>(`[${WORKS_FILTER_ROOT_ATTR}]`)) {
+    initWorksFilter(root, {
+      location: window.location,
+      history: window.history,
+      prefersReducedMotion: () => window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+    });
+  }
+</script>

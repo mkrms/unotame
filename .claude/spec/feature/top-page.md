@@ -237,6 +237,7 @@ HTML の検査方法は X-1（`node-html-parser` と `test:dist`。D-012 で決�
 - [ ] `dist/index.html` 内の `id` 属性の値に重複が無い。
 - [ ] `WorkCard` は `src/components/works/WorkCard.astro` の 1 か所で定義され、トップ・一覧・詳細の 3 ページがこれを使っている（`grep` で `c-work-card` 相当のカードのマークアップがほかに無いことを確認）。
       （2026-10-27: トップの実装時点では一覧・詳細が無いため保留。一覧・詳細の実装時に、ソースを検査する自動テストとして足して判定する）
+      → 一覧・詳細の実装で `tests/source/components.test.ts` に追加した（`c-work-card` が `WorkCard.astro` だけにあり、3 ページの import が WorkCard に届く）
 - [ ] `npm run check`・`npm run lint`・`CMS_SOURCE=fixture npm run build` が通る。
 
 ## 将来拡張（任意）

@@ -1,12 +1,14 @@
 ---
 // 「View More」リンク（top-page。legacy の .c-btn-view-more）。
+// 404 の「実績一覧へ」も同じボタンで出すため、文言だけ差し替えられる（not-found。既定は View More）。
 type Props = {
   href: string;
+  label?: string;
 };
 
-const { href } = Astro.props;
+const { href, label = 'View More' } = Astro.props;
 ---
 
 <a class="c-btn-view-more" href={href}>
-  View More
+  {label}
 </a>

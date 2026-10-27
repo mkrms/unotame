@@ -212,12 +212,12 @@ export function buildRedirectRules(input: {
 
 | 旧 URL（パターン） | 新 URL | 方式 |
 |---|---|---|
-| `/{category…}/{ID}` と `/{category…}/{ID}/`（カテゴリ部分は 1 階層以上・任意の値） | `/works/{slug}/` | ID ごとの個別ルール（生成） |
+| `/{category…}/{ID}` と `/{category…}/{ID}/`（カテゴリ部分は 1 階層以上・任意の値。先頭が 4 桁の年のもの・ID の直前が `page` のものは除く） | `/works/{slug}/` | ID ごとの個別ルール（生成） |
 | `/?p={ID}` | `/works/{slug}/` | ID ごとの個別ルール（生成。クエリは破棄） |
-| `/category/{wpCatSlug}/`（`/category/{親}/{子}/` を含む） | `/works/?category={新カテゴリslug}` | 汎用ルール（同名なら 1 本）＋ 変更分のみ個別ルール |
+| `/category/{wpCatSlug}/`（`/category/{親}/{子}/`、`/category/{slug}/page/{n}/` を含む） | `/works/?category={新カテゴリslug}` | 汎用ルール（同名なら 1 本）＋ 変更分のみ個別ルール |
 | `/works/page/{n}/` | `/works/` | 汎用ルール |
 | `/works`・`/contact`（スラッシュなし） | `/works/`・`/contact/` | Apache `mod_dir` に任せる |
-| `/feed/` ほか WP 固有（`/wp-admin/`、`/wp-login.php`、`/author/…`、日付アーカイブ） | — | リダイレクトしない（404。`/feed/` は U-8） |
+| `/feed/` ほか WP 固有（`/wp-admin/`、`/wp-login.php`、`/author/…`、日付アーカイブ、`/category/{slug}/feed/`・`/category/{slug}/feed/atom/` などのフィード） | — | リダイレクトしない（404。`/feed/` は U-8。`feed` がカテゴリとして拾われないよう、汎用カテゴリルールで除外する） |
 | 上記に該当しない旧 ID（対応表にない ID） | — | 404（`/works/` への一括転送はしない＝ソフト 404 を避ける） |
 
 **カテゴリ名（スラッグ）が変わった場合の扱い**: 詳細ページのルールは **ID だけで照合し、カテゴリ部分は任意の値を許容**する。
@@ -225,29 +225,41 @@ export function buildRedirectRules(input: {
 新サイトではカテゴリが URL に含まれないため、今後カテゴリを変更・改名しても詳細 URL は変わらず、リダイレクトの追加も不要。
 カテゴリアーカイブ（`/category/{slug}/`）だけは旧スラッグに依存するため、改名したカテゴリは `legacyWpSlugs` から個別ルールを生成する。
 
-**`.htaccess` の生成ルール（案）**:
+**`.htaccess` の生成ルール（案）**（2026-10-27 変更。実装時のレビューで、旧詳細ルールが `/works/page/2/` や日付アーカイブ `/2020/12/` を、
+カテゴリの汎用ルールがカテゴリのページ送り・フィードを誤って転送することが分かったため、パターン・順序・転送先を改めた）:
 
 ```apache
-# --- 生成: 旧 WP 実績詳細（legacyWpId → slug） ---
 RewriteEngine On
-# /{category…}/123 または /{category…}/123/
-RewriteRule ^(?:[^/]+/)+123/?$ /works/unotame-portfolio/ [R=301,L]
+
+# --- ③ 固定: ページネーション（生成ルールより前） ---
+RewriteRule ^works/page/[0-9]+/?$ https://unotame.com/works/ [R=301,L]
+
+# --- ② 生成: 旧 WP 実績詳細（legacyWpId → slug） ---
+# /{category…}/123 または /{category…}/123/（先頭が 4 桁の年、ID の直前が page のものは除く）
+RewriteRule ^(?![0-9]{4}/|wp-)(?:[^/]+/)*(?!page/)[^/]+/123/?$ https://unotame.com/works/unotame-portfolio/ [R=301,L]
 # /?p=123
 RewriteCond %{QUERY_STRING} (?:^|&)p=123(?:&|$)
-RewriteRule ^$ /works/unotame-portfolio/? [R=301,L]
+RewriteRule ^$ https://unotame.com/works/unotame-portfolio/? [R=301,L]
 
-# --- 生成: カテゴリ（変更があったものだけ） ---
-RewriteRule ^category/(?:[^/]+/)*old-web/?$ /works/?category=web [R=301,L]
-# --- 固定: カテゴリ（同名の残り） ---
-RewriteRule ^category/(?:[^/]+/)*([a-z0-9-]+)/?$ /works/?category=$1 [R=301,L]
-# --- 固定: ページネーション ---
-RewriteRule ^works/page/[0-9]+/?$ /works/ [R=301,L]
+# --- ② 生成: カテゴリ（変更があったものだけ） ---
+RewriteRule ^category/(?:[^/]+/)*old-web(?:/page/[0-9]+)?/?$ https://unotame.com/works/?category=web [R=301,L]
+# --- ③ 固定: カテゴリ（同名の残り。最短一致で末尾の要素を取り、ページ送りも受ける。feed・feed/atom などのフィードは対象外で 404） ---
+# 先読みは category/ の直後でパス全体に掛ける（途中に置くと最短一致が feed/ を越えて atom をカテゴリとして拾うため）
+RewriteRule ^category/(?!(?:[^/]+/)*feed(?:/[^/]+)?/?$)(?:[^/]+/)*?([a-z0-9-]+)(?:/page/[0-9]+)?/?$ https://unotame.com/works/?category=$1 [R=301,L]
+
+# --- ① https / ホスト正規化（旧 URL のルールより後ろ。省略） ---
+# --- ④ ErrorDocument 404 /404.html ---
 ```
 
-- 個別ルールの先頭パターン `^(?:[^/]+/)+{ID}/?$` は、新 URL `/works/{slug}/` と衝突しない（slug は英字必須のため数値だけのパス要素にならない）。
-- 置換先の末尾 `?` は元クエリを破棄する指定。
-- リダイレクト先はルート相対で書き、ホスト・スキームは先頭の正規化ルールで https に揃えたうえで評価されるよう、`.htaccess` 内の順序を
-  「① https/ホスト正規化 → ② 生成ルール → ③ 固定ルール → ④ ErrorDocument」とする。
+- 個別ルールは、新 URL `/works/{slug}/` と衝突しない（slug は英字必須のため数値だけのパス要素にならない）。
+  先頭が 4 桁の年（日付アーカイブ）・先頭が `wp-`（`wp-json`・`wp-content` など）・ID の直前が `page`（ページ送り）の URL は否定先読みで除外する。
+  フィード（末尾が `feed` または `feed/atom`・`feed/rss2` など）は、汎用カテゴリルールの否定先読みで対象外にし、404 にする（除外専用のルールは置かない）。WP の分割ページ（`/{cat}/{ID}/2/`）は扱わない（U-1 の確認後に判断）。
+- 置換先の末尾 `?` は元クエリを破棄する指定。旧詳細のパスルールは元のクエリを残す（`/web/123/?utm=x` → `/works/foo/?utm=x`。害はない）。
+- 転送先は `https://unotame.com/...` の完全な URL で書く（2026-10-27 変更。旧: ルート相対）。http の旧 URL も 1 回の 301 で最終 URL に届く。
+  `ErrorDocument` だけはルート相対（完全な URL にすると 404 ではなく 302 になるため）。
+- `.htaccess` 内の順序は「③ ページ送り → ② 生成ルール → ③ カテゴリ汎用 → ① https/ホスト正規化 → ④ ErrorDocument」とする。
+  （2026-10-27 変更。① を先頭に置くと、http・www の旧 URL はまず https への寄せが当たって 2 回の 301 になることを Apache で確認したため。
+  旧 URL のルールは完全な URL へ飛ぶので当たれば 1 回で届き、当たらないリクエストは最後の ① で正規化される）
 
 **対応表の持ち方（比較）**:
 
@@ -261,6 +273,12 @@ RewriteRule ^works/page/[0-9]+/?$ /works/ [R=301,L]
 - 実装案: `public/` には置かず、テンプレート（例 `src/htaccess/htaccess.template`。正規化ルール・固定ルール・ErrorDocument を含む）に
   `buildRedirectRules()` の出力を差し込み、`dist/.htaccess` に書き出す（Astro インテグレーションの `astro:build:done` か、`build` 後のスクリプト）。
 - 安全策: 期待する旧 ID 件数（`EXPECTED_LEGACY_COUNT` などの定数、またはスナップショットテスト）を持ち、生成ルール数が減ったらビルドを失敗させる。
+  **実装（2026-10-27）**: 定数は `src/data/redirects.ts` の `EXPECTED_LEGACY_WORK_REDIRECTS`。旧 ID はコンテンツ移行（P2・U-2）で入れるため、
+  当面は 0（保護が効かない）。移行後に移行件数へ上げる。実際の件数が定数より多いときはビルドで「定数を上げる」よう警告する。
+  P3 の本番切替のチェックリストに「`EXPECTED_LEGACY_WORK_REDIRECTS` が移行件数と等しい（0 でない）」を入れる。
+- 書き出し（実装）: Astro は `.` で始まるページを出力しないため、`src/pages/htaccess.txt.ts` で出力し、`src/integrations/htaccess.ts` が
+  `astro:build:done` で `dist/htaccess.txt` を `dist/.htaccess` に改名する（`public/.htaccess` があればビルドを失敗させる）。
+  P2 で sitemap を入れるときは、`htaccess.txt` が sitemap に含まれないことを確かめる。
 - `.htaccess` は**デプロイ対象に含める**前提（`hosting-and-deploy.md` の「`--delete` で `.htaccess` を除外」案と調整が必要。U-4）。
   Xserver 側で自動追記される設定（SSL 化など）がある場合は、テンプレートへ取り込んでリポジトリ管理する。
 
@@ -294,8 +312,9 @@ RewriteRule ^works/page/[0-9]+/?$ /works/ [R=301,L]
 - [ ] `buildRedirectRules` に `{ legacyWpId: 123, slug: 'foo' }` を与えると、`^(?:[^/]+/)+123/?$` → `/works/foo/` の `R=301` ルールと、`p=123` クエリ用ルールが出力される。
 - [ ] `legacyWpId` を持たない works からはルールが生成されない。
 - [ ] 生成ルールのパターンを JS の正規表現として評価したとき、`web/123`、`web/123/`、`design/sub/123/` に一致し、`web/1234`、`web/12`、`works/foo/` に一致しない（テストで Apache の正規表現と同等の範囲を確認）。
+- [ ] ID=2・12 のルールがあっても、`works/page/2/`・`page/2/`・`2020/12/` は実績へ転送されず、`works/page/2/` の行き先は `/works/`。`category/web/page/2/` は `?category=web`、`category/web/feed/` は転送されない。（2026-10-27 追加）
 - [ ] `legacyWpSlugs: ['old-web']`、`slug: 'web'` のカテゴリから `^category/(?:[^/]+/)*old-web/?$` → `/works/?category=web` が生成され、汎用カテゴリルールより前に出力される。
-- [ ] `dist/.htaccess` が存在し、① 正規化 → ② 生成ルール → ③ 固定ルール → ④ `ErrorDocument 404 /404.html` の順で並んでいる。
+- [ ] `dist/.htaccess` が存在し、③ ページ送り → ② 生成ルール → ③ カテゴリ汎用 → ① 正規化 → ④ `ErrorDocument 404 /404.html` の順で並んでいる。（2026-10-27 変更）
 - [ ] 生成された詳細リダイレクトの件数が期待件数（旧 ID 件数）を下回るとビルドが失敗する。
 
 ### 一覧のカテゴリクエリ（P1。ブラウザテスト。詳細は Works 一覧仕様）
@@ -310,6 +329,8 @@ RewriteRule ^works/page/[0-9]+/?$ /works/ [R=301,L]
 - [ ] `http://unotame.com/works/`（および www を運用しない場合は `https://www.unotame.com/works/`）が 1 回の `301` で `https://unotame.com/works/` になる。
 - [ ] `/works/does-not-exist/` と `/web/999999/`（対応表にない ID）が `404` ステータスで 404 ページの内容を返す。
 - [ ] `/category/{旧slug}/` が `301` で `/works/?category={新slug}` に到達する。
+- [ ] `http://unotame.com/{category}/{ID}/` も 1 回の `301` で `https://unotame.com/works/{slug}/` に到達する（Xserver で `%{HTTPS}` が正しく判定されることの確認を兼ねる）。
+- [ ] `EXPECTED_LEGACY_WORK_REDIRECTS` が移行件数と等しい（0 でない）。
 
 ## 将来拡張（任意）
 - slug 変更時の自動リダイレクト: works に `previousSlugs`（繰り返し or カンマ区切り）を持たせ、`/works/{旧slug}/` → `/works/{新slug}/` を同じ生成器で出す。

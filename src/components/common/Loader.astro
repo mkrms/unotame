@@ -1,8 +1,8 @@
 ---
 // ローダー（トップだけ。layout.md）。見た目と時間は object/component/_loader.scss が持ち、ここでは状態クラスだけを付ける。
 // JS が無効のときに出さないためのスタイルは、style 要素を head に置く必要があるので BaseLayout.astro の head にある。
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- Astro が型チェックで参照する（props を受け取らないことを明示）
-type Props = Record<string, never>;
+// props を受け取らないことを型で示す（export しておくと未使用扱いにならない）
+export type Props = Record<string, never>;
 ---
 
 <div class="c-loader" data-loader aria-hidden="true">

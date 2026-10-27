@@ -82,6 +82,7 @@ export const site = {
   name: 'UNOTAME',
   description: '「あなた」のために。',       // 現行の og:description。ページが description を渡さないときの既定値
   locale: 'ja',
+  ogLocale: 'ja_JP',                          // og:locale の値（2026-10-27 実装時に追加）
   ogImagePath: '/ogp.png',                    // public/ に置く。absoluteUrl() で https の絶対 URL にして出す
   copyright: '© UNOTAME',                     // 現行どおり年は入れない
 } as const;
@@ -250,8 +251,10 @@ type Props = Record<string, never>;  // props なし
 <div class="c-loader" data-loader aria-hidden="true">
   <div class="c-loader__dot"></div>
 </div>
-<noscript><style is:inline>.c-loader { display: none !important; }</style></noscript>
 ```
+
+- JS 無効時用のスタイルは、`BaseLayout.astro` の **`<head>` の中**に `{loader && <noscript><style is:inline>.c-loader { display: none !important; }</style></noscript>}` として置く
+  （HTML の仕様では `<style>` は `<head>` 内にしか置けないため。2026-10-27 レビュー指摘 L-2 で `<body>` から移動）。
 
 - **タイミング（現行の再現）**: 状態はクラスで表し、時間は CSS の `transition` で持つ。
 
@@ -265,8 +268,9 @@ type Props = Record<string, never>;  // props なし
   - モジュール script は HTML の解析後に実行されるため、実行時点で `load` が終わっている場合を `document.readyState` で必ず拾う。
 - **JS が無効のとき**: `<noscript>` 内のスタイルでローダーを最初から出さない（ページは普通に見える）。
   - `<noscript>` 内の `<style>` は Astro に処理（スコープ化・移動）されないよう **`is:inline` を付ける**。
-- **JS が途中で失敗したとき（保険）**: `.c-loader` に、6 秒後に `visibility: hidden; opacity: 0; pointer-events: none` にする CSS アニメーション
-  （`animation: c-loader-failsafe 0s 6s forwards`）を付けておく。JS が正常なら 5.6 秒までに消えているので影響しない。
+- **JS が途中で失敗したとき（保険）**: `.c-loader` に、7 秒後に `visibility: hidden; opacity: 0; pointer-events: none` にする CSS アニメーション
+  （`animation: c-loader-failsafe 0s 7s forwards`）を付けておく。load が来なければ 5 秒で消え始めて 5.6 秒で消え終わり、
+  load が遅れて来た場合も、ほぼ 7 秒までに通常のフェードが終わる（2026-10-27 レビュー指摘 L-1 で 6 秒から変更。6 秒では遅い load のフェードの途中で保険が効いてしまうため）。
 - **`prefers-reduced-motion: reduce` のとき**: ローダーを出さない（`@media (prefers-reduced-motion: reduce) { .c-loader { display: none; } }`）。
   ローダーは装飾で、波紋のアニメーションと待ち時間の両方が動きを減らしたい利用者の負担になるため（L-2）。
 - 支援技術: `aria-hidden="true"`。フォーカスを受ける要素は置かない。
@@ -298,12 +302,12 @@ type Props = Record<string, never>;  // props なし
 - [ ] `aria-current`: `dist/works/index.html` は WORKS が `page`、`dist/works/{slug}/index.html` は WORKS が `true`、`dist/contact/index.html` はヘッダーとフッターの CONTACT が `page`、
       `dist/index.html` と `dist/404.html` には `aria-current` が無い。
 - [ ] ロゴの `<img>` が `alt="UNOTAME"`・`loading="eager"`・`width`・`height` を持ち、`src` が `/_astro/` で始まる。
-- [ ] `.c-loader` 要素とローダーの script は `dist/index.html` にだけあり、ほかの HTML には無い。`dist/index.html` の `.c-loader` は `aria-hidden="true"` を持ち、`<noscript>` 内に `.c-loader` を隠すスタイルがある。
+- [ ] `.c-loader` 要素とローダーの script は `dist/index.html` にだけあり、ほかの HTML には無い。`dist/index.html` の `.c-loader` は `aria-hidden="true"` を持ち、`<head>` 内の `<noscript>` に `.c-loader` を隠すスタイルがある（ほかの HTML には無い）。
 - [ ] `dist/` のどこにも `jquery` という文字列（ファイル名・`src`）が無い。
 
 ### ブラウザ確認（`npm run preview`。手動、または Playwright）
 - [ ] `/` を開くと、ローダー（黒丸の波紋）が出て、読み込み完了から約 1.7 秒以内に消え、その後 `.c-loader` が `hidden` になっている。消えたあとロゴ・ナビをクリックできる。
-- [ ] 画像の応答を止めて `load` が起きない状態にしても、ローダーは 6 秒以内に消える（Playwright なら `page.route` で画像を保留にして確認）。
+- [ ] 画像の応答を止めて `load` が起きない状態にしても、ローダーは 7 秒以内に消える（Playwright なら `page.route` で画像を保留にして確認）。
 - [ ] JavaScript を無効にして `/` を開くと、ローダーは一度も表示されず、ページが見える。
 - [ ] DevTools の Rendering で `prefers-reduced-motion: reduce` をエミュレートすると、ローダーは表示されない。
 - [ ] `/works/` から ABOUT を押すと `/#about` に移動し、About の見出しが固定ヘッダーに隠れない。

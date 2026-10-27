@@ -5,6 +5,11 @@
 ## 基本方針
 - 現行デザインを**踏襲して刷新**する。ブランドの一貫性（ロゴ・書体・トーン）は維持し、コードと細部を改善する。
 
+## 対象ブラウザ
+- Vite（Astro 7）の既定の対象（`baseline-widely-available`。Safari は 16.4 以降）に合わせる。
+  メディアクエリの範囲記法（`width <= 768px` など）は変換せずに出力するため、iOS 16.3 以前の Safari には SP 用のスタイルが当たらない
+  （2026-10-27 レビュー指摘 L-3。古い環境への対応が必要になったら、P2 で対象ブラウザの指定を見直す）。
+
 ## 引き継ぐ資産（移植元）
 - ロゴ: `assets/img/logo-landscape-removebg.png` ほか `unotame-logo-*.png`
 - 書体: Objective（Regular / Medium / Black, `assets/fonts/*.otf`）→ WOFF2 化を検討

@@ -85,3 +85,17 @@
 - **背景**: 無料プラン（API 5 個・キー 1 個・転送量 20GB/月）の範囲で運用できる。microCMS の正規表現が先読みに対応しているか確認できず、
   CMS とコードで規則を二重に持つより、ビルド時の検証 1 か所にまとめるほうが保守しやすい。
 - **影響**: 入力ミスは公開前のビルドで初めて分かる（CI で検出してデプロイを止める）。url-design.md のスキーマ表もこれに合わせて更新した。
+
+### D-011 プロジェクト基盤: legacy 退避・Astro 7・Node 24・ツール構成
+- **決定**: `spec/feature/project-foundation.md` を採用する。主な内容は次のとおり。
+  - 現行テーマ（`*.php`・`style.css`・`assets/`・`.vscode/settings.json`）を `git mv` で `legacy/` へ移す。追跡中の `.DS_Store` は削除して gitignore に入れる。
+  - コミットは 4 つ（準備 / 退避のみ / Astro 初期化 / lint・format・test 導入）に分ける。
+  - Astro 7 系（`^7`、lock で固定）を手動で導入。TypeScript は `strict`、ツール対応のため TypeScript 本体は 6.0 系に固定する。
+  - Node 24 系（`.nvmrc`・`engines`・`engine-strict`）。パッケージマネージャは npm（`package-lock.json` をコミット、CI は `npm ci`）。
+  - ESLint（flat config）・Prettier・Stylelint（`.scss` のみ）・Vitest を P1 で導入。`.gitattributes` で LF に統一。
+  - 開発環境は Git Bash 前提。npm scripts 内で環境変数を前置する必要が出たら `cross-env` を入れる。
+  - Objective フォントの WOFF2 化は P2（着手前にライセンスを確認）。FLOCSS に Utility（`u-`）層を追加する。
+- **背景**: 退避と導入を分けて履歴を追いやすくし、ローカル・CI で同じコマンドと同じ版で動く土台を最初に作るため。
+  TypeScript 7 系は `@astrojs/check`・typescript-eslint が未対応（2026-10-27 時点）。
+- **影響**: 以後の機能は本仕様の配置・コマンドに従う。P2 の CI は `lint → check → test → build` をそのまま呼ぶ。
+  TypeScript 7 系への更新は、ツール側の対応を確認してから別途判断する。

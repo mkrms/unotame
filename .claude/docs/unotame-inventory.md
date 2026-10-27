@@ -15,7 +15,7 @@ designer はここを起点に機能仕様（`spec/feature/`）へ展開する�
 
 | 要素 | フェーズ | 概要 | 仕様ファイル |
 |---|---|---|---|
-| プロジェクト基盤 | P1 | 現行 WP テーマを `legacy/` へ退避（D-007）、Astro + TS 初期化、ディレクトリ構成、lint/format、`.env.example`、`.gitignore` | 未作成 |
+| プロジェクト基盤 | P1 | 現行 WP テーマを `legacy/` へ退避（D-007）、Astro + TS 初期化、ディレクトリ構成、lint/format、`.env.example`、`.gitignore` | `spec/feature/project-foundation.md`（承認済み・D-011） |
 | 共通レイアウト | P1 | ヘッダー（ロゴ・ナビ ABOUT/WORKS/CONTACT）、フッター（CONTACT 導線・コピーライト）、ローダー | 未作成 |
 | スタイル移植 | P1 | destyle + SCSS（FLOCSS）の移植、Objective フォント、画像資産 | `spec/design/design-policy.md`（枠） |
 | CMS 連携 | P1 | microCMS スキーマ（works / category）、API クライアント、レスポンス→ドメイン型変換 | `spec/feature/cms-integration.md`（承認済み・D-010） |
@@ -57,5 +57,6 @@ designer はここを起点に機能仕様（`spec/feature/`）へ展開する�
 
 ## 次のアクション
 
-- `designer` で「プロジェクト基盤」（legacy 退避と Astro 初期化）の仕様を起こす。
+- `implementer` で「プロジェクト基盤」を実装する（4 コミット構成。各コミットは承認後）。
+- 並行して `designer` で P1 の残り（共通レイアウト・スタイル移植・トップ・Works 一覧/詳細・404）の仕様を起こす。
 - お問い合わせ方式を `contact-options.md` の質問への回答をもとに決める。

@@ -8,8 +8,8 @@
 ## 引き継ぐ資産（移植元）
 - ロゴ: `assets/img/logo-landscape-removebg.png` ほか `unotame-logo-*.png`
 - 書体: Objective（Regular / Medium / Black, `assets/fonts/*.otf`）→ WOFF2 化を検討
-- スタイル: `assets/css/style.scss`（Foundation / Layout / Object〈Component / Project〉）、`destyle.css`
-- 命名規約: FLOCSS（`l-` Layout / `c-` Component / `p-` Project / `is-` 状態）
+- スタイル: `assets/css/style.scss`（Foundation / Layout / Object〈Component / Project〉）、`destyle.css`。新構成では Object に Utility を追加する
+- 命名規約: FLOCSS（`l-` Layout / `c-` Component / `p-` Project / `u-` Utility / `is-` 状態）。Utility は現行の `.sp-none` / `.pc-none` などの置き場
 - ページ構成: トップ（KV / Message / Works / About）、Works 一覧・詳細、Contact、フッターの大きな CONTACT 導線
 
 ## 改善候補（P2 で検討）

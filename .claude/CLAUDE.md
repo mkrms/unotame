@@ -28,8 +28,8 @@
 
 | フェーズ | 目的 | 概要 |
 |---|---|---|
-| 1 | 現行サイトを Astro で再構築（ローカルで動く） | Astro 基盤、共通レイアウト、トップ / Works 一覧・詳細 / Contact、microCMS 連携、SCSS 移植 |
-| 2 | 刷新と品質向上 | デザインの細部刷新、jQuery 除去、SEO/OGP・パフォーマンス・a11y、WP からのコンテンツ移行、PR 時の CI チェック |
+| 1 | 現行サイトを Astro で再構築（ローカルで動く） | Astro 基盤、共通レイアウト、トップ / Works 一覧・詳細 / Contact、microCMS 連携、SCSS 移植（jQuery を使わない実装） |
+| 2 | 刷新と品質向上 | デザインの細部刷新、SEO/OGP・パフォーマンス・a11y、WP からのコンテンツ移行、PR 時の CI チェック |
 | 3 | 公開と CI/CD | GitHub Actions による Xserver 自動デプロイ、CMS Webhook 連携、本番切替（WP 撤去・URL 互換） |
 
 詳細なスコープは `.claude/docs/unotame-inventory.md`（棚卸）を参照。

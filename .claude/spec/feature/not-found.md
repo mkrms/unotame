@@ -89,7 +89,10 @@ ErrorDocument 404 /404.html
 
 ### ローカルでの確かめ方
 - `npm run dev`: 存在しない URL（例 `http://localhost:4321/does-not-exist/`）で 404 ページが表示される。`trailingSlash: 'always'` のため
-  `/works`（スラッシュなし）も 404 ページになる（url-design の受け入れ条件と同じ）。
+  `/works`（スラッシュなし）も 404 ステータスになる（url-design の受け入れ条件と同じ）。
+  - **2026-10-27 変更（実装時の確認）**: スラッシュなしの URL（`/works`・`/works/{slug}`・`/does-not-exist`）は、dev・preview とも
+    自前の 404 ページではなく Astro 既定のページ（「trailingSlash is set to "always"」の案内）が 404 ステータスで出る。Astro の挙動なので受け入れる。
+    本番（Apache）では mod_dir が `/works` を `/works/` へ 301 で転送するため、影響はローカルだけ。自前の 404 ページはスラッシュ付きの URL で確かめる。
 - `npm run build && npm run preview`: 同じ URL を開き、`curl -i http://localhost:4321/does-not-exist/` で **ステータスが 404**、本文に `404 Not Found` が含まれることを確かめる。
   - Astro の preview サーバーは `dist/404.html` を 404 ステータスで返す想定。Astro 7 で挙動が違った場合は、`dist/404.html` の存在と中身の検査で代える（N-3）。
 - `.htaccess` の `ErrorDocument` はローカルの preview では効かない（Apache ではないため）。ローカルでは `dist/.htaccess` の中身を検査し、
@@ -104,11 +107,13 @@ ErrorDocument 404 /404.html
 - [ ] `dist/404.html` に `<h1>` がちょうど 1 つあり、`/works/` と `/` へのリンクがある。ヘッダー（ナビ 3 項目）とフッター（CONTACT → `/contact/`）がある。
 - [ ] `dist/404.html` のすべての `href`・`src`（`<link>`・`<script>`・`<img>`・`<a>`）が `/`・`#`・`https://` のいずれかで始まる（相対パスが無い）。
 - [ ] `dist/404.html` にローダー（`.c-loader`）が無く、ナビに `aria-current` が無い。
-- [ ] `dist/404.html` の出力が CMS のデータに依存しない（フィクスチャの works を 0 件・別の内容にしても `dist/404.html` が同一）。
+- [ ] `dist/404.html` の出力が CMS のデータに依存しない。（2026-10-27 変更。旧: フィクスチャの works を 0 件・別の内容にしても `dist/404.html` が同一）
+      `src/pages/404.astro` から import をたどって（動的 import を含む）`src/lib/cms/` に届かないことを、ソースの検査で確かめる。
+      パスの別名（alias）を導入した場合は、この検査も別名をたどるよう直す。
 - [ ] `dist/.htaccess` の最後の有効な行（コメント・空行を除く）が `ErrorDocument 404 /404.html` で、`ErrorDocument` の指定先が `http` で始まっていない。※ url-design の `.htaccess` 生成の実装後に確認。
 
 ### ローカル確認
-- [ ] `npm run dev` で `/does-not-exist/` と `/works` が 404 ページを表示する。
+- [ ] `npm run dev` で `/does-not-exist/` が 404 ページを表示し、`/works`（スラッシュなし）が 404 ステータスになる（中身は Astro 既定のページでよい。2026-10-27 変更）。
 - [ ] `npm run preview` で `curl -i http://localhost:4321/does-not-exist/` のステータスが `404` で、本文に `404 Not Found` が含まれる（N-3 で preview の挙動が違うと分かった場合は、この項目を外す）。
 - [ ] `/works/aaa/bbb/` のような深い URL で 404 ページを開いても、CSS・フォント・ロゴが読み込まれ、見た目が崩れない。
 

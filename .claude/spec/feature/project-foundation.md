@@ -169,7 +169,7 @@ export default defineConfig({
 {
   "extends": "astro/tsconfigs/strict",
   "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist", "legacy", "node_modules"]  // 基底の exclude を上書きするので dist も書く
+  "exclude": ["dist", "legacy", "node_modules", "coverage"]  // 基底の exclude を上書きするので dist も書く
 }
 ```
 - 基底の `astro/tsconfigs/base` は `allowJs: true` かつ `include: ["**/*"]` のため、**`legacy` を除外しないと `legacy/assets/js/*.js` が型チェックの対象に入る**。
@@ -259,8 +259,8 @@ npm-debug.log*
 # OS・エディタ
 .DS_Store
 Thumbs.db
-.vscode/*
-!.vscode/extensions.json
+/.vscode/*
+!/.vscode/extensions.json
 ```
 
 **`.gitattributes`**
@@ -309,10 +309,12 @@ trim_trailing_whitespace = unset
 
 **`.env.example`**（cms-integration の記載どおり。値は空でコミット）
 ```
+# microCMS（API キーは GET 権限のみの読み取り専用キーを使う。値はコミットしない）
 MICROCMS_SERVICE_DOMAIN=
 MICROCMS_API_KEY=
 # データの取得元: microcms（既定）| fixture（API を呼ばずに fixtures/microcms/*.json を使う）
 CMS_SOURCE=
+# 開発時のみ: 下書きプレビュー。"コンテンツID:draftKey" をカンマ区切り。astro build で設定されているとビルド失敗
 MICROCMS_PREVIEW_DRAFTS=
 ```
 （コメント行は cms-integration の `.env.example` 案をそのまま写す。本書の時点ではこれらを読むコードはまだ無い。）
@@ -326,7 +328,7 @@ MICROCMS_PREVIEW_DRAFTS=
   "name": "unotame",
   "private": true,
   "type": "module",
-  "engines": { "node": ">=24.16.0" },
+  "engines": { "node": "^24.16.0 || >=26.3.0" },
   "scripts": { /* 下の「npm scripts」 */ }
 }
 ```

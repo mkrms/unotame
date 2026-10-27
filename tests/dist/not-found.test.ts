@@ -1,7 +1,7 @@
 // 404 ページの受け入れ条件（not-found「受け入れ条件 / ビルド成果物」）を dist/404.html で検査する。
-// .htaccess（ErrorDocument）の項目は url-design の .htaccess 生成の実装後に確認する（今回は対象外）。
+// .htaccess の ErrorDocument の項目は dist/.htaccess で検査する（生成は url-design。ルールの並びは tests/dist/htaccess.test.ts）。
 // 「CMS のデータに依存しない」は tests/source/components.test.ts で、404.astro の import をたどって src/lib/cms に届かないことを確かめる。
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { beforeAll, describe, expect, it } from 'vitest';
 import type { HTMLElement } from 'node-html-parser';
 import { globalNav } from '../../src/data/navigation';
@@ -68,5 +68,22 @@ describe('404 page: content', () => {
   it('has no loader and no aria-current', () => {
     expect(root.querySelectorAll('.c-loader')).toHaveLength(0);
     expect(root.querySelectorAll('[aria-current]')).toHaveLength(0);
+  });
+});
+
+describe('404 page: .htaccess', () => {
+  it('ends dist/.htaccess with a root-relative ErrorDocument 404 /404.html', () => {
+    const path = distPath('.htaccess');
+    expect(existsSync(path)).toBe(true);
+    const lines = readFileSync(path, 'utf8')
+      .split('\n')
+      .map((line) => line.trim())
+      .filter((line) => line !== '' && !line.startsWith('#'));
+    expect(lines.at(-1)).toBe('ErrorDocument 404 /404.html');
+    const targets = lines
+      .filter((line) => /^ErrorDocument\s/.test(line))
+      .map((line) => line.split(/\s+/).slice(2).join(' '));
+    expect(targets.length).toBeGreaterThan(0);
+    for (const target of targets) expect(target.startsWith('http'), target).toBe(false);
   });
 });

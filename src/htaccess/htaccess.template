@@ -1,0 +1,28 @@
+# UNOTAME (https://unotame.com/) .htaccess
+# このファイルはビルドで生成される（src/htaccess/htaccess.template + src/lib/redirects.ts）。直接編集しない。
+# サーバーパネルからの .htaccess の変更はデプロイで上書きされる。必要な設定はこのテンプレートへ取り込む。
+# 順序: ③ ページ送り → ② 生成ルール → ③ カテゴリ（汎用） → ① https / ホスト正規化 → ④ ErrorDocument（url-design）
+# 転送先は 1 回の 301 で届くよう完全な URL で書く（オリジンのプレースホルダーはビルドで astro.config の site に
+# 置き換わる）。ErrorDocument だけはルート相対。
+# ① を旧 URL のルールより後ろに置くのは、http / www の旧 URL も 1 回の 301 で新 URL へ届けるため（旧 URL のルールは
+# スキーム・ホストを問わず完全な URL へ飛ぶ）。旧 URL に当たらないリクエストだけが ① で正規化される。
+
+RewriteEngine On
+
+# --- ③ 固定: ページ送り（② より前に置き、/works/page/{n}/ を旧 ID の詳細と取り違えない） ---
+RewriteRule ^works/page/[0-9]+/?$ {{SITE_ORIGIN}}/works/ [R=301,L]
+
+{{GENERATED_REDIRECT_RULES}}
+
+# --- ③ 固定: カテゴリ（汎用。旧スラッグと同名の残り。/page/{n}/ も同じ先へ。フィード（末尾が feed または feed/{1 要素}。
+#     例 feed/・feed/atom/・feed/rss2）は対象外で 404。先読みはパス全体に掛け、feed/ の後ろをカテゴリと取り違えない） ---
+RewriteRule ^category/(?!(?:[^/]+/)*feed(?:/[^/]+)?/?$)(?:[^/]+/)*?([a-z0-9-]+)(?:/page/[0-9]+)?/?$ {{SITE_ORIGIN}}/works/?category=$1 [R=301,L]
+
+# --- ① https / ホスト正規化（旧 URL に当たらなかった http と www を https://unotame.com へ 1 回の 301 で寄せる。
+#     クエリは保つ） ---
+RewriteCond %{HTTPS} !on [OR]
+RewriteCond %{HTTP_HOST} ^www\.unotame\.com$ [NC]
+RewriteRule ^ https://unotame.com%{REQUEST_URI} [R=301,L]
+
+# --- ④ エラーページ（ルート相対で書く。完全な URL にすると 404 ではなく 302 になる） ---
+ErrorDocument 404 /404.html

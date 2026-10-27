@@ -142,3 +142,9 @@
   - `project-foundation.md`: F-8 に `<style>` の使い分け（S-2 の案 A）を反映。テスト用パッケージと `test:dist` の追加を追記。
   - 実装時に確かめる項目（not-found N-3：`astro preview` の 404 ステータス、top-page X-2：コンテナ API など）は各仕様の未決事項に残した。
     お問い合わせ（Contact）は送信方式が未決のため、本決定に含まない。
+- **追加の決定（2026-10-27、ユーザー承認）**: 仕様の整理中に見つかった次の点を決めた。
+  - 1366px でも 768px と同じブレークポイントの重なりがあるため、`ov-pc` を `width > 1366px` にして P1 で直す（style-migration S-5）。
+  - `test:dist` は `npm test` から外し、専用の Vitest 設定で動かす。CI の順序は `lint → check → test → build → test:dist`（project-foundation）。
+  - 実績詳細の description は P1 から `work.description` を渡す（空なら本文からの自動生成。works-detail）。
+  - 実績 0 件の文言はトップと一覧に出し、詳細には出さない（top-page T-4 と works-detail D-6 の整合）。
+  - `.claude/CLAUDE.md` の技術決定事項に、グローバル SCSS と Adobe Fonts の継続を追記した。

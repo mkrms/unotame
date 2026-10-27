@@ -96,7 +96,7 @@ src/styles/
 | `style.scss` | `style.scss` | `@import` を `@use` に。順序は下の「`style.scss`」のとおり |
 | `destyle.css` | npm `destyle.css@4.0.1`（`BaseLayout.astro` で `import 'destyle.css'`） | コピーしない |
 | `Foundation/_global.scss` の色・ブレークポイント | `foundation/_variables.scss` | `$BREAKPOINT_PC` → `$breakpoint-pc`、`$BREAKPOINT_SP` → `$breakpoint-sp`（Stylelint の変数名規則に合わせる）。`$color-secondary` は未使用だが残す（ブランド色の記録） |
-| 同 mixin `ov-pc` `pc` `ov-sp` `sp` | `foundation/_mixins.scss` | 名前は変えない（各ファイルの差分を小さくするため）。メディアクエリは範囲記法に。`ov-sp` は `width > 768px` にして 768px の重なりを直す（S-5。2026-10-27 変更、D-012） |
+| 同 mixin `ov-pc` `pc` `ov-sp` `sp` | `foundation/_mixins.scss` | 名前は変えない（各ファイルの差分を小さくするため）。メディアクエリは範囲記法に。`ov-sp` は `width > 768px`、`ov-pc` は `width > 1366px` にして、768px と 1366px の重なりを直す（S-5。2026-10-27 変更、D-012） |
 | 同 `@font-face` ×3 | `foundation/_fonts.scss` | `src` を `url('../../assets/fonts/Objective-*.otf') format('opentype')` に |
 | 同 mixin `objective` `mincho` | `foundation/_mixins.scss` | そのまま（`mincho` の代替フォントも現行どおり。S-1） |
 | 同 クラス `.objective` `.mincho` | — | 移さない（未使用）。必要になったら `u-` の Utility として足す |
@@ -129,7 +129,7 @@ $breakpoint-sp: 768px;
 // foundation/_mixins.scss（CSS を出力しない）
 @use 'variables' as *;
 
-@mixin ov-pc { @media screen and (width >= $breakpoint-pc) { @content; } }
+@mixin ov-pc { @media screen and (width > $breakpoint-pc) { @content; } }   // S-5（2026-10-27 追加、D-012）: legacy の min-width: 1366px から変更。1366px では pc だけが当たる
 @mixin pc    { @media screen and (width <= $breakpoint-pc) { @content; } }
 @mixin ov-sp { @media screen and (width > $breakpoint-sp) { @content; } }   // S-5（D-012）: legacy の min-width: 768px から変更。768px では sp だけが当たる
 @mixin sp    { @media screen and (width <= $breakpoint-sp) { @content; } }
@@ -237,7 +237,7 @@ $breakpoint-sp: 768px;
 - `stylelint --fix` で直る差分（色の表記 `rgba(0, 0, 0, 0.8)` → `rgb(0 0 0 / 80%)`、フォント名の引用符、空行など）は、**見た目が変わらない書き換え**なので受け入れる。
 - 変数名（`$BREAKPOINT_*` → `$breakpoint-*`）、メディアクエリの範囲記法（`min-width: 768px` → `width >= 768px`。意味は同じ）、空ルールの削除は手で直す。
 - ルールを無効にする場合は、その行にコメントで理由を書く（ファイル全体・設定での無効化は承認事項）。
-- 値（色・寸法・時間）は変えない。現行の不具合も P1 では直さない。ただし 768px のブレークポイントの重なり（S-5 ①）だけは P1 で直す（2026-10-27 変更、D-012）。
+- 値（色・寸法・時間）は変えない。現行の不具合も P1 では直さない。ただし 768px と 1366px のブレークポイントの重なり（S-5 ①）だけは P1 で直す（2026-10-27 変更、D-012）。
 
 ### 見た目の比較手順（P1 の確認方法）
 - **比較対象**: 現行の本番サイト `https://unotame.com/`（WordPress。本番切替まで稼働している）と、ローカルの `npm run build && npm run preview`。
@@ -249,7 +249,7 @@ $breakpoint-sp: 768px;
 | 375px | SP の基準（1rem = 10px） |
 | 768px | SP の上限。現行は `sp` と `ov-sp` が両方当たるが、新サイトは `sp` だけが当たる（S-5 で P1 に直す。この幅の差分は「意図した変更」として記録する） |
 | 769px | PC 側の下限（ヘッダーのナビが出る最初の幅） |
-| 1366px | PC の基準（1rem = 10px） |
+| 1366px | PC の基準（1rem = 10px）。現行は `pc` と `ov-pc` が両方当たるが、新サイトは `pc` だけが当たる（S-5 で P1 に直す。差分は「意図した変更」として記録する） |
 | 1920px | 大きい画面（rem が比例して大きくなることの確認） |
 
 - **ページ**: `/`、`/works/`、実績詳細 1 件、`/contact/`（フォーム部分は除く）。404 は現行が空白ページなので比較しない（`not-found.md`）。
@@ -304,7 +304,7 @@ $breakpoint-sp: 768px;
 
 ## 未決事項
 
-2026-10-27 に推奨どおりで決定した（D-012）。S-5 は推奨のうち「①は P1 で直してもよい」を採り、768px の重なりを P1 で直す。
+2026-10-27 に推奨どおりで決定した（D-012）。S-5 は推奨のうち「①は P1 で直してもよい」を採り、768px の重なりを P1 で直す。同じ重なりが 1366px にもあることが分かったため、こちらも P1 で直す（2026-10-27 追加承認）。
 
 | ID | 内容 | 決定 |
 |---|---|---|
@@ -312,7 +312,7 @@ $breakpoint-sp: 768px;
 | S-2 | グローバル SCSS と `.astro` の `<style>` の使い分け | **決定（D-012）**: 案 A（P1 はすべてグローバル SCSS。例外は `<noscript>` の `<style is:inline>` 1 か所）。B・C は P2 で必要になったら再検討。project-foundation F-8 にも反映済み |
 | S-3 | 実績カードのスタイルが 3 か所に重複している | **決定（D-012）**: `top-page.md` の共通 `WorkCard`（`c-work-card`）が承認されたため、カード 1 枚分を `object/component/_work-card.scss` にまとめ、並べ方（グリッド・列数）は各 Project に残す |
 | S-4 | 未使用のクラス（`.objective`・`.mincho`・`.bg-color`・`.container`）を移さないこと。未使用の `.sp-none`・`.pc-none` は `u-sp-none`・`u-pc-none` として移すこと | **決定（D-012）**: 本書のとおり |
-| S-5 | 現行の不具合・癖: ① `sp`（≤768px）と `ov-sp`（≥768px）が 768px ちょうどで両方当たる、② `html` の `font-size` が画面幅だけで決まり、ブラウザの文字サイズ設定が効かない、③ `mincho` の代替が `sans-serif` | **決定（D-012）**: ① は **P1 で直す**（`ov-sp` を `width > 768px` に。768px での見た目の差は意図した変更として記録する）。②・③ は P1 では現行どおり、P2 で直す |
+| S-5 | 現行の不具合・癖: ① `sp`（≤768px）と `ov-sp`（≥768px）が 768px ちょうどで、`pc`（≤1366px）と `ov-pc`（≥1366px）が 1366px ちょうどで両方当たる、② `html` の `font-size` が画面幅だけで決まり、ブラウザの文字サイズ設定が効かない、③ `mincho` の代替が `sans-serif` | **決定（D-012）**: ① は **P1 で直す**（`ov-sp` を `width > 768px`、`ov-pc` を `width > 1366px` に。2 つの幅での見た目の差は意図した変更として記録する。1366px は 2026-10-27 追加承認）。②・③ は P1 では現行どおり、P2 で直す |
 | S-6 | destyle を npm で入れ、JS の import で読むこと | **決定（D-012）**: 本書のとおり（同じ 4.0.1 を使う） |
 | S-7 | P1 で `<Image>` を使うこと（ロゴ・プロフィール・SNS アイコン。WebP に変換される） | **決定（D-012）**: 使う。WebP への変換で画質が気になる場合は `format` を元の形式に指定する |
 | S-8 | 見た目の比較を手動（スクリーンショットの並べ比べ）で行い、画像差分の自動化は P1 では行わないこと | **決定（D-012）**: 本書のとおり |

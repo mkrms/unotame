@@ -15,7 +15,7 @@
   - `src/pages/works/[slug].astro` と `getStaticPaths`（全 slug のページを生成）。
   - 詳細のヘッダー（タイトル・サムネイル・カテゴリ）、本文（`set:html`）、Latest 3 件、View More。
   - Latest の選び方の純粋関数とテスト。
-- **P2**: `<title>`・description・OGP（`Work.description`・サムネイルを使う。「SEO / OGP」）、本文 HTML のサニタイズ導入の判断、本文画像のリサイズ、
+- **P2**: OGP の作り込み（サムネイルを og:image に使うなど。「SEO / OGP」）、本文 HTML のサニタイズ導入の判断、本文画像のリサイズ、
   サムネイルの `srcset`・astro:assets 化（「パフォーマンス / a11y」）。
 - **含まない**: 前後の実績へのリンク（将来拡張。D-2）、実績日の表示（D-7）、コメント・共有ボタン、下書きプレビュー専用ページ（cms-integration の将来拡張）。
   旧 URL `/{category}/{ID}` からの 301 は url-design（`.htaccess` 生成）の範囲で、本書では扱わない。
@@ -96,7 +96,7 @@ src/components/common/ViewMoreLink.astro    … top-page.md
 </div>
 ```
 - `<h1>` は作品名でページに 1 つ。`BaseLayout`（`layout.md`）に `title={work.title}` を渡す（`<title>` は `{作品名} | UNOTAME`）。
-  `description` に `work.description` を渡すかは `layout.md` の props と P2「SEO / OGP」に従う。
+  `description` には P1 から `work.description` を渡す（空のときは `cms-integration.md` の変換層が本文から自動で作った値。2026-10-27 決定、D-012 追加）。
 - 本文とヘッダーを `<article>` で囲む（実績 1 件として独立した内容のため）。クラス名は `style-migration.md` に従う。
 
 ### サムネイル

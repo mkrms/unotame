@@ -44,6 +44,8 @@
 - **デプロイ**: GitHub Actions ＋ SSH/rsync で Xserver へ配信。FTP 手動アップロードは本番切替後に廃止。（D-006）
 - **リポジトリ構成**: ルートを Astro プロジェクトとし、現行 WordPress テーマは `legacy/` へ退避する（配信しない）。（D-007）
 - **事前確認**: ステージングは置かず、`npm run dev` と `npm run build && npm run preview` によるローカル確認で代替する。（D-008）
+- **スタイルの書き方**: P1 は SCSS をすべてグローバル（`src/styles/`、FLOCSS）で書き、Astro コンポーネントの `<style>` は使わない。（D-012）
+- **明朝体**: 見出しなどの游明朝は Adobe Fonts（CSS 版の `<link>`）で読み込み続ける。（D-012）
 - 設計判断の経緯は `.claude/docs/decisions-log.md` に記録する。
 
 ## 4. ドキュメント構成（所在）

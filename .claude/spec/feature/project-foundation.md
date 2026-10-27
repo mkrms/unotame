@@ -467,7 +467,9 @@ git status                     # renamed: のみであることを確認
 - **2026-10-27 追加（D-012）**: P1 のページ仕様の承認で、次のテスト用パッケージとスクリプトの追加が承認された（導入はページの実装時）。
   - 開発依存 `happy-dom`: DOM の挙動のテスト。該当ファイルの先頭で `// @vitest-environment happy-dom` を指定し、全体の `environment: 'node'` は変えない（works-list L-6）。
   - 開発依存 `node-html-parser` と npm script `test:dist`: `CMS_SOURCE=fixture npm run build` の後に `tests/dist/*.test.ts` で `dist/` の HTML を検査する（top-page X-1）。
-    `npm test`（`include: tests/**/*.test.ts`）から `tests/dist/` を外す方法と、`test:dist` の中身（環境変数の前置は F-9 に従う）は実装時に決める。
+    **決定（2026-10-27、D-012 追加）**: `vitest.config.ts` の `exclude` に `tests/dist/**` を加えて `npm test` から外し、`test:dist` は専用の設定
+    （例 `vitest.dist.config.ts`、`include: ['tests/dist/**/*.test.ts']`）で動かす。`test:dist` はビルド済みの `dist/` を前提とし、ビルドは含めない
+    （環境変数の前置は F-9 に従う）。CI の順序は `lint → check → test → build（CMS_SOURCE=fixture）→ test:dist`。
 
 ## 受け入れ条件
 

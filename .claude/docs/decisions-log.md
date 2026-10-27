@@ -151,3 +151,16 @@
 - **実装時の変更（2026-10-27、レビュー指摘。ユーザー承認済み）**:
   - ローダーの CSS の保険を 6 秒から **7 秒** に変更（load が遅いとき、通常のフェードの途中で保険が効かないようにするため。layout.md L-1）。
   - JS 無効時用の `<noscript>` の `<style is:inline>` を、`<body>`（Loader.astro）から `BaseLayout.astro` の `<head>` 内へ移動（HTML の仕様に合わせる。L-2）。
+
+## 2026-10-27 microCMS の準備
+
+### D-013 microCMS MCP の導入と API の作成
+- **決定**:
+  - microCMS の公式リモート MCP（`https://mcp.microcms.io/mcp/unotame`、Authorization ヘッダーに API キー）を Claude Code に導入する。
+    設定はユーザーのローカル（リポジトリ外）に置き、`.mcp.json` はリポジトリに入れない。
+  - MCP 経由で `categories` と `works` の 2 つの API を、`cms-integration.md` の確定案どおりに作成した（API は無料プラン 5 個中 2 個）。
+  - 本文のフィールドは新しい版の `richEditorV2` にした（仕様は「リッチエディタ」とだけ指定していたため）。
+  - MCP 用の API キーは、当面すべての権限を付けたまま作業する（ユーザー判断）。
+- **背景**: API の作成やテスト用コンテンツの登録を、Claude から直接行えるようにするため。
+- **影響**: D-010 の「ビルド用キーは GET のみ」とは、まだ食い違ったままになる。**ビルド用（`.env`・GitHub Secrets）にこのキーを使う前に**、
+  GET のみのキーを別に作るか、このキーの権限を絞るかを決めること（遅くとも P3 の CI/CD 構築まで）。

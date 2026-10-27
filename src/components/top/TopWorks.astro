@@ -4,6 +4,7 @@ import type { Work } from '../../lib/domain/work';
 import { routes } from '../../lib/routes';
 import WorkCard from '../works/WorkCard.astro';
 import ViewMoreLink from '../common/ViewMoreLink.astro';
+import { EMPTY_WORKS_MESSAGE } from '../../data/site';
 
 type Props = {
   works: Work[];
@@ -25,7 +26,7 @@ const { works } = Astro.props;
       ))}
     </ul>
   ) : (
-    <p class="p-front-page-works__empty">実績はまだ登録されていません。</p>
+    <p class="p-front-page-works__empty">{EMPTY_WORKS_MESSAGE}</p>
   )}
   <ViewMoreLink href={routes.works()} />
 </section>

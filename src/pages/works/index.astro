@@ -1,0 +1,37 @@
+---
+// 実績一覧（works-list）。全件をビルド時に出力し、カテゴリの絞り込みはクライアント側の素の TS で行う。
+// 静的 HTML では全カードが表示状態（hidden を付けない）。データの取得はここだけで行う。
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import WorkCard from '../../components/works/WorkCard.astro';
+import WorksFilter from '../../components/works/WorksFilter.astro';
+import { getAllWorks, getCategoriesInUse } from '../../lib/cms';
+import { WORKS_FILTER_ROOT_ATTR } from '../../lib/works-filter';
+import { EMPTY_WORKS_MESSAGE } from '../../data/site';
+
+const PAGE_TITLE = '記事・実績一覧';
+
+const works = await getAllWorks(); // 検証済み・date 降順
+const categories = await getCategoriesInUse(); // 実績 1 件以上・管理画面の並び順
+---
+
+<BaseLayout title={PAGE_TITLE}>
+  <div class="l-page__wrapper l-container">
+    <h1 class="l-page-title">{PAGE_TITLE}</h1>
+    {works.length > 0 ? (
+      <div class="p-works" {...{ [WORKS_FILTER_ROOT_ATTR]: '' }}>
+        {/* 絞り込みは DOM では一覧より前（PC で右に置くのは CSS） */}
+        <WorksFilter categories={categories} />
+        <ul class="p-works__list">
+          {works.map((work) => (
+            <li class="p-works__item" data-category={work.category.slug}>
+              <WorkCard work={work} headingLevel={2} />
+            </li>
+          ))}
+        </ul>
+      </div>
+    ) : (
+      // 開発時のみ（本番ビルドは 0 件でエラー）。文言は top-page T-4 と共通
+      <p class="p-works__empty">{EMPTY_WORKS_MESSAGE}</p>
+    )}
+  </div>
+</BaseLayout>

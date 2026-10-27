@@ -11,3 +11,6 @@ export const site = {
   /** 現行どおり年は入れない */
   copyright: '© UNOTAME',
 } as const;
+
+/** 実績が 0 件のときの文言（トップの Works・実績一覧で共通。top-page T-4 / works-list） */
+export const EMPTY_WORKS_MESSAGE = '実績はまだ登録されていません。';

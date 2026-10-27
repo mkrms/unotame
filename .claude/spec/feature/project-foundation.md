@@ -485,7 +485,8 @@ git status                     # renamed: のみであることを確認
 ### Astro・ツール（ゴール）
 - [ ] クリーンな clone で `.nvmrc` の Node を使い `npm ci` が終了コード 0。`npm ls` が終了コード 0（peer 依存の不整合なし）、`npm ls typescript` が 6.0.x を指す。
 - [ ] `npm run build` が終了コード 0 で、`dist/index.html` がある。`dist/` に `legacy`・`*.php`・`.htaccess` が無い（`.htaccess` は URL 設計の実装で追加される）。
-- [ ] `dist/_astro/` に、`src/styles/style.scss` から生成された CSS が 1 つ以上ある（SCSS がコンパイルされている）。
+- [ ] `src/styles/style.scss` から生成されたコンパイル済みの CSS が、`dist/` の HTML（`<style>`）または `dist/_astro/*.css` にある（SCSS がコンパイルされている）。
+  Astro の既定 `build.inlineStylesheets: 'auto'` では小さい CSS は HTML に埋め込まれるため、どちらでも合格とする（2026-10-27 実装時に修正）。
 - [ ] `npm run check`（= `npx astro check`）が終了コード 0 で、エラー 0 件。`legacy/` 配下のファイルが検査対象に出てこない。
 - [ ] `npm run lint` が終了コード 0。かつ `legacy/` に lint 違反があっても結果に影響しない（対象外）。
 - [ ] `npm run format` を実行しても `git status --porcelain -- legacy .claude CLAUDE.md` が 0 行（旧テーマと仕様書を書き換えない）。

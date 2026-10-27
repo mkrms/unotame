@@ -1,0 +1,6 @@
+// エントリ。各レイヤ（foundation / layout / object）を @use で読む。
+@use 'foundation/variables' as *;
+
+body {
+  color: $color-primary;
+}

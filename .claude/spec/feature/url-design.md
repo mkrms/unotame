@@ -1,6 +1,7 @@
 # 機能仕様: URL 設計（url-design）
 
 > 状態: **承認済み（2026-10-27、推奨案どおり）**。decisions-log D-009 に記録。
+> **2026-10-27 変更（D-012）**: U-9 を「replaceState」で決定（works-list L-1）。現行の 404 の記述を訂正（not-found N-4）。
 
 ## 目的
 - 新サイト（Astro 静的出力 + microCMS、Xserver/Apache 配信）の **URL 体系を一本化**し、ページ・リンク生成・
@@ -28,7 +29,7 @@
 | 実績一覧 | `/works/` | 投稿アーカイブ。`functions.php` で `post` に `has_archive = 'works'` を付与 → `archive.php` |
 | 実績詳細 | `/{category}/{投稿ID}`（例 `/web/123`）※ | 投稿（`single.php`）。パーマリンク構造は `/%category%/%post_id%` 系 |
 | お問い合わせ | `/contact/` | 固定ページ（`page-contact.php`、本文は WP 側でフォームプラグイン想定） |
-| 404 | 任意の未定義 URL | `404.php`（中身は空。ヘッダー/フッターのみ） |
+| 404 | 任意の未定義 URL | `404.php`。`legacy/404.php` は 0 バイトで、現行の 404 は空白のページ（ヘッダー・フッターも出ない）。2026-10-27 訂正（D-012。旧記述「ヘッダー/フッターのみ」は誤り） |
 
 ※ 末尾スラッシュの有無は未確認（未決事項 U-1）。
 
@@ -75,7 +76,7 @@
   - `/works/` 表示時に `category` クエリを読み、存在するカテゴリスラッグなら該当カテゴリで絞り込んだ状態で表示する。
   - 未知の値・空値は無視して「全て」を表示する（エラーにしない）。
   - 絞り込みボタン操作時は `history.replaceState` で `?category=` を更新し、「全て」選択時はクエリを取り除く。
-    （`pushState` にして戻る操作で絞り込みを戻すかは Works 一覧仕様で決める。U-9）
+    （`pushState` は使わない。2026-10-27 決定、D-012。U-9・works-list L-1）
   - 絞り込み UI 自体の仕様は「Works 一覧」仕様に委ねる。本書はクエリ名とスラッグの規則のみを定める。
 
 ### 末尾スラッシュの方針
@@ -328,7 +329,7 @@ RewriteRule ^works/page/[0-9]+/?$ /works/ [R=301,L]
 | U-6 | 正規ホスト（`unotame.com` か `www.unotame.com` か）と、現在の http→https 強制の有無 | **決定（D-009）**: 正規ホストは `unotame.com`（www なし）。現在の http→https 強制の有無は本番切替前に確認 |
 | U-7 | microCMS のコンテンツ ID の後変更の可否・文字数制約（案 X を選ぶ場合のみ重要） | **不要**: 案 Y（専用フィールド）を採用したため |
 | U-8 | `/feed/` の扱い（404 のままか、`/` へ 301 か、RSS を新設するか） | 購読者の有無で判断。P1 は 404 を想定 |
-| U-9 | カテゴリ切替時の履歴の扱い（`replaceState` か `pushState` か） | Works 一覧仕様で決める |
+| U-9 | カテゴリ切替時の履歴の扱い（`replaceState` か `pushState` か） | **決定：replaceState（D-012）**。2026-10-27、works-list L-1 で決定。履歴を増やさず、詳細から戻ったときは URL の `?category=` から状態を復元する |
 | U-10 | ヘッダー「ABOUT」を `/#about` にする（現行はトップへのリンクのみ） | **決定（D-009）**: `/#about` にする |
 | U-11 | 本文画像 `/wp-content/uploads/...` と現行 OGP 画像 URL（`/wp-content/themes/unotame/...`）を本番切替後も残すか | 画像は microCMS へ移行する前提だが、外部からの直リンク・SNS の OGP キャッシュが切れる。残す場合は rsync 除外、残さない場合は 404（または新画像へ 301）。コンテンツ移行・本番切替で決める |
 | U-12 | slug の長さ上限（案 60 文字）・予約語の過不足 | **決定（D-009）**: 推奨どおり（3〜60 文字、予約語 `page` / `category` / `feed` / `index` / `404`） |

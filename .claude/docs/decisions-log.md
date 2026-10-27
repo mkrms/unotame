@@ -105,3 +105,46 @@
   - 受け入れ条件「`dist/_astro/` にコンパイル済み CSS がある」を「HTML の `<style>` または `dist/_astro/*.css` にある」に緩和。
     Astro の既定 `build.inlineStylesheets: 'auto'` では小さい CSS が HTML に埋め込まれるため。設定は既定のまま。
   - レビュー指摘により `engines` を `^24.16.0 || >=26.3.0` に変更（依存パッケージの対応範囲に合わせる）。
+
+## 2026-10-27 P1 ページ仕様の承認
+
+### D-012 P1 ページ仕様 6 本の採用（共通レイアウト・スタイル移植・404・トップ・Works 一覧/詳細）
+- **決定**: `spec/feature/` の `layout.md`・`style-migration.md`・`not-found.md`・`top-page.md`・`works-list.md`・`works-detail.md` を、
+  すべて推奨どおりで採用する（2026-10-27、ユーザー承認）。主な内容は次のとおり。
+  - **ローダー**: トップだけに出す。現行のタイミング（`load` 後のフェード、5 秒の上限）を素の TS ＋ CSS の transition で再現し、
+    JS 無効時（`<noscript>` の `<style is:inline>`）と `prefers-reduced-motion: reduce` では出さない。JS が失敗しても 6 秒で消える CSS の保険を付ける。
+  - **`<head>` とヘッダー**: `<title>` は `{ページ名} | UNOTAME`（ページ名は現行の h1。L-8）。OGP は現行と同じ項目を出し、`og:image` を https、`og:url` をページごとに直す（L-3）。
+    SP（768px 以下）のナビは P1 では現行どおり非表示（L-1）。
+  - **スタイル**: P1 はすべてグローバル SCSS（FLOCSS）で書き、`.astro` に `<style>` を書かない（S-2 の案 A。例外は `<noscript>` の 1 か所）。
+    `@import` を `@use` に、destyle は npm の 4.0.1、`src/assets/` の画像は `<Image>` で出す（S-7）。
+    実績カードは共通の `WorkCard`（`c-work-card`）にまとめる。**768px のブレークポイントの重なりは P1 で直す**（`ov-sp` を `width > 768px` に。S-5）。
+  - **Adobe Fonts の継続（前提条件つき）**: 明朝体 `yu-mincho-pr6n`（kit `woq0phd`）を P1 でも使い、CSS 版の埋め込みコード
+    `<link rel="stylesheet" href="https://use.typekit.net/woq0phd.css">` を `<head>` に置く（S-1）。**実装前に、ユーザーが Adobe Fonts の管理画面で
+    ① Web プロジェクトが有効で `yu-mincho-pr6n` を含むか、② `localhost` と `unotame.com` で配信されるか、を確認する**（2026-10-27 時点で未確認）。
+  - **404**: 静的な文言とトップ・一覧への導線だけ（CMS のデータを使わない。N-1・N-2）。
+  - **トップ**: 人物情報は `src/data/profile.ts`、プロフィール写真の alt は `新山 慶介`、実績 0 件の文言は「実績はまだ登録されていません。」、SNS は新しいタブ＋`rel="noopener"`＋リンク名（T-3〜T-5）。
+  - **Works 一覧**: 全件表示（ページ分割なし）。絞り込みは `<button>`＋`aria-pressed`＋素の TS。履歴は **`replaceState`**（pushState は使わない。U-9）。
+    知らない `?category=` は URL から消す。JS 無効時はボタンを表示したまま全件表示。
+  - **Works 詳細**: **Latest は表示中の実績自身を除いた**最新 3 件（`selectLatestWorks`）。**カテゴリ名を `/works/?category={slug}` へのリンクにする**。
+    ヘッダー画像の alt にタイトルを入れない。本文 HTML は P1 ではサニタイズしない（P2 で判断）。前後の実績へのリンクは入れない。
+  - **テスト用パッケージの追加**: 開発依存に `happy-dom`（DOM の挙動のテスト。works-list L-6）と `node-html-parser`、npm script `test:dist`
+    （ビルド後に `dist/` の HTML を検査。top-page X-1）を追加する（導入は実装時）。
+  - **Message の誤記修正**: 現行の「"アナタ"が笑顔がずっと続くように。」を「"アナタ"の笑顔がずっと続くように。」に直す（2026-10-27 にユーザー確認済み。top-page T-2）。
+    About の「2024年現在」の経歴文は、ユーザーから最新の文を受け取って差し替える（届くまでは現行の文。T-1）。
+- **背景**: P1 の基準は「現行と同じ見た目・導線で Astro に載せる」ことだが、現行の不具合のうち修正の範囲が小さく利用者に効くもの
+  （id の重複・キーボードで操作できない絞り込み・`<main>` の重複・`og:image` の http・768px の重なり・Latest の自己参照）は P1 で直す。
+  見た目の大きな変更（SP のナビ、デザイン刷新）は P2 に回す。
+- **影響**: 承認済みの仕様を次のとおり修正した（各文書に「2026-10-27 変更（D-012）」と記載）。
+  - `cms-integration.md`: 受け入れ条件「`dist/index.html` に現行と同じ文言」を「`src/data/profile.ts` の文言」に変更。`Profile` 型を top-page の案に合わせた
+    （`icon` を `ImageMetadata` に、`about.photo` と `SocialLink.id` を追加）。Latest の取得を「自身を除く `selectLatestWorks`」に変更。
+    C-8（詳細画像の alt にタイトルを入れない）と C-16（一覧は全件表示）を決定。
+  - `url-design.md`: U-9 を「決定：replaceState」に。現行の 404 の記述を「`legacy/404.php` は 0 バイトで、現行の 404 は空白のページ」に訂正（not-found N-4）。
+  - `project-foundation.md`: F-8 に `<style>` の使い分け（S-2 の案 A）を反映。テスト用パッケージと `test:dist` の追加を追記。
+  - 実装時に確かめる項目（not-found N-3：`astro preview` の 404 ステータス、top-page X-2：コンテナ API など）は各仕様の未決事項に残した。
+    お問い合わせ（Contact）は送信方式が未決のため、本決定に含まない。
+- **追加の決定（2026-10-27、ユーザー承認）**: 仕様の整理中に見つかった次の点を決めた。
+  - 1366px でも 768px と同じブレークポイントの重なりがあるため、`ov-pc` を `width > 1366px` にして P1 で直す（style-migration S-5）。
+  - `test:dist` は `npm test` から外し、専用の Vitest 設定で動かす。CI の順序は `lint → check → test → build → test:dist`（project-foundation）。
+  - 実績詳細の description は P1 から `work.description` を渡す（空なら本文からの自動生成。works-detail）。
+  - 実績 0 件の文言はトップと一覧に出し、詳細には出さない（top-page T-4 と works-detail D-6 の整合）。
+  - `.claude/CLAUDE.md` の技術決定事項に、グローバル SCSS と Adobe Fonts の継続を追記した。

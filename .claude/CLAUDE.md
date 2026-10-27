@@ -11,7 +11,7 @@
 - **対象ユーザー / 最終ゴール**: 仕事を依頼する可能性のある企業・個人（クライアント）、および技術者コミュニティ。
   実績（Works）・人物像（About）・問い合わせ導線が速く・美しく届き、本人は CMS から実績を追加するだけで
   公開まで自動で完了する状態がゴール。
-- **技術スタック**: Astro（TypeScript）/ SCSS（FLOCSS 構成を継続）/ ヘッドレス CMS（microCMS 想定）/
+- **技術スタック**: Astro（TypeScript）/ SCSS（FLOCSS 構成を継続）/ ヘッドレス CMS（microCMS）/
   GitHub Actions / Xserver レンタルサーバー（静的ファイル配信）
 - **公開・配布**: https://unotame.com/（Xserver）。`main` への push ＋ CMS 更新 Webhook を契機に
   GitHub Actions でビルド → SSH/rsync でデプロイ。
@@ -37,7 +37,7 @@
 ## 3. 技術スタックの決定事項
 
 - **フレームワーク**: Astro（静的出力 `output: 'static'`）。TypeScript を使用。（D-003）
-- **コンテンツ管理**: ヘッドレス CMS（第一候補 microCMS）。ビルド時に API から取得して静的生成する。
+- **コンテンツ管理**: ヘッドレス CMS（microCMS で確定・D-010）。ビルド時に API から取得して静的生成する。
   API キーはリポジトリに含めず、ローカルは `.env`、CI は GitHub Secrets で渡す。（D-004）
 - **デザイン/スタイル**: 現行デザインを踏襲して刷新。SCSS ＋ FLOCSS 構成を継続し、既存のフォント・ロゴ・
   画像資産を流用する。jQuery は廃止し、必要な挙動は素の TS / Astro で実装する。（D-005）

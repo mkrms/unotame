@@ -8,6 +8,7 @@
 | ファイル | 範囲 |
 |---|---|
 | [url-design.md](./url-design.md) | URL 設計（P1）：新 URL 体系・末尾スラッシュ・slug 規則・カテゴリ絞り込みのクエリ・旧 URL からの 301 リダイレクト生成・canonical/sitemap の URL 規則（状態: 承認済み・D-009） |
+| [cms-integration.md](./cms-integration.md) | CMS 連携（P1）：microCMS の API 設計（works / categories）、データ取得層（`src/lib/cms/`・SDK・全件取得・ドメイン型への変換・ビルド時の検証）、画像 URL、環境変数と秘密情報、下書きプレビューとフィクスチャモード、無料プランの制約（状態: 承認済み・D-010） |
 
 ## 記法ルール
 

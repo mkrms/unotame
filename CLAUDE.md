@@ -1,7 +1,7 @@
 # UNOTAME
 
 新山慶介（UNOTAME）のポートフォリオサイト（https://unotame.com/）。
-現行の WordPress オリジナルテーマを、**Astro ＋ ヘッドレス CMS（microCMS 想定）による静的サイト**へ
+現行の WordPress オリジナルテーマを、**Astro ＋ ヘッドレス CMS（microCMS）による静的サイト**へ
 作り替え、FTP での手動アップロードを **GitHub Actions による Xserver への自動デプロイ（SSH/rsync）** に
 置き換えるプロジェクト。デザインは現行（ロゴ・Objective フォント・構成）を踏襲して刷新する。
 

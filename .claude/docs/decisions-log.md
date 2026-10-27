@@ -73,3 +73,15 @@
   URL の安定性と SEO を改善する。旧 URL の評価とリンクは 301 で引き継ぐ。
 - **影響**: 「CMS 連携」仕様で `slug`・`legacyWpId` を含むスキーマを確定する。rsync の `--delete` で `.htaccess` を除外する案は取りやめる。
   旧投稿 ID と slug の対応表づくり、現行パーマリンク・`.htaccess`・カテゴリ一覧の確認はコンテンツ移行（P2）と本番切替（P3）で行う。
+
+### D-010 CMS 連携: microCMS で確定、取得は自作関数＋ビルド時検証
+- **決定**: `spec/feature/cms-integration.md` を採用する。主な内容は次のとおり。
+  - CMS は microCMS で確定（D-004 の「第一候補」を確定）。API は `works` と `categories` の 2 つ。本文はリッチエディタ、並び順は専用の `date` フィールド。
+  - slug は「必須・重複不可」だけを microCMS に設定し、**正規表現・文字数の入力制限は付けない**。命名規則（D-009）はビルド時の検証だけで守る。
+  - トップの KV・Message・About・SNS は CMS で持たず、`src/data/profile.ts` で管理する。
+  - 取得は `microcms-js-sdk` ＋ `src/lib/cms/` の自作関数（Content Layer は使わない）。取得元はフィクスチャに差し替え可能（`CMS_SOURCE=fixture`）。
+  - ビルド時に slug・legacyWpId・参照切れなどを全件検証し、違反や API エラー、本番での実績 0 件はビルド失敗とする。
+  - API キーは GET 権限のみ。下書きは `MICROCMS_PREVIEW_DRAFTS` で個別に指定してローカル確認し、本番ビルドでは設定されていたら止める。
+- **背景**: 無料プラン（API 5 個・キー 1 個・転送量 20GB/月）の範囲で運用できる。microCMS の正規表現が先読みに対応しているか確認できず、
+  CMS とコードで規則を二重に持つより、ビルド時の検証 1 か所にまとめるほうが保守しやすい。
+- **影響**: 入力ミスは公開前のビルドで初めて分かる（CI で検出してデプロイを止める）。url-design.md のスキーマ表もこれに合わせて更新した。

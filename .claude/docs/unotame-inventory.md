@@ -18,7 +18,7 @@ designer はここを起点に機能仕様（`spec/feature/`）へ展開する�
 | プロジェクト基盤 | P1 | 現行 WP テーマを `legacy/` へ退避（D-007）、Astro + TS 初期化、ディレクトリ構成、lint/format、`.env.example`、`.gitignore` | 未作成 |
 | 共通レイアウト | P1 | ヘッダー（ロゴ・ナビ ABOUT/WORKS/CONTACT）、フッター（CONTACT 導線・コピーライト）、ローダー | 未作成 |
 | スタイル移植 | P1 | destyle + SCSS（FLOCSS）の移植、Objective フォント、画像資産 | `spec/design/design-policy.md`（枠） |
-| CMS 連携 | P1 | microCMS スキーマ（works / category）、API クライアント、レスポンス→ドメイン型変換 | 未作成 |
+| CMS 連携 | P1 | microCMS スキーマ（works / category）、API クライアント、レスポンス→ドメイン型変換 | `spec/feature/cms-integration.md`（承認済み・D-010） |
 | トップページ | P1 | KV（スキル一覧）、Message、Works 最新6件、About（プロフィール・SNSリンク） | 未作成 |
 | Works 一覧 | P1 | `/works/` 実績一覧、カテゴリ絞り込み（jQuery なし） | 未作成 |
 | Works 詳細 | P1 | 実績詳細（アイキャッチ・カテゴリ・本文）、Latest 3件 | 未作成 |
@@ -39,7 +39,7 @@ designer はここを起点に機能仕様（`spec/feature/`）へ展開する�
 - **お問い合わせの送信方式**: 比較検討中（下記の候補）。
 - **URL 設計の残り**: 方針は D-009 で確定。現行パーマリンク・カテゴリ一覧・`.htaccess` の確認、旧 ID ⇔ slug の
   対応表づくり、`/feed/` と旧画像 URL の扱いが残っている（`url-design.md` の未決事項）。
-- **CMS の最終確定**: microCMS で確定するか（無料枠・API 数の制約確認）。
+- **CMS 連携の残り**: 方針は D-010 で確定。無料プランで使える機能（Webhook・並べ替え等）の確認などが残っている（`cms-integration.md` の未決事項）。
 - **パッケージマネージャ / Node バージョン**: 暫定 npm・Node LTS。
 
 ### お問い合わせ方式の候補（比較検討用）
@@ -57,5 +57,5 @@ designer はここを起点に機能仕様（`spec/feature/`）へ展開する�
 
 ## 次のアクション
 
-- `designer` で「CMS 連携」（microCMS スキーマ。`slug`・`legacyWpId` を含む）と「プロジェクト基盤」（legacy 退避と Astro 初期化）の仕様を起こす。
+- `designer` で「プロジェクト基盤」（legacy 退避と Astro 初期化）の仕様を起こす。
 - お問い合わせ方式を `contact-options.md` の質問への回答をもとに決める。

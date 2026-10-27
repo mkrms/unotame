@@ -2,6 +2,8 @@
 
 > 状態: **承認済み（2026-10-27。C-1 は入力制限なし、他は推奨どおり。decisions-log D-010）**。`url-design.md`（承認済み・D-009）のスキーマ案・ドメイン型・ルーティング関数を
 > 引き継いで確定させる。url-design の内容は変更していない（変更が必要と思われる点は「未決事項」に挙げた）。
+> **2026-10-27 変更（D-012）**: P1 のページ仕様の承認に合わせ、`Profile` 型（top-page T-6）、プロフィールの受け入れ条件（top-page T-7）、
+> Latest の取得（works-detail D-1）、C-8（works-detail D-5）、C-16（works-list L-2）を更新した。
 
 ## 目的
 - Works（実績）とカテゴリを microCMS で管理し、**ビルド時に API から取得して静的生成**する仕組みを定める（D-004）。
@@ -223,15 +225,23 @@ export type Work = {
 ### プロフィール（リポジトリ内データ。`src/data/profile.ts`）
 
 ```ts
-export type SocialLink = { label: string; url: string; icon: string /* src/assets 内の画像 */ };
+// 2026-10-27 変更（D-012）: top-page.md の案に合わせた（icon を ImageMetadata に、SocialLink.id と about.photo を追加）
+import type { ImageMetadata } from 'astro';
+
+export type SocialLink = {
+  id: 'x' | 'zenn' | 'qiita' | 'note' | 'github';               // 並び・テスト用の識別子
+  label: string;                                                  // サービス名（リンクのアクセシブルネーム）
+  url: string;                                                    // https の絶対 URL
+  icon: ImageMetadata;                                            // src/assets/images/sns/ の画像を import した値
+};
 export type Profile = {
   kv: { name: string; role: string; skills: string[] };         // 'Niiyama Keisuke' / 'full-stack web engineer' / 9 項目
   message: { heading: string; lines: string[]; signature: string };
-  about: { nameJa: string; nameEn: string; bio: string[] };
+  about: { nameJa: string; nameEn: string; bio: string[]; photo: { src: ImageMetadata; alt: string } };
   socials: SocialLink[];                                          // X / Zenn / Qiita / note / GitHub
 };
 ```
-内容は `front-page.php` から移す。`src/lib/profile.ts` の `getProfile(): Profile` 経由で読む。
+各フィールドの意味・初期値は `top-page.md` を正とする。内容は `front-page.php` から移す（Message の誤記の修正と About の経歴文の差し替えは top-page T-1・T-2）。`src/lib/profile.ts` の `getProfile(): Profile` 経由で読む。
 
 ### ディレクトリ構成（`src/lib/`。url-design の `routes.ts` / `slug.ts` / `redirects.ts` と同居）
 
@@ -272,7 +282,7 @@ export interface CmsSource {
 
 // index.ts（ページ・コンポーネントはここだけを import する）
 export function getAllWorks(): Promise<Work[]>;                 // 検証済み・date 降順
-export function getLatestWorks(limit: number): Promise<Work[]>;  // トップ 6 / Latest 3
+export function getLatestWorks(limit: number): Promise<Work[]>;  // トップ 6（詳細の Latest は selectLatestWorks を使う。2026-10-27 変更、D-012）
 export function getWorkBySlug(slug: string): Promise<Work | undefined>;
 export function getAllCategories(): Promise<Category[]>;        // 管理画面の並び順
 export function getCategoriesInUse(): Promise<Category[]>;      // 実績が 1 件以上あるもの（現行の hide_empty 相当）
@@ -299,13 +309,14 @@ export function loadContent(source: CmsSource, config: CmsConfig): Promise<{ wor
 ### `getStaticPaths` との連携
 ```ts
 // src/pages/works/[slug].astro
-import { getAllWorks, getLatestWorks } from '../../lib/cms';
+import { getAllWorks } from '../../lib/cms';
 export async function getStaticPaths() {
   const works = await getAllWorks();
   return works.map((work) => ({ params: { slug: work.slug }, props: { work } }));
 }
 ```
-- ページは `props` の `Work` をそのまま表示する。Latest 3 件は `getLatestWorks(3)`（現行どおり表示中の実績を含む。除くかは Works 詳細仕様で決める）。
+- ページは `props` の `Work` をそのまま表示する。Latest 3 件は**表示中の実績を除いた**最新 3 件（2026-10-27 変更、D-012。works-detail D-1）。
+  `getStaticPaths` で取得済みの全件から表示側の純粋関数 `selectLatestWorks()` で選び、props で渡す（具体的なコードは `works-detail.md` を正とする。`getLatestWorks()` 自体は変えない）。
 - トップは `getLatestWorks(6)`、一覧は `getAllWorks()` と `getCategoriesInUse()`。
 - 実績 0 件の表示（「お知らせはまだ登録されておりません。」相当）はページ側の仕様。ただし本番ビルドでは 0 件をエラーにする（下記）。
 
@@ -460,7 +471,7 @@ export async function getStaticPaths() {
 
 ### ビルド（フィクスチャモード）
 - [ ] `CMS_SOURCE=fixture npm run build` が成功し、フィクスチャの全 works について `dist/works/{slug}/index.html` が生成される（url-design の受け入れ条件と同じ判定）。
-- [ ] プロフィール（KV のスキル 9 項目・Message・About・SNS 5 件）が `src/data/profile.ts` から出力され、`dist/index.html` に現行と同じ文言が含まれる。
+- [ ] プロフィール（KV のスキル 9 項目・Message・About・SNS 5 件）が `src/data/profile.ts` から出力され、`dist/index.html` に `src/data/profile.ts` の文言が含まれる。（2026-10-27 変更、D-012。旧:「現行と同じ文言」。Message の誤記修正〈top-page T-2〉と経歴文の差し替え〈T-1〉で現行の文言と一致しなくなるため）
 
 ## 将来拡張（任意）
 - プロフィール（KV・Message・About・SNS）を microCMS のオブジェクト形式 API へ移す（`getProfile()` の中身の差し替えのみ）。
@@ -483,7 +494,7 @@ export async function getStaticPaths() {
 | C-5 | 本文の形式 | 推奨: リッチエディタ |
 | C-6 | 画像の配信方式 | 推奨: P1 は microCMS 画像 API。画像 API の転送量が無料枠 20GB/月に数えられるかを確認し、P2 で astro:assets 化を判断 |
 | C-7 | 本文中の `"assets/` 参照（例 `assets/img/img-works-unotame.png`）の扱い | 推奨: 移行時に microCMS メディアへ上げ直して URL を置換。新サイトの `public/assets/` にテーマ画像を置き続けるか（置換の受け皿を残すか）を「コンテンツ移行」「プロジェクト基盤」で決める |
-| C-8 | 画像フィールドで代替テキストを入力できるか | 要確認。できなければ alt は空（現行どおり）。詳細画像の alt にタイトルを入れるかは Works 詳細仕様で決める |
+| C-8 | 画像フィールドで代替テキストを入力できるか | 入力できるかは要確認。できなければ alt は空（現行どおり）。**詳細画像の alt（2026-10-27 決定、D-012。works-detail D-5）**: タイトルは入れない。代替テキストがあれば使い、無ければ空。カードの画像は常に空（top-page） |
 | C-9 | フィクスチャの画像をダミー URL にするか、ローカル画像にするか | 推奨: P1 はダミー URL（オフラインでは表示されない）。画面を詰める段階で困ればローカル画像へのマッピングを追加 |
 | C-10 | 開発サーバーでのメモ化 | 推奨: 開発時は毎回取り直す。API 呼び出し回数が問題になれば短時間（例 30 秒）のキャッシュを足す |
 | C-11 | トップのプロフィール類の持ち方 | **決定（D-010）**: リポジトリ内データ（`src/data/profile.ts`） |
@@ -491,4 +502,4 @@ export async function getStaticPaths() {
 | C-13 | `description` の上限（120 文字）と自動生成の長さ（100 文字程度） | SEO / OGP 仕様（P2）で調整してよい |
 | C-14 | microCMS の最終確定（D-004 は「P1 冒頭で確定」） | **決定（D-010）**: microCMS で確定 |
 | C-15 | 料金ページに無い項目（Webhook・API プレビュー・管理画面の並べ替え・商用利用）の確認 | 管理画面またはヘルプで確認する（本書では要確認のまま） |
-| C-16 | 現行一覧の表示件数（`posts_per_page` 未指定 = 「表示設定」の値）。新サイトは全件表示にする想定 | Works 一覧仕様で確定。本番 WP の「設定 > 表示設定」を確認 |
+| C-16 | 現行一覧の表示件数（`posts_per_page` 未指定 = 「表示設定」の値）。新サイトは全件表示にする想定 | **決定（2026-10-27、D-012。works-list L-2）**: 新サイトの一覧は全件表示（ページ分割なし）。本番 WP の「表示設定」の確認は不要 |

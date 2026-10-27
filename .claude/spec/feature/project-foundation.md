@@ -3,6 +3,7 @@
 > 状態: **承認済み（2026-10-27。Node 24・strict、他は推奨どおり。decisions-log D-011）**。D-003（Astro）/ D-005（SCSS・FLOCSS 継続、jQuery 廃止）/ D-006（デプロイ）/
 > D-007（legacy 退避）/ D-008（ステージングなし）/ D-009（URL）/ D-010（CMS）を前提とする。
 > 承認済みの `url-design.md`・`cms-integration.md` のファイル配置・環境変数・Astro 設定は変更していない（気になる点は「未決事項」に挙げた）。
+> **2026-10-27 変更（D-012）**: F-8 に `<style>` の使い分け（style-migration S-2 の案 A）を反映。テスト用パッケージ（`happy-dom`・`node-html-parser`）と `test:dist` の追加を「6. テストの最小構成」に追記。
 
 ## 目的
 - 現行 WordPress テーマを `legacy/` に退避し（D-007）、リポジトリのルートを **Astro（TypeScript）プロジェクト**にする。
@@ -236,6 +237,7 @@ export default {
 };
 ```
 - 対象は `src/**/*.scss` のみ。`.astro` の `<style>` まで見るには `postcss-html` が要るので、スコープ付きスタイルを使う方針になったら追加する（F-8）。
+  2026-10-27 変更（D-012）: style-migration S-2 で「P1 はすべてグローバル SCSS（案 A）」に決まったため、P1 では `postcss-html` を追加しない。
 
 **`.gitignore`**（現在の 1 行に追記）
 ```
@@ -462,6 +464,10 @@ git status                     # renamed: のみであることを確認
   異常系のフィクスチャは `tests/fixtures/`（cms-integration）。
 - 本書では「`getViteConfig` 経由で Astro の設定が Vitest に読み込まれている」ことだけを確かめるテストを 1 本置く
   （例 `tests/setup.test.ts`: `import.meta.env.SITE` が `https://unotame.com` であること）。テスト 0 件で `vitest run` が失敗するのを避ける意味もある。
+- **2026-10-27 追加（D-012）**: P1 のページ仕様の承認で、次のテスト用パッケージとスクリプトの追加が承認された（導入はページの実装時）。
+  - 開発依存 `happy-dom`: DOM の挙動のテスト。該当ファイルの先頭で `// @vitest-environment happy-dom` を指定し、全体の `environment: 'node'` は変えない（works-list L-6）。
+  - 開発依存 `node-html-parser` と npm script `test:dist`: `CMS_SOURCE=fixture npm run build` の後に `tests/dist/*.test.ts` で `dist/` の HTML を検査する（top-page X-1）。
+    `npm test`（`include: tests/**/*.test.ts`）から `tests/dist/` を外す方法と、`test:dist` の中身（環境変数の前置は F-9 に従う）は実装時に決める。
 
 ## 受け入れ条件
 
@@ -519,7 +525,7 @@ git status                     # renamed: のみであることを確認
 | F-5 | legacy の CRLF 3 件（`style.scss`・`_base.scss`・`script.js`）を LF に正規化するか | **決定（D-011、2026-10-27 変更）**: 正規化する。`eol=lf` により変換は避けられないため、コミット 1 で改行コードだけ LF 化する（中身は変えない） |
 | F-6 | Objective の WOFF2 化を P1 でやるか | **決定（D-011）**: WOFF2 化は P2。P1 は OTF をコピー。ライセンス確認は P2 着手前に行う |
 | F-7 | 本文の `"assets/` 参照の受け皿として `public/assets/` を用意するか（cms-integration C-7 の「プロジェクト基盤」側） | **決定（D-011）**: P1 では用意しない |
-| F-8 | Stylelint を P1 で入れるか、`.astro` の `<style>` も対象にするか | **決定（D-011）**: P1 で入れる（`.scss` のみ、`selector-class-pattern` は無効化） |
+| F-8 | Stylelint を P1 で入れるか、`.astro` の `<style>` も対象にするか（グローバル SCSS とコンポーネントの `<style>` の使い分け） | **決定（D-011）**: P1 で入れる（`.scss` のみ、`selector-class-pattern` は無効化）。**使い分けも決定（2026-10-27 変更、D-012）**: style-migration S-2 の案 A（P1 はすべてグローバル SCSS。`.astro` に `<style>` を書かない。例外は `Loader.astro` の `<noscript>` 内の `<style is:inline>` 1 か所）。`.astro` を Stylelint の対象にする必要は無い。案 B・C へ移る場合（P2 以降）に `postcss-html` を足す |
 | F-9 | 環境変数を前置するコマンド（cms-integration の受け入れ条件 `CMS_SOURCE=fixture npm run build` など）が Windows の cmd / PowerShell では動かない | **決定（D-011）**: 開発環境は Git Bash 前提（コマンドラインでの前置は動く）。ただし npm scripts は Windows では cmd で実行されるため、scripts 内で環境変数を前置する場合や Git Bash で動かない場合は `cross-env` を入れる |
 | F-10 | `npm run preview`・`npm run format`・`npm run check` を `.claude/settings.local.json` の許可に足すか | **決定（D-011）**: `Bash(npm run preview)`・`Bash(npm run check)` を許可に追加した |
 | F-11 | `legacy/README.md`（「配信しない・本番切替後に合意して削除」の注記）を置くか | **決定（D-011）**: 置く（コミット 3 に含める） |

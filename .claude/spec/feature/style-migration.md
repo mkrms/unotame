@@ -135,7 +135,7 @@ $breakpoint-sp: 768px;
 @mixin sp    { @media screen and (width <= $breakpoint-sp) { @content; } }
 
 @mixin objective { font-family: objective, sans-serif; font-weight: bold; }
-@mixin mincho    { font-family: yu-mincho-pr6n, sans-serif; }
+@mixin mincho    { font-family: 'yu-mincho-pr6n', sans-serif; }   // Stylelint（font-family-name-quotes）に合わせて引用符で囲む
 ```
 
 - 各パーシャルは、使うものだけを**相対パスで明示的に** `@use` する（例 `layout/_header.scss` なら `@use '../foundation/variables' as *;` と
@@ -231,6 +231,7 @@ $breakpoint-sp: 768px;
 | 一覧の `li { display: none }`・`.is-show`・`.is-active` を移さない。選択中の絞り込みボタンは `[aria-pressed="true"]` で装飾する。PC で絞り込みを右に置くのは CSS（`order` 等）で行う（DOM では一覧より前）。「→」の矢印は読み上げさせない | `object/project/_works.scss` | works-list L-8 |
 | 表示されたカードのフェードは 300ms（現行 600ms）。`prefers-reduced-motion: reduce` では動かさない | `object/project/_works.scss`（または JS 側の `animate`） | works-list L-9 |
 | 実績カードの帯を `:focus-visible` でもホバーと同じに表示する。帯の `transform` などの動きは `prefers-reduced-motion: reduce` で止める。画像は `aspect-ratio: 3/2`・`object-fit: cover` | `object/component/_work-card.scss` | top-page（WorkCard） |
+| 実装時の調整（2026-10-27）：`c-work-card__title` に文字サイズを明示する（2rem、SP は 1.8rem。見出しが h2 になっても legacy の h3 と同じ大きさにするため）。カードの影は `li` ではなく画像（`__img`）に付ける（新構成では `li` に 3:2 の比率が無いため。**意図した変更**として見た目の比較で記録する） | `object/component/_work-card.scss` | レビュー L-5 |
 
 ### Stylelint への適合
 - 移植したファイルは `npm run lint`（`stylelint-config-standard-scss`、`selector-class-pattern` は無効）を通す。
@@ -280,7 +281,7 @@ $breakpoint-sp: 768px;
 - [ ] `src/styles/` の構成が「新しいディレクトリ構成」のとおりで、各ファイルの中身が対応表のとおりに移っている（未使用で移さないと決めたもの以外が欠けていない）。
 - [ ] `src/styles/` 配下に `@import` が無い（`grep -rn "@import" src/styles` が 0 件）。
 - [ ] CSS を出力するパーシャル（`_fonts`・`_base`・layout・object）を `@use` しているのは `style.scss` だけ。
-- [ ] `src/**/*.astro` に `<style` が無い（例外は `Loader.astro` の `<noscript>` 内の `<style is:inline>` 1 か所のみ）。
+- [ ] `src/**/*.astro` に `<style` が無い（例外は `BaseLayout.astro` の `<head>` 内、`<noscript>` の `<style is:inline>` 1 か所のみ。2026-10-27 に Loader.astro から移動）。
 - [ ] `package.json` の `dependencies` に `destyle.css` が `4.0.1` で入っており、`src/` に destyle の CSS のコピーが無い。
 - [ ] `src/assets/fonts/` に `Objective-{Regular,Medium,Black}.otf` があり、`legacy/assets/fonts/` の同名ファイルとバイト単位で同じ（`legacy/` 側も残っている）。
 

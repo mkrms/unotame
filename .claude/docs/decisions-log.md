@@ -148,3 +148,6 @@
   - 実績詳細の description は P1 から `work.description` を渡す（空なら本文からの自動生成。works-detail）。
   - 実績 0 件の文言はトップと一覧に出し、詳細には出さない（top-page T-4 と works-detail D-6 の整合）。
   - `.claude/CLAUDE.md` の技術決定事項に、グローバル SCSS と Adobe Fonts の継続を追記した。
+- **実装時の変更（2026-10-27、レビュー指摘。ユーザー承認済み）**:
+  - ローダーの CSS の保険を 6 秒から **7 秒** に変更（load が遅いとき、通常のフェードの途中で保険が効かないようにするため。layout.md L-1）。
+  - JS 無効時用の `<noscript>` の `<style is:inline>` を、`<body>`（Loader.astro）から `BaseLayout.astro` の `<head>` 内へ移動（HTML の仕様に合わせる。L-2）。

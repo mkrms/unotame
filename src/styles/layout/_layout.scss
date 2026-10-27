@@ -1,0 +1,44 @@
+@use '../foundation/mixins' as *;
+
+.l-container {
+  width: 65%;
+  margin: 0 auto;
+
+  @include sp {
+    width: 95%;
+  }
+}
+
+.l-section-title {
+  @include mincho;
+
+  font-size: 3.2rem;
+  width: 100%;
+  text-align: center;
+  padding: 3rem 0;
+}
+
+.l-page {
+  &__wrapper {
+    padding: 8rem 0;
+  }
+
+  &-title {
+    font-size: 3.6rem;
+    padding-top: 3rem;
+    padding-bottom: 5rem;
+
+    @include mincho;
+  }
+}
+
+.l-single {
+  &__wrapper {
+    width: 55%;
+    padding: 8rem 0;
+
+    @include sp {
+      width: 95%;
+    }
+  }
+}

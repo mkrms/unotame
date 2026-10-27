@@ -1,0 +1,35 @@
+---
+// <head> の共通部分（layout.md）。canonical・favicon・Twitter Card は P2「SEO / OGP」。
+import { site } from '../../data/site';
+import { absoluteUrl } from '../../lib/routes';
+
+type Props = {
+  /** buildPageTitle() で組み立て済みの文字列 */
+  title: string;
+  description: string;
+  noindex: boolean;
+  pathname: string;
+};
+
+const { title, description, noindex, pathname } = Astro.props;
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{title}</title>
+<meta name="description" content={description} />
+{noindex && <meta name="robots" content="noindex" />}
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={site.name} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+{!noindex && <meta property="og:url" content={absoluteUrl(pathname)} />}
+<meta property="og:image" content={absoluteUrl(site.ogImagePath)} />
+<meta property="og:locale" content={site.ogLocale} />
+
+{/*
+ * Adobe Fonts（明朝体 yu-mincho-pr6n、kit woq0phd）は、ここに CSS 版の埋め込みコードを置く（style-migration S-1）:
+ *   <link rel="stylesheet" href="https://use.typekit.net/woq0phd.css" />
+ * 管理画面での確認（S-1 の前提条件）が済むまでは入れない。それまで明朝の指定は代替の sans-serif で表示される。
+ */}

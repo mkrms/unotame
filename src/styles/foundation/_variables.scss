@@ -1,2 +1,10 @@
-// 変数の置き場。残りの変数・mixin はスタイル移植で legacy/assets/css/Foundation/_global.scss から移す。
+// 色・ブレークポイント（CSS を出力しない）。legacy/assets/css/Foundation/_global.scss から移植。
+
+// 色
 $color-primary: #333;
+$color-secondary: #005321; // 未使用だがブランド色の記録として残す
+$color-bg: #f8f8f8;
+
+// ブレークポイント（mixin は _mixins.scss）
+$breakpoint-pc: 1366px;
+$breakpoint-sp: 768px;

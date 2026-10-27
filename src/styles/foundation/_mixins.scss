@@ -1,0 +1,38 @@
+// ブレークポイント・書体の mixin（CSS を出力しない）。legacy/assets/css/Foundation/_global.scss から移植。
+@use 'variables' as *;
+
+// ov-pc / ov-sp は legacy の min-width から「より大きい」に変更し、
+// 1366px・768px ちょうどで pc と ov-pc（sp と ov-sp）が両方当たる重なりを直した（style-migration S-5）。
+@mixin ov-pc {
+  @media screen and (width > $breakpoint-pc) {
+    @content;
+  }
+}
+
+@mixin pc {
+  @media screen and (width <= $breakpoint-pc) {
+    @content;
+  }
+}
+
+@mixin ov-sp {
+  @media screen and (width > $breakpoint-sp) {
+    @content;
+  }
+}
+
+@mixin sp {
+  @media screen and (width <= $breakpoint-sp) {
+    @content;
+  }
+}
+
+@mixin objective {
+  font-family: objective, sans-serif;
+  font-weight: bold;
+}
+
+// 明朝体は Adobe Fonts（yu-mincho-pr6n）。読み込めないときは代替の sans-serif で表示される（現行どおり。S-1・S-5 ③）。
+@mixin mincho {
+  font-family: 'yu-mincho-pr6n', sans-serif;
+}

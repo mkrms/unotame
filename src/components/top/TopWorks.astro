@@ -1,0 +1,31 @@
+---
+// トップの Works（最新 6 件）。top-page「Works」。取得は index.astro で行い、ここはドメイン型だけを受け取る。
+import type { Work } from '../../lib/domain/work';
+import { routes } from '../../lib/routes';
+import WorkCard from '../works/WorkCard.astro';
+import ViewMoreLink from '../common/ViewMoreLink.astro';
+
+type Props = {
+  works: Work[];
+};
+
+const { works } = Astro.props;
+---
+
+<section class="p-front-page-works l-container" aria-labelledby="top-works-heading">
+  <h2 id="top-works-heading" class="l-section-title">
+    WORKS
+  </h2>
+  {works.length > 0 ? (
+    <ul class="p-front-page-works__list">
+      {works.map((work) => (
+        <li class="p-front-page-works__item">
+          <WorkCard work={work} headingLevel={3} />
+        </li>
+      ))}
+    </ul>
+  ) : (
+    <p class="p-front-page-works__empty">実績はまだ登録されていません。</p>
+  )}
+  <ViewMoreLink href={routes.works()} />
+</section>

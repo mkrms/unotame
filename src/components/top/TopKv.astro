@@ -1,0 +1,22 @@
+---
+// トップの KV（名前・肩書き・スキル）。top-page「KV」。
+import type { Profile } from '../../lib/domain/profile';
+
+type Props = {
+  kv: Profile['kv'];
+};
+
+const { kv } = Astro.props;
+---
+
+<section class="p-front-page-kv l-container" aria-labelledby="top-kv-heading">
+  <h1 id="top-kv-heading" class="p-front-page-kv__name">
+    {kv.name}
+  </h1>
+  <p class="p-front-page-kv__role">{kv.role}</p>
+  <ul class="p-front-page-kv__skills">
+    {kv.skills.map((skill) => (
+      <li class="p-front-page-kv__skill">{skill}</li>
+    ))}
+  </ul>
+</section>

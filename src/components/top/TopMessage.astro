@@ -1,0 +1,31 @@
+---
+// トップの Message。top-page「Message」。legacy の <main>・<aside> は使わない（<main> はページに 1 つ）。
+import type { Profile } from '../../lib/domain/profile';
+
+type Props = {
+  message: Profile['message'];
+};
+
+const { message } = Astro.props;
+---
+
+<section class="p-front-page-message l-container" aria-labelledby="top-message-heading">
+  <h2 id="top-message-heading" class="l-section-title">
+    Message
+  </h2>
+  <div class="p-front-page-message__body">
+    <h3 class="p-front-page-message__heading">{message.heading}</h3>
+    <p class="p-front-page-message__text">
+      {
+        /* 1 要素 = 1 行。'' の行は空行になる（<br> が 2 つ続く） */
+        message.lines.map((line, index) => (
+          <>
+            {index > 0 && <br />}
+            {line}
+          </>
+        ))
+      }
+    </p>
+    <p class="p-front-page-message__signature">{message.signature}</p>
+  </div>
+</section>

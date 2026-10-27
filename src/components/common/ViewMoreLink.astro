@@ -1,0 +1,12 @@
+---
+// 「View More」リンク（top-page。legacy の .c-btn-view-more）。
+type Props = {
+  href: string;
+};
+
+const { href } = Astro.props;
+---
+
+<a class="c-btn-view-more" href={href}>
+  View More
+</a>

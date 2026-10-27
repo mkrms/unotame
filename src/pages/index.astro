@@ -1,11 +1,23 @@
 ---
-// 仮ページ。トップページ仕様の実装で中身（KV・Message・Works・About）を作る。
+// トップページ（top-page）。データの取得はここだけで行い、各セクションにはドメイン型の値を渡す。
+// 人物情報はリポジトリ内データ（getProfile）、実績は CMS（getLatestWorks）。
 import BaseLayout from '../layouts/BaseLayout.astro';
+import TopKv from '../components/top/TopKv.astro';
+import TopMessage from '../components/top/TopMessage.astro';
+import TopWorks from '../components/top/TopWorks.astro';
+import TopAbout from '../components/top/TopAbout.astro';
+import { getProfile } from '../lib/profile';
+import { getLatestWorks } from '../lib/cms';
+
+const TOP_WORKS_LIMIT = 6;
+
+const profile = getProfile();
+const works = await getLatestWorks(TOP_WORKS_LIMIT);
 ---
 
 <BaseLayout loader>
-  <div class="l-page__wrapper l-container">
-    <h1 class="l-page-title">UNOTAME</h1>
-    <p>トップページは準備中です。</p>
-  </div>
+  <TopKv kv={profile.kv} />
+  <TopMessage message={profile.message} />
+  <TopWorks works={works} />
+  <TopAbout about={profile.about} socials={profile.socials} />
 </BaseLayout>

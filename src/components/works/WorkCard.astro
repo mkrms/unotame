@@ -1,0 +1,33 @@
+---
+// 実績カード 1 枚分（top-page「共通コンポーネント WorkCard」）。トップ・一覧・詳細の Latest で共通。
+// <li> は呼び出し側が持つ（一覧では data-category を付けるため）。並べ方は各ページの Project 側のスタイル。
+import type { Work } from '../../lib/domain/work';
+import { cmsImageUrl } from '../../lib/cms/image';
+import { routes } from '../../lib/routes';
+
+type Props = {
+  work: Work;
+  /** 既定 3。一覧ページ（h1 の直下に並ぶ）では 2 */
+  headingLevel?: 2 | 3;
+};
+
+const { work, headingLevel = 3 } = Astro.props;
+const Heading = headingLevel === 2 ? 'h2' : 'h3';
+---
+
+<a class="c-work-card" href={routes.work(work.slug)}>
+  {/* リンク内に作品名とカテゴリ名の文字があるので、画像は装飾扱い（alt 空） */}
+  <img
+    class="c-work-card__img"
+    src={cmsImageUrl(work.thumbnail, { width: 800, format: 'webp' })}
+    width={work.thumbnail.width}
+    height={work.thumbnail.height}
+    alt=""
+    loading="lazy"
+    decoding="async"
+  />
+  <div class="c-work-card__detail">
+    <Heading class="c-work-card__title">{work.title}</Heading>
+    <span class="c-work-card__category">{work.category.name}</span>
+  </div>
+</a>

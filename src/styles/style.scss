@@ -16,7 +16,8 @@
 @use 'object/component/loader';
 @use 'object/component/work-card';
 
-// Object / Project（p-front-page / p-works / p-work-detail）は各ページの実装で追加する。
+// Object / Project（p-works / p-work-detail は各ページの実装で追加する）
+@use 'object/project/front-page';
 
 // Object / Utility（最後に置き、ほかのレイヤより優先させる）
 @use 'object/utility/display';

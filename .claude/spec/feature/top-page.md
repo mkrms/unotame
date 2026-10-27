@@ -236,6 +236,7 @@ HTML の検査方法は X-1（`node-html-parser` と `test:dist`。D-012 で決�
 ### 共通
 - [ ] `dist/index.html` 内の `id` 属性の値に重複が無い。
 - [ ] `WorkCard` は `src/components/works/WorkCard.astro` の 1 か所で定義され、トップ・一覧・詳細の 3 ページがこれを使っている（`grep` で `c-work-card` 相当のカードのマークアップがほかに無いことを確認）。
+      （2026-10-27: トップの実装時点では一覧・詳細が無いため保留。一覧・詳細の実装時に、ソースを検査する自動テストとして足して判定する）
 - [ ] `npm run check`・`npm run lint`・`CMS_SOURCE=fixture npm run build` が通る。
 
 ## 将来拡張（任意）
@@ -259,6 +260,6 @@ HTML の検査方法は X-1（`node-html-parser` と `test:dist`。D-012 で決�
 | T-6 | cms-integration の `Profile` 型との差分: `SocialLink.icon` を `string` から `ImageMetadata` に、`about.photo`（写真と alt）と `SocialLink.id` を追加 | **対応済み（2026-10-27、D-012）**: cms-integration の型の記述を本書の案に合わせた |
 | T-7 | cms-integration の受け入れ条件「`dist/index.html` に現行と同じ文言が含まれる」 | **対応済み（2026-10-27、D-012）**: cms-integration 側を「`src/data/profile.ts` の文言が含まれる」に変更した |
 | T-8 | ローダー（現行はトップにだけある） | **決定（D-012）**: `layout.md` の `loader` props（トップだけ true）で扱う。本書は `loader: true` を渡すだけ |
-| X-1 | ビルド成果物（`dist/*.html`）の検査方法。今の Vitest は `environment: 'node'` で HTML パーサが無い | **決定（D-012）**: 開発依存に `node-html-parser` を入れ、`tests/dist/*.test.ts` を「`CMS_SOURCE=fixture npm run build` の後に実行する」別スクリプト `test:dist` にする（top-page・works-list・works-detail で共通）。パッケージ追加は承認済み（インストールは実装時）。通常の `npm test`（`include: tests/**/*.test.ts`）から `tests/dist/` を外す方法は実装時に決める |
-| X-2 | コンポーネント単体の描画テスト（0 件表示など、フィクスチャでは起きない状態） | 実装時に確認: Astro のコンテナ API（`experimental_AstroContainer`。Astro 7 での名前・安定性）で `TopWorks` を描画して検査する。使えない場合は開発サーバーでの目視確認に落とす |
+| X-1 | ビルド成果物（`dist/*.html`）の検査方法。今の Vitest は `environment: 'node'` で HTML パーサが無い | **決定（D-012）**: 開発依存に `node-html-parser` を入れ、`tests/dist/*.test.ts` を「`CMS_SOURCE=fixture npm run build` の後に実行する」別スクリプト `test:dist` にする（top-page・works-list・works-detail で共通）。パッケージ追加は承認済み（インストールは実装時）。通常の `npm test`（`include: tests/**/*.test.ts`）から `tests/dist/` を外す方法は実装時に決める。**実装（2026-10-27）**: `vitest.config.ts` の `exclude` で外し、`vitest.dist.config.ts` で `tests/dist/` だけを実行する。`test:dist` はビルドを含まず、フィクスチャでビルドされた `dist/` でなければ分かるメッセージで止まる。`dist/` を無視する `.gitignore`・`.prettierignore` の指定は `/dist/`（ルートだけ）にした（`tests/dist/` まで無視されていたため）。**P2 の CI（PR チェック）で `CMS_SOURCE=fixture` のビルド → `test:dist` を組み込むこと**（2026-10-27 レビュー指摘。今は手動実行のみ） |
+| X-2 | コンポーネント単体の描画テスト（0 件表示など、フィクスチャでは起きない状態） | 実装時に確認: Astro のコンテナ API（`experimental_AstroContainer`。Astro 7 での名前・安定性）で `TopWorks` を描画して検査する。使えない場合は開発サーバーでの目視確認に落とす。**確認済み（2026-10-27）**: `experimental_AstroContainer` で描画でき、`npm test` の中で実行している（`tests/components/`） |
 | X-3 | 共通カードのクラス名（`c-work-card` を新設し、現行の重複を 1 つにまとめる） | **決定（D-012）**: `c-work-card`（style-migration S-3） |

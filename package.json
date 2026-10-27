@@ -15,6 +15,7 @@
     "lint:fix": "eslint . --fix && stylelint \"src/**/*.scss\" --allow-empty-input --fix && prettier --write .",
     "format": "prettier --write .",
     "test": "vitest run",
+    "test:dist": "vitest run --config vitest.dist.config.ts",
     "test:watch": "vitest",
     "astro": "astro"
   },
@@ -26,9 +27,11 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.12",
     "@eslint/js": "^10.0.1",
+    "@types/node": "^24.19.2",
     "eslint": "^10.13.0",
     "eslint-plugin-astro": "^3.2.1",
     "globals": "^17.13.0",
+    "node-html-parser": "^9.0.5",
     "prettier": "^3.9.10",
     "prettier-plugin-astro": "^1.1.2",
     "sass": "^1.106.1",

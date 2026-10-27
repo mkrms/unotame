@@ -1,0 +1,44 @@
+---
+// 実績詳細（works-detail）。全実績の /works/{slug}/ を生成する。
+// 全件の取得は getStaticPaths で一度だけ行い、Latest（自身を除いた最新 3 件）も props で渡す。
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import WorkDetailHeader from '../../components/works/WorkDetailHeader.astro';
+import WorkBody from '../../components/works/WorkBody.astro';
+import LatestWorks from '../../components/works/LatestWorks.astro';
+import { getAllWorks } from '../../lib/cms';
+import type { Work } from '../../lib/domain/work';
+import { selectLatestWorks } from '../../lib/related-works';
+
+export async function getStaticPaths() {
+  // getStaticPaths はページの他の変数を参照できないので、件数はここに置く
+  const LATEST_LIMIT = 3;
+  const works = await getAllWorks(); // 検証済み・date 降順
+  return works.map((work) => ({
+    params: { slug: work.slug },
+    props: {
+      work,
+      latest: selectLatestWorks(works, { excludeSlug: work.slug, limit: LATEST_LIMIT }),
+    },
+  }));
+}
+
+type Props = {
+  work: Work;
+  latest: Work[];
+};
+
+const { work, latest } = Astro.props;
+---
+
+<BaseLayout title={work.title} description={work.description}>
+  <div class="l-single__wrapper l-container">
+    <h1 class="l-page-title">{work.title}</h1>
+    <div class="p-work-detail">
+      <article class="p-work-detail__content">
+        <WorkDetailHeader work={work} />
+        <WorkBody html={work.bodyHtml} />
+      </article>
+      <LatestWorks works={latest} />
+    </div>
+  </div>
+</BaseLayout>

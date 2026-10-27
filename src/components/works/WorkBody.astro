@@ -1,0 +1,12 @@
+---
+// 実績の本文（works-detail「本文」）。set:html を使うのはこのコンポーネントだけにする（使用箇所を限定してレビューしやすくする）。
+// html は cms の変換層（src/lib/cms/body.ts）で加工済み。表示側では追加の加工をしない。
+// 信頼の前提: 本文を書くのはサイトの持ち主 1 人で、microCMS のリッチエディタの出力をそのまま信頼する（P1 はサニタイズしない。D-4）。
+type Props = {
+  html: string;
+};
+
+const { html } = Astro.props;
+---
+
+<div class="p-work-detail__content__body" set:html={html} />

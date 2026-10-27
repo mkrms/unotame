@@ -1,0 +1,29 @@
+---
+// 実績詳細のヘッダー（works-detail「サムネイル」「カテゴリ」）。
+// サムネイルはページの最初に見える大きな画像なので lazy にしない。alt は CMS の代替テキスト（無ければ空。D-5）。
+// カテゴリ名は一覧の絞り込み（/works/?category={slug}）へのリンク（D-3）。
+import type { Work } from '../../lib/domain/work';
+import { cmsImageUrl } from '../../lib/cms/image';
+import { routes } from '../../lib/routes';
+
+type Props = {
+  work: Work;
+};
+
+const { work } = Astro.props;
+---
+
+<div class="p-work-detail__content__header">
+  <img
+    class="p-work-detail__thumbnail"
+    src={cmsImageUrl(work.thumbnail, { width: 1600, format: 'webp' })}
+    width={work.thumbnail.width}
+    height={work.thumbnail.height}
+    alt={work.thumbnail.alt}
+    fetchpriority="high"
+    decoding="async"
+  />
+  <p class="p-work-detail__category">
+    カテゴリー：<a href={routes.works({ category: work.category.slug })}>{work.category.name}</a>
+  </p>
+</div>

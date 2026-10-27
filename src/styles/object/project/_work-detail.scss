@@ -1,0 +1,78 @@
+// 実績詳細（p-work-detail）。legacy/assets/css/Object/Project/_work-detail.scss から移植。
+// legacy の要素セレクタ（header の img・span）は works-detail.md のマークアップに合わせてクラスに置き換えた（値は変えない）。
+// 本文（__content__body）はリッチエディタの HTML なので要素セレクタのまま（このブロックの中に閉じる）。
+// 実績カード 1 枚分は object/component/_work-card.scss（S-3）。ここには Latest の並べ方だけを残す。
+@use '../../foundation/variables' as *;
+@use '../../foundation/mixins' as *;
+
+.p-work-detail {
+  &__content {
+    &__body {
+      h2 {
+        font-size: 3.6rem;
+        border-bottom: solid 3px black;
+        margin-top: 5rem;
+        margin-bottom: 3rem;
+      }
+
+      h3 {
+        font-size: 2rem;
+        padding: 0.25rem 0.5rem;
+        border-left: solid 0.5rem $color-primary;
+        margin: 2rem 0;
+      }
+
+      ul,
+      ol {
+        padding: 3rem;
+        border: solid 3px $color-primary;
+      }
+
+      ul li,
+      ol li {
+        list-style-type: disc;
+        list-style-position: inside;
+        line-height: 1.5;
+        padding: 0.5rem 0;
+      }
+    }
+  }
+
+  // legacy の __content__header img
+  &__thumbnail {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    box-shadow: 0 0 0.8rem #ddd;
+  }
+
+  // legacy の __content__header span（<p> にした）
+  &__category {
+    display: block;
+    padding: 1.5rem 0;
+    width: 100%;
+    text-align: right;
+  }
+
+  // legacy は <div>。<section> にしたので、要素セレクタ section の余白（foundation）を打ち消して legacy と同じにする
+  &__latest {
+    padding: 0;
+  }
+
+  &__latest-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.33%;
+    row-gap: 2rem;
+  }
+
+  // カードの影・比率は c-work-card 側（画像）
+  &__latest-item {
+    width: 32%;
+
+    @include sp {
+      width: 100%;
+    }
+  }
+}

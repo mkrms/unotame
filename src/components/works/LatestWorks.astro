@@ -1,0 +1,35 @@
+---
+// 実績詳細の Latest（works-detail「Latest」）。表示中の実績を除いた最新の実績と View More。
+// 0 件（実績が全部で 1 件だけ）のときは見出しと <ul> を出さず、View More だけを出す（D-6）。
+import type { Work } from '../../lib/domain/work';
+import { routes } from '../../lib/routes';
+import WorkCard from './WorkCard.astro';
+import ViewMoreLink from '../common/ViewMoreLink.astro';
+
+type Props = {
+  /** selectLatestWorks() の結果 */
+  works: Work[];
+};
+
+const { works } = Astro.props;
+---
+
+{works.length > 0 ? (
+  <section class="p-work-detail__latest" aria-labelledby="work-latest-heading">
+    <h2 id="work-latest-heading" class="l-section-title">
+      Latest
+    </h2>
+    <ul class="p-work-detail__latest-list">
+      {works.map((work) => (
+        <li class="p-work-detail__latest-item">
+          <WorkCard work={work} headingLevel={3} />
+        </li>
+      ))}
+    </ul>
+    <ViewMoreLink href={routes.works()} />
+  </section>
+) : (
+  <div class="p-work-detail__latest">
+    <ViewMoreLink href={routes.works()} />
+  </div>
+)}

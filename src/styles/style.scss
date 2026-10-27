@@ -19,6 +19,7 @@
 // Object / Project
 @use 'object/project/front-page';
 @use 'object/project/works';
+@use 'object/project/work-detail';
 
 // Object / Utility（最後に置き、ほかのレイヤより優先させる）
 @use 'object/utility/display';

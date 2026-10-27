@@ -60,3 +60,16 @@
   運用コストを抑えたい。
 - **影響**: 本番だけで起きる差分（`.htaccess` のリダイレクト、サーバー側のお問い合わせ処理など）は、本番切替の手順で
   個別に確認する。microCMS の下書きは、ローカルから「下書きも含めて取得」する仕組みで確認する案を P2 で検討する。
+
+### D-009 URL 設計: `/works/{slug}/` ＋ 旧 URL からの 301 を自動生成
+- **決定**: `spec/feature/url-design.md` の推奨案を採用する。主な内容は次のとおり。
+  - 実績詳細は `/works/{slug}/`、カテゴリ絞り込みは `/works/?category={slug}`（canonical は `/works/`）。About は `/#about`。
+  - 末尾スラッシュありで統一（Astro `trailingSlash: 'always'`、`build.format: 'directory'`）。正規ホストは `https://unotame.com`（www なし）。
+  - slug は microCMS の専用フィールドで持つ（英小文字・数字・ハイフン、英字必須、3〜60 文字、予約語あり）。ビルド時に検証する。
+  - 旧 URL `/{category}/{投稿ID}`・`/?p={ID}`・`/category/{slug}/` などは、microCMS の `legacyWpId` などからビルド時に生成する
+    `.htaccess` で 301 リダイレクトする。カテゴリのスラッグは WordPress の現行のものを引き継ぐ。
+  - `.htaccess` はリポジトリで管理し、デプロイ対象に含める。
+- **背景**: 数値 ID の URL は意味を持たず、カテゴリ変更で URL が変わる。カテゴリを URL から外し、意味のある slug にすることで
+  URL の安定性と SEO を改善する。旧 URL の評価とリンクは 301 で引き継ぐ。
+- **影響**: 「CMS 連携」仕様で `slug`・`legacyWpId` を含むスキーマを確定する。rsync の `--delete` で `.htaccess` を除外する案は取りやめる。
+  旧投稿 ID と slug の対応表づくり、現行パーマリンク・`.htaccess`・カテゴリ一覧の確認はコンテンツ移行（P2）と本番切替（P3）で行う。

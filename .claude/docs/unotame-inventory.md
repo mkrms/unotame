@@ -22,7 +22,7 @@ designer はここを起点に機能仕様（`spec/feature/`）へ展開する�
 | トップページ | P1 | KV（スキル一覧）、Message、Works 最新6件、About（プロフィール・SNSリンク） | 未作成 |
 | Works 一覧 | P1 | `/works/` 実績一覧、カテゴリ絞り込み（jQuery なし） | 未作成 |
 | Works 詳細 | P1 | 実績詳細（アイキャッチ・カテゴリ・本文）、Latest 3件 | 未作成 |
-| URL 設計 | P1 | 現行 `/{category}/{投稿ID}` を見直して新しい URL 体系を決め、旧 URL からの 301 リダイレクト方針を定める | 未作成 |
+| URL 設計 | P1 | 現行 `/{category}/{投稿ID}` を見直して新しい URL 体系を決め、旧 URL からの 301 リダイレクト方針を定める | `spec/feature/url-design.md`（承認済み・D-009） |
 | お問い合わせ | P1 | `/contact/`。送信方式を比較検討して決める（下記「お問い合わせ方式の候補」） | 未作成 |
 | 404 ページ | P1 | 静的 404 と Xserver 側の ErrorDocument 設定 | 未作成 |
 | デザイン刷新 | P2 | 現行踏襲のうえ細部（余白・タイポ・アニメーション・レスポンシブ）を改善 | `spec/design/design-policy.md`（枠） |
@@ -37,10 +37,8 @@ designer はここを起点に機能仕様（`spec/feature/`）へ展開する�
 ## 未決事項（まとめ）
 
 - **お問い合わせの送信方式**: 比較検討中（下記の候補）。
-- **URL 設計**: 現行の実績詳細は `/{category}/{投稿ID}`（例: `/web/123/`）。数値 ID は意味を持たず、カテゴリを
-  変えると URL も変わるため、最適化したい。新しい体系と、旧 URL からのリダイレクト方法（`.htaccess` で
-  ID ⇔ 新 slug の対応表を持つ等）を決める。
-  - 案: `/works/{slug}/`（カテゴリは URL に含めず、一覧の絞り込みで扱う）。一覧 `/works/` との階層が揃い、カテゴリを変えても URL が変わらない。
+- **URL 設計の残り**: 方針は D-009 で確定。現行パーマリンク・カテゴリ一覧・`.htaccess` の確認、旧 ID ⇔ slug の
+  対応表づくり、`/feed/` と旧画像 URL の扱いが残っている（`url-design.md` の未決事項）。
 - **CMS の最終確定**: microCMS で確定するか（無料枠・API 数の制約確認）。
 - **パッケージマネージャ / Node バージョン**: 暫定 npm・Node LTS。
 
@@ -55,8 +53,9 @@ designer はここを起点に機能仕様（`spec/feature/`）へ展開する�
 | メールリンク / SNS DM のみ | フォームを置かない | 最も簡素／スパム・利便性 |
 
 → `designer` で評価軸（費用・スパム対策・デザイン自由度・保守性・確認ステップ）を決めて比較し、決定したら decisions-log に記録する。
+- 比較資料: [`contact-options.md`](./contact-options.md)（評価軸・候補比較・推奨案・決めてほしい質問）
 
 ## 次のアクション
 
-- `designer` で「プロジェクト基盤」（legacy 退避と Astro 初期化）と「URL 設計」の仕様を起こす。
-- 並行して、お問い合わせ方式の比較資料を作成する。
+- `designer` で「CMS 連携」（microCMS スキーマ。`slug`・`legacyWpId` を含む）と「プロジェクト基盤」（legacy 退避と Astro 初期化）の仕様を起こす。
+- お問い合わせ方式を `contact-options.md` の質問への回答をもとに決める。

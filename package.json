@@ -20,7 +20,8 @@
   },
   "dependencies": {
     "astro": "^7.4.2",
-    "destyle.css": "4.0.1"
+    "destyle.css": "4.0.1",
+    "microcms-js-sdk": "^3.6.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.12",

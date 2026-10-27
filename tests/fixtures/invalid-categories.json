@@ -1,0 +1,63 @@
+{
+  "contents": [
+    {
+      "id": "cat-ok",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z",
+      "publishedAt": "2024-01-01T00:00:00.000Z",
+      "revisedAt": "2024-01-01T00:00:00.000Z",
+      "name": "Web制作",
+      "slug": "web"
+    },
+    {
+      "id": "cat-dup-a",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z",
+      "publishedAt": "2024-01-01T00:00:00.000Z",
+      "revisedAt": "2024-01-01T00:00:00.000Z",
+      "name": "重複A",
+      "slug": "dup"
+    },
+    {
+      "id": "cat-dup-b",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z",
+      "publishedAt": "2024-01-01T00:00:00.000Z",
+      "revisedAt": "2024-01-01T00:00:00.000Z",
+      "name": "重複B",
+      "slug": "dup"
+    },
+    {
+      "id": "cat-legacy-a",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z",
+      "publishedAt": "2024-01-01T00:00:00.000Z",
+      "revisedAt": "2024-01-01T00:00:00.000Z",
+      "name": "旧A",
+      "slug": "legacy-a",
+      "legacyWpSlugs": "old-shared"
+    },
+    {
+      "id": "cat-legacy-b",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z",
+      "publishedAt": "2024-01-01T00:00:00.000Z",
+      "revisedAt": "2024-01-01T00:00:00.000Z",
+      "name": "旧B",
+      "slug": "legacy-b",
+      "legacyWpSlugs": "old-shared, web"
+    },
+    {
+      "id": "cat-bad-slug",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z",
+      "publishedAt": "2024-01-01T00:00:00.000Z",
+      "revisedAt": "2024-01-01T00:00:00.000Z",
+      "name": "不正",
+      "slug": "Bad_Slug"
+    }
+  ],
+  "totalCount": 6,
+  "offset": 0,
+  "limit": 100
+}

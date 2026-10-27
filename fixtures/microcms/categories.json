@@ -1,0 +1,44 @@
+{
+  "contents": [
+    {
+      "id": "cat-web",
+      "createdAt": "2024-01-10T01:00:00.000Z",
+      "updatedAt": "2024-01-10T01:00:00.000Z",
+      "publishedAt": "2024-01-10T01:00:00.000Z",
+      "revisedAt": "2024-01-10T01:00:00.000Z",
+      "name": "Web制作",
+      "slug": "web"
+    },
+    {
+      "id": "cat-system",
+      "createdAt": "2024-01-10T01:01:00.000Z",
+      "updatedAt": "2024-01-10T01:01:00.000Z",
+      "publishedAt": "2024-01-10T01:01:00.000Z",
+      "revisedAt": "2024-01-10T01:01:00.000Z",
+      "name": "システム開発",
+      "slug": "system",
+      "legacyWpSlugs": "dev, system-dev"
+    },
+    {
+      "id": "cat-writing",
+      "createdAt": "2024-01-10T01:02:00.000Z",
+      "updatedAt": "2024-01-10T01:02:00.000Z",
+      "publishedAt": "2024-01-10T01:02:00.000Z",
+      "revisedAt": "2024-01-10T01:02:00.000Z",
+      "name": "ライティング",
+      "slug": "writing"
+    },
+    {
+      "id": "cat-design",
+      "createdAt": "2024-01-10T01:03:00.000Z",
+      "updatedAt": "2024-01-10T01:03:00.000Z",
+      "publishedAt": "2024-01-10T01:03:00.000Z",
+      "revisedAt": "2024-01-10T01:03:00.000Z",
+      "name": "デザイン",
+      "slug": "design"
+    }
+  ],
+  "totalCount": 4,
+  "offset": 0,
+  "limit": 4
+}

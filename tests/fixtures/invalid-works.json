@@ -1,0 +1,347 @@
+{
+  "contents": [
+    {
+      "id": "w-valid",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z",
+      "publishedAt": "2024-01-01T00:00:00.000Z",
+      "revisedAt": "2024-01-01T00:00:00.000Z",
+      "title": "タイトル w-valid",
+      "slug": "valid-work",
+      "category": {
+        "id": "cat-ok",
+        "createdAt": "2024-01-01T00:00:00.000Z",
+        "updatedAt": "2024-01-01T00:00:00.000Z",
+        "publishedAt": "2024-01-01T00:00:00.000Z",
+        "revisedAt": "2024-01-01T00:00:00.000Z",
+        "name": "Web制作",
+        "slug": "web"
+      },
+      "thumbnail": {
+        "url": "https://images.microcms-assets.io/assets/dummy/x.png",
+        "width": 1200,
+        "height": 800
+      },
+      "body": "<p>本文</p>",
+      "date": "2024-01-01T15:00:00.000Z"
+    },
+    {
+      "id": "w-bad-slug",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z",
+      "publishedAt": "2024-01-01T00:00:00.000Z",
+      "revisedAt": "2024-01-01T00:00:00.000Z",
+      "title": "タイトル w-bad-slug",
+      "slug": "ABC",
+      "category": {
+        "id": "cat-ok",
+        "createdAt": "2024-01-01T00:00:00.000Z",
+        "updatedAt": "2024-01-01T00:00:00.000Z",
+        "publishedAt": "2024-01-01T00:00:00.000Z",
+        "revisedAt": "2024-01-01T00:00:00.000Z",
+        "name": "Web制作",
+        "slug": "web"
+      },
+      "thumbnail": {
+        "url": "https://images.microcms-assets.io/assets/dummy/x.png",
+        "width": 1200,
+        "height": 800
+      },
+      "body": "<p>本文</p>",
+      "date": "2024-01-01T15:00:00.000Z"
+    },
+    {
+      "id": "w-reserved",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z",
+      "publishedAt": "2024-01-01T00:00:00.000Z",
+      "revisedAt": "2024-01-01T00:00:00.000Z",
+      "title": "タイトル w-reserved",
+      "slug": "page",
+      "category": {
+        "id": "cat-ok",
+        "createdAt": "2024-01-01T00:00:00.000Z",
+        "updatedAt": "2024-01-01T00:00:00.000Z",
+        "publishedAt": "2024-01-01T00:00:00.000Z",
+        "revisedAt": "2024-01-01T00:00:00.000Z",
+        "name": "Web制作",
+        "slug": "web"
+      },
+      "thumbnail": {
+        "url": "https://images.microcms-assets.io/assets/dummy/x.png",
+        "width": 1200,
+        "height": 800
+      },
+      "body": "<p>本文</p>",
+      "date": "2024-01-01T15:00:00.000Z"
+    },
+    {
+      "id": "w-dup-1",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z",
+      "publishedAt": "2024-01-01T00:00:00.000Z",
+      "revisedAt": "2024-01-01T00:00:00.000Z",
+      "title": "タイトル w-dup-1",
+      "slug": "dup-slug",
+      "category": {
+        "id": "cat-ok",
+        "createdAt": "2024-01-01T00:00:00.000Z",
+        "updatedAt": "2024-01-01T00:00:00.000Z",
+        "publishedAt": "2024-01-01T00:00:00.000Z",
+        "revisedAt": "2024-01-01T00:00:00.000Z",
+        "name": "Web制作",
+        "slug": "web"
+      },
+      "thumbnail": {
+        "url": "https://images.microcms-assets.io/assets/dummy/x.png",
+        "width": 1200,
+        "height": 800
+      },
+      "body": "<p>本文</p>",
+      "date": "2024-01-01T15:00:00.000Z"
+    },
+    {
+      "id": "w-dup-2",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z",
+      "publishedAt": "2024-01-01T00:00:00.000Z",
+      "revisedAt": "2024-01-01T00:00:00.000Z",
+      "title": "タイトル w-dup-2",
+      "slug": "dup-slug",
+      "category": {
+        "id": "cat-ok",
+        "createdAt": "2024-01-01T00:00:00.000Z",
+        "updatedAt": "2024-01-01T00:00:00.000Z",
+        "publishedAt": "2024-01-01T00:00:00.000Z",
+        "revisedAt": "2024-01-01T00:00:00.000Z",
+        "name": "Web制作",
+        "slug": "web"
+      },
+      "thumbnail": {
+        "url": "https://images.microcms-assets.io/assets/dummy/x.png",
+        "width": 1200,
+        "height": 800
+      },
+      "body": "<p>本文</p>",
+      "date": "2024-01-01T15:00:00.000Z"
+    },
+    {
+      "id": "w-legacy-1",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z",
+      "publishedAt": "2024-01-01T00:00:00.000Z",
+      "revisedAt": "2024-01-01T00:00:00.000Z",
+      "title": "タイトル w-legacy-1",
+      "slug": "legacy-one",
+      "category": {
+        "id": "cat-ok",
+        "createdAt": "2024-01-01T00:00:00.000Z",
+        "updatedAt": "2024-01-01T00:00:00.000Z",
+        "publishedAt": "2024-01-01T00:00:00.000Z",
+        "revisedAt": "2024-01-01T00:00:00.000Z",
+        "name": "Web制作",
+        "slug": "web"
+      },
+      "thumbnail": {
+        "url": "https://images.microcms-assets.io/assets/dummy/x.png",
+        "width": 1200,
+        "height": 800
+      },
+      "body": "<p>本文</p>",
+      "date": "2024-01-01T15:00:00.000Z",
+      "legacyWpId": 500
+    },
+    {
+      "id": "w-legacy-2",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z",
+      "publishedAt": "2024-01-01T00:00:00.000Z",
+      "revisedAt": "2024-01-01T00:00:00.000Z",
+      "title": "タイトル w-legacy-2",
+      "slug": "legacy-two",
+      "category": {
+        "id": "cat-ok",
+        "createdAt": "2024-01-01T00:00:00.000Z",
+        "updatedAt": "2024-01-01T00:00:00.000Z",
+        "publishedAt": "2024-01-01T00:00:00.000Z",
+        "revisedAt": "2024-01-01T00:00:00.000Z",
+        "name": "Web制作",
+        "slug": "web"
+      },
+      "thumbnail": {
+        "url": "https://images.microcms-assets.io/assets/dummy/x.png",
+        "width": 1200,
+        "height": 800
+      },
+      "body": "<p>本文</p>",
+      "date": "2024-01-01T15:00:00.000Z",
+      "legacyWpId": 500
+    },
+    {
+      "id": "w-legacy-neg",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z",
+      "publishedAt": "2024-01-01T00:00:00.000Z",
+      "revisedAt": "2024-01-01T00:00:00.000Z",
+      "title": "タイトル w-legacy-neg",
+      "slug": "legacy-negative",
+      "category": {
+        "id": "cat-ok",
+        "createdAt": "2024-01-01T00:00:00.000Z",
+        "updatedAt": "2024-01-01T00:00:00.000Z",
+        "publishedAt": "2024-01-01T00:00:00.000Z",
+        "revisedAt": "2024-01-01T00:00:00.000Z",
+        "name": "Web制作",
+        "slug": "web"
+      },
+      "thumbnail": {
+        "url": "https://images.microcms-assets.io/assets/dummy/x.png",
+        "width": 1200,
+        "height": 800
+      },
+      "body": "<p>本文</p>",
+      "date": "2024-01-01T15:00:00.000Z",
+      "legacyWpId": -1
+    },
+    {
+      "id": "w-cat-null",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z",
+      "publishedAt": "2024-01-01T00:00:00.000Z",
+      "revisedAt": "2024-01-01T00:00:00.000Z",
+      "title": "タイトル w-cat-null",
+      "slug": "category-null",
+      "category": null,
+      "thumbnail": {
+        "url": "https://images.microcms-assets.io/assets/dummy/x.png",
+        "width": 1200,
+        "height": 800
+      },
+      "body": "<p>本文</p>",
+      "date": "2024-01-01T15:00:00.000Z"
+    },
+    {
+      "id": "w-cat-missing",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z",
+      "publishedAt": "2024-01-01T00:00:00.000Z",
+      "revisedAt": "2024-01-01T00:00:00.000Z",
+      "title": "タイトル w-cat-missing",
+      "slug": "category-missing",
+      "category": {
+        "id": "cat-unknown",
+        "createdAt": "2024-01-01T00:00:00.000Z",
+        "updatedAt": "2024-01-01T00:00:00.000Z",
+        "publishedAt": "2024-01-01T00:00:00.000Z",
+        "revisedAt": "2024-01-01T00:00:00.000Z",
+        "name": "非公開",
+        "slug": "hidden"
+      },
+      "thumbnail": {
+        "url": "https://images.microcms-assets.io/assets/dummy/x.png",
+        "width": 1200,
+        "height": 800
+      },
+      "body": "<p>本文</p>",
+      "date": "2024-01-01T15:00:00.000Z"
+    },
+    {
+      "id": "w-no-title",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z",
+      "publishedAt": "2024-01-01T00:00:00.000Z",
+      "revisedAt": "2024-01-01T00:00:00.000Z",
+      "title": "  ",
+      "slug": "no-title",
+      "category": {
+        "id": "cat-ok",
+        "createdAt": "2024-01-01T00:00:00.000Z",
+        "updatedAt": "2024-01-01T00:00:00.000Z",
+        "publishedAt": "2024-01-01T00:00:00.000Z",
+        "revisedAt": "2024-01-01T00:00:00.000Z",
+        "name": "Web制作",
+        "slug": "web"
+      },
+      "thumbnail": {
+        "url": "https://images.microcms-assets.io/assets/dummy/x.png",
+        "width": 1200,
+        "height": 800
+      },
+      "body": "<p>本文</p>",
+      "date": "2024-01-01T15:00:00.000Z"
+    },
+    {
+      "id": "w-no-thumb",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z",
+      "publishedAt": "2024-01-01T00:00:00.000Z",
+      "revisedAt": "2024-01-01T00:00:00.000Z",
+      "title": "タイトル w-no-thumb",
+      "slug": "no-thumbnail",
+      "category": {
+        "id": "cat-ok",
+        "createdAt": "2024-01-01T00:00:00.000Z",
+        "updatedAt": "2024-01-01T00:00:00.000Z",
+        "publishedAt": "2024-01-01T00:00:00.000Z",
+        "revisedAt": "2024-01-01T00:00:00.000Z",
+        "name": "Web制作",
+        "slug": "web"
+      },
+      "body": "<p>本文</p>",
+      "date": "2024-01-01T15:00:00.000Z"
+    },
+    {
+      "id": "w-empty-body",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z",
+      "publishedAt": "2024-01-01T00:00:00.000Z",
+      "revisedAt": "2024-01-01T00:00:00.000Z",
+      "title": "タイトル w-empty-body",
+      "slug": "empty-body",
+      "category": {
+        "id": "cat-ok",
+        "createdAt": "2024-01-01T00:00:00.000Z",
+        "updatedAt": "2024-01-01T00:00:00.000Z",
+        "publishedAt": "2024-01-01T00:00:00.000Z",
+        "revisedAt": "2024-01-01T00:00:00.000Z",
+        "name": "Web制作",
+        "slug": "web"
+      },
+      "thumbnail": {
+        "url": "https://images.microcms-assets.io/assets/dummy/x.png",
+        "width": 1200,
+        "height": 800
+      },
+      "body": "<p></p>",
+      "date": "2024-01-01T15:00:00.000Z"
+    },
+    {
+      "id": "w-bad-date",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z",
+      "publishedAt": "2024-01-01T00:00:00.000Z",
+      "revisedAt": "2024-01-01T00:00:00.000Z",
+      "title": "タイトル w-bad-date",
+      "slug": "bad-date",
+      "category": {
+        "id": "cat-ok",
+        "createdAt": "2024-01-01T00:00:00.000Z",
+        "updatedAt": "2024-01-01T00:00:00.000Z",
+        "publishedAt": "2024-01-01T00:00:00.000Z",
+        "revisedAt": "2024-01-01T00:00:00.000Z",
+        "name": "Web制作",
+        "slug": "web"
+      },
+      "thumbnail": {
+        "url": "https://images.microcms-assets.io/assets/dummy/x.png",
+        "width": 1200,
+        "height": 800
+      },
+      "body": "<p>本文</p>",
+      "date": "not-a-date"
+    }
+  ],
+  "totalCount": 14,
+  "offset": 0,
+  "limit": 100
+}

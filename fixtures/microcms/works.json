@@ -1,0 +1,243 @@
+{
+  "contents": [
+    {
+      "id": "work01",
+      "createdAt": "2024-06-01T03:00:00.000Z",
+      "updatedAt": "2024-06-01T03:00:00.000Z",
+      "publishedAt": "2024-06-01T03:00:00.000Z",
+      "revisedAt": "2024-06-01T03:00:00.000Z",
+      "title": "UNOTAME ポートフォリオサイト",
+      "slug": "unotame-portfolio",
+      "category": {
+        "id": "cat-web",
+        "createdAt": "2024-01-10T01:00:00.000Z",
+        "updatedAt": "2024-01-10T01:00:00.000Z",
+        "publishedAt": "2024-01-10T01:00:00.000Z",
+        "revisedAt": "2024-01-10T01:00:00.000Z",
+        "name": "Web制作",
+        "slug": "web"
+      },
+      "thumbnail": {
+        "url": "https://images.microcms-assets.io/assets/dummy/thumb-work01.png",
+        "height": 800,
+        "width": 1200
+      },
+      "body": "<p>自身のポートフォリオサイトを WordPress のオリジナルテーマで制作しました。</p><p><img src=\"assets/img/img-works-unotame.png\" alt=\"\"></p><p>デザインから実装まで一貫して担当しています。</p>",
+      "date": "2024-05-31T15:00:00.000Z",
+      "description": "WordPress のオリジナルテーマで制作したポートフォリオサイト。",
+      "legacyWpId": 101
+    },
+    {
+      "id": "work02",
+      "createdAt": "2024-04-20T03:00:00.000Z",
+      "updatedAt": "2024-04-20T03:00:00.000Z",
+      "publishedAt": "2024-04-20T03:00:00.000Z",
+      "revisedAt": "2024-04-20T03:00:00.000Z",
+      "title": "コーポレートサイト制作",
+      "slug": "xxx-corporate-site",
+      "category": {
+        "id": "cat-web",
+        "createdAt": "2024-01-10T01:00:00.000Z",
+        "updatedAt": "2024-01-10T01:00:00.000Z",
+        "publishedAt": "2024-01-10T01:00:00.000Z",
+        "revisedAt": "2024-01-10T01:00:00.000Z",
+        "name": "Web制作",
+        "slug": "web"
+      },
+      "thumbnail": {
+        "url": "https://images.microcms-assets.io/assets/dummy/thumb-work02.png",
+        "height": 800,
+        "width": 1200
+      },
+      "body": "<h2>概要</h2><p>中小企業のコーポレートサイトを制作しました。<strong>レスポンシブ</strong>対応と CMS の導入を行い、更新作業を社内で完結できるようにしました。お知らせ・採用情報・お問い合わせの各ページを用意し、運用マニュアルも作成しています。</p><figure><img src=\"https://images.microcms-assets.io/assets/dummy/body-corporate.png\" alt=\"トップページ\" width=\"1200\" height=\"800\"></figure>",
+      "date": "2024-04-19T15:00:00.000Z",
+      "legacyWpId": 102
+    },
+    {
+      "id": "work03",
+      "createdAt": "2024-03-02T03:00:00.000Z",
+      "updatedAt": "2024-03-02T03:00:00.000Z",
+      "publishedAt": "2024-03-02T03:00:00.000Z",
+      "revisedAt": "2024-03-02T03:00:00.000Z",
+      "title": "業務管理システム",
+      "slug": "business-system",
+      "category": {
+        "id": "cat-system",
+        "createdAt": "2024-01-10T01:01:00.000Z",
+        "updatedAt": "2024-01-10T01:01:00.000Z",
+        "publishedAt": "2024-01-10T01:01:00.000Z",
+        "revisedAt": "2024-01-10T01:01:00.000Z",
+        "name": "システム開発",
+        "slug": "system",
+        "legacyWpSlugs": "dev, system-dev"
+      },
+      "thumbnail": {
+        "url": "https://images.microcms-assets.io/assets/dummy/thumb-work03.png",
+        "height": 800,
+        "width": 1200
+      },
+      "body": "<p>社内の業務管理システムを設計・開発しました。</p><p><img src=\"https://images.microcms-assets.io/assets/dummy/body-system.png\" alt=\"\" loading=\"eager\"></p>",
+      "date": "2024-03-01T15:00:00.000Z",
+      "description": "社内向け業務管理システムの設計・開発。"
+    },
+    {
+      "id": "work04",
+      "createdAt": "2024-02-10T03:00:00.000Z",
+      "updatedAt": "2024-02-10T03:00:00.000Z",
+      "publishedAt": "2024-02-10T03:00:00.000Z",
+      "revisedAt": "2024-02-10T03:00:00.000Z",
+      "title": "API 連携基盤",
+      "slug": "api-platform",
+      "category": {
+        "id": "cat-system",
+        "createdAt": "2024-01-10T01:01:00.000Z",
+        "updatedAt": "2024-01-10T01:01:00.000Z",
+        "publishedAt": "2024-01-10T01:01:00.000Z",
+        "revisedAt": "2024-01-10T01:01:00.000Z",
+        "name": "システム開発",
+        "slug": "system",
+        "legacyWpSlugs": "dev, system-dev"
+      },
+      "thumbnail": {
+        "url": "https://images.microcms-assets.io/assets/dummy/thumb-work04.png",
+        "height": 800,
+        "width": 1200
+      },
+      "body": "<p>外部サービスと連携する API 基盤を構築しました。</p>",
+      "date": "2024-01-31T15:00:00.000Z",
+      "legacyWpId": 104
+    },
+    {
+      "id": "work05",
+      "createdAt": "2024-02-12T03:00:00.000Z",
+      "updatedAt": "2024-02-12T03:00:00.000Z",
+      "publishedAt": "2024-02-12T03:00:00.000Z",
+      "revisedAt": "2024-02-12T03:00:00.000Z",
+      "title": "ランディングページ改修",
+      "slug": "yyy-lp-redesign",
+      "category": {
+        "id": "cat-web",
+        "createdAt": "2024-01-10T01:00:00.000Z",
+        "updatedAt": "2024-01-10T01:00:00.000Z",
+        "publishedAt": "2024-01-10T01:00:00.000Z",
+        "revisedAt": "2024-01-10T01:00:00.000Z",
+        "name": "Web制作",
+        "slug": "web"
+      },
+      "thumbnail": {
+        "url": "https://images.microcms-assets.io/assets/dummy/thumb-work05.png",
+        "height": 800,
+        "width": 1200
+      },
+      "body": "<p>既存のランディングページを改修し、表示速度を改善しました。</p>",
+      "date": "2024-01-31T15:00:00.000Z"
+    },
+    {
+      "id": "work06",
+      "createdAt": "2023-12-01T03:00:00.000Z",
+      "updatedAt": "2023-12-01T03:00:00.000Z",
+      "publishedAt": "2023-12-01T03:00:00.000Z",
+      "revisedAt": "2023-12-01T03:00:00.000Z",
+      "title": "Web メディア記事執筆",
+      "slug": "media-writing",
+      "category": {
+        "id": "cat-writing",
+        "createdAt": "2024-01-10T01:02:00.000Z",
+        "updatedAt": "2024-01-10T01:02:00.000Z",
+        "publishedAt": "2024-01-10T01:02:00.000Z",
+        "revisedAt": "2024-01-10T01:02:00.000Z",
+        "name": "ライティング",
+        "slug": "writing"
+      },
+      "thumbnail": {
+        "url": "https://images.microcms-assets.io/assets/dummy/thumb-work06.png",
+        "height": 800,
+        "width": 1200
+      },
+      "body": "<p>Web メディアで技術記事を執筆しました。</p>",
+      "date": "2023-11-30T15:00:00.000Z",
+      "description": "技術系 Web メディアでの記事執筆。",
+      "legacyWpId": 106
+    },
+    {
+      "id": "work07",
+      "createdAt": "2023-12-01T03:00:00.000Z",
+      "updatedAt": "2023-12-01T03:00:00.000Z",
+      "publishedAt": "2023-12-01T03:00:00.000Z",
+      "revisedAt": "2023-12-01T03:00:00.000Z",
+      "title": "採用サイト制作",
+      "slug": "recruit-site",
+      "category": {
+        "id": "cat-web",
+        "createdAt": "2024-01-10T01:00:00.000Z",
+        "updatedAt": "2024-01-10T01:00:00.000Z",
+        "publishedAt": "2024-01-10T01:00:00.000Z",
+        "revisedAt": "2024-01-10T01:00:00.000Z",
+        "name": "Web制作",
+        "slug": "web"
+      },
+      "thumbnail": {
+        "url": "https://images.microcms-assets.io/assets/dummy/thumb-work07.png",
+        "height": 800,
+        "width": 1200
+      },
+      "body": "<p>採用サイトを制作しました。</p>",
+      "date": "2023-11-30T15:00:00.000Z"
+    },
+    {
+      "id": "work08",
+      "createdAt": "2023-04-02T03:00:00.000Z",
+      "updatedAt": "2023-04-02T03:00:00.000Z",
+      "publishedAt": "2023-04-02T03:00:00.000Z",
+      "revisedAt": "2023-04-02T03:00:00.000Z",
+      "title": "ECサイト構築",
+      "slug": "ec-site",
+      "category": {
+        "id": "cat-web",
+        "createdAt": "2024-01-10T01:00:00.000Z",
+        "updatedAt": "2024-01-10T01:00:00.000Z",
+        "publishedAt": "2024-01-10T01:00:00.000Z",
+        "revisedAt": "2024-01-10T01:00:00.000Z",
+        "name": "Web制作",
+        "slug": "web"
+      },
+      "thumbnail": {
+        "url": "https://images.microcms-assets.io/assets/dummy/thumb-work08.png",
+        "height": 800,
+        "width": 1200
+      },
+      "body": "<p>EC サイトを構築しました。</p>",
+      "date": "2023-03-31T15:00:00.000Z",
+      "legacyWpId": 108
+    },
+    {
+      "id": "work09",
+      "createdAt": "2022-10-02T03:00:00.000Z",
+      "updatedAt": "2022-10-02T03:00:00.000Z",
+      "publishedAt": "2022-10-02T03:00:00.000Z",
+      "revisedAt": "2022-10-02T03:00:00.000Z",
+      "title": "広告運用レポート自動化",
+      "slug": "ads-report-automation",
+      "category": {
+        "id": "cat-system",
+        "createdAt": "2024-01-10T01:01:00.000Z",
+        "updatedAt": "2024-01-10T01:01:00.000Z",
+        "publishedAt": "2024-01-10T01:01:00.000Z",
+        "revisedAt": "2024-01-10T01:01:00.000Z",
+        "name": "システム開発",
+        "slug": "system",
+        "legacyWpSlugs": "dev, system-dev"
+      },
+      "thumbnail": {
+        "url": "https://images.microcms-assets.io/assets/dummy/thumb-work09.png",
+        "height": 800,
+        "width": 1200
+      },
+      "body": "<p>広告運用のレポート作成を自動化するツールを開発しました。</p>",
+      "date": "2022-09-30T15:00:00.000Z"
+    }
+  ],
+  "totalCount": 9,
+  "offset": 0,
+  "limit": 9
+}

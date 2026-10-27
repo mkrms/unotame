@@ -1,9 +1,12 @@
 import { defineConfig } from 'astro/config';
+import devServerFlag from './src/integrations/dev-server-flag.ts';
 
 export default defineConfig({
   site: 'https://unotame.com',
   output: 'static',
   trailingSlash: 'always',
   build: { format: 'directory' }, // 既定値だが明示する（url-design）
-  // integrations: [] … sitemap は P2「SEO / OGP」で追加
+  // dev-server-flag … astro dev のときだけ import.meta.env.UNOTAME_IS_DEV_SERVER を true にする（cms の dev 判定）
+  // sitemap は P2「SEO / OGP」で追加
+  integrations: [devServerFlag()],
 });

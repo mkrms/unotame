@@ -1,0 +1,8 @@
+dist/
+.astro/
+node_modules/
+coverage/
+legacy/
+.claude/
+CLAUDE.md
+package-lock.json

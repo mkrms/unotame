@@ -169,7 +169,7 @@ export default defineConfig({
 {
   "extends": "astro/tsconfigs/strict",
   "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist", "legacy", "node_modules"]  // 基底の exclude を上書きするので dist も書く
+  "exclude": ["dist", "legacy", "node_modules", "coverage"]  // 基底の exclude を上書きするので dist も書く
 }
 ```
 - 基底の `astro/tsconfigs/base` は `allowJs: true` かつ `include: ["**/*"]` のため、**`legacy` を除外しないと `legacy/assets/js/*.js` が型チェックの対象に入る**。
@@ -259,8 +259,8 @@ npm-debug.log*
 # OS・エディタ
 .DS_Store
 Thumbs.db
-.vscode/*
-!.vscode/extensions.json
+/.vscode/*
+!/.vscode/extensions.json
 ```
 
 **`.gitattributes`**
@@ -281,8 +281,9 @@ Thumbs.db
 *.woff binary
 *.woff2 binary
 ```
-- `text=auto` は「**すでに CRLF でコミットされているファイルは変換しない**」ので、legacy の CRLF 3 件（`style.scss` ほか）は中身が変わらない。
-  legacy を正規化（LF 化）するかは F-5。推奨は「しない」（退避コミットを純粋な移動に保ち、旧テーマには手を入れない）。
+- `eol=lf` を付けているため、すでに CRLF でコミットされている legacy の 3 件（`style.scss`・`_base.scss`・`script.js`）も `git add` の際に LF へ変換される
+  （実装時に判明。当初の想定「変換されない」は誤り）。このためコミット 1 で 3 件を `git add --renormalize` し、改行コードだけを LF 化する（F-5）。
+  これで退避コミット（コミット 2）は純粋な移動（`R100`）に保てる。
 - SVG はテキストとして扱う（LF に統一されてよい）。
 
 **`.editorconfig`**
@@ -308,10 +309,12 @@ trim_trailing_whitespace = unset
 
 **`.env.example`**（cms-integration の記載どおり。値は空でコミット）
 ```
+# microCMS（API キーは GET 権限のみの読み取り専用キーを使う。値はコミットしない）
 MICROCMS_SERVICE_DOMAIN=
 MICROCMS_API_KEY=
 # データの取得元: microcms（既定）| fixture（API を呼ばずに fixtures/microcms/*.json を使う）
 CMS_SOURCE=
+# 開発時のみ: 下書きプレビュー。"コンテンツID:draftKey" をカンマ区切り。astro build で設定されているとビルド失敗
 MICROCMS_PREVIEW_DRAFTS=
 ```
 （コメント行は cms-integration の `.env.example` 案をそのまま写す。本書の時点ではこれらを読むコードはまだ無い。）
@@ -325,7 +328,7 @@ MICROCMS_PREVIEW_DRAFTS=
   "name": "unotame",
   "private": true,
   "type": "module",
-  "engines": { "node": ">=24.16.0" },
+  "engines": { "node": "^24.16.0 || >=26.3.0" },
   "scripts": { /* 下の「npm scripts」 */ }
 }
 ```
@@ -484,7 +487,8 @@ git status                     # renamed: のみであることを確認
 ### Astro・ツール（ゴール）
 - [ ] クリーンな clone で `.nvmrc` の Node を使い `npm ci` が終了コード 0。`npm ls` が終了コード 0（peer 依存の不整合なし）、`npm ls typescript` が 6.0.x を指す。
 - [ ] `npm run build` が終了コード 0 で、`dist/index.html` がある。`dist/` に `legacy`・`*.php`・`.htaccess` が無い（`.htaccess` は URL 設計の実装で追加される）。
-- [ ] `dist/_astro/` に、`src/styles/style.scss` から生成された CSS が 1 つ以上ある（SCSS がコンパイルされている）。
+- [ ] `src/styles/style.scss` から生成されたコンパイル済みの CSS が、`dist/` の HTML（`<style>`）または `dist/_astro/*.css` にある（SCSS がコンパイルされている）。
+  Astro の既定 `build.inlineStylesheets: 'auto'` では小さい CSS は HTML に埋め込まれるため、どちらでも合格とする（2026-10-27 実装時に修正）。
 - [ ] `npm run check`（= `npx astro check`）が終了コード 0 で、エラー 0 件。`legacy/` 配下のファイルが検査対象に出てこない。
 - [ ] `npm run lint` が終了コード 0。かつ `legacy/` に lint 違反があっても結果に影響しない（対象外）。
 - [ ] `npm run format` を実行しても `git status --porcelain -- legacy .claude CLAUDE.md` が 0 行（旧テーマと仕様書を書き換えない）。
@@ -512,7 +516,7 @@ git status                     # renamed: のみであることを確認
 | F-2 | コミットの分け方 | **決定（D-011）**: 4 コミットに分ける |
 | F-3 | **Node のメジャー**（24 か 26 か）と固定方法 | **決定（D-011）**: Node 24 ＋ `.nvmrc` |
 | F-4 | TypeScript の厳しさ（`strict` か `strictest` か） | **決定（D-011）**: `strict` |
-| F-5 | legacy の CRLF 3 件（`style.scss`・`_base.scss`・`script.js`）を LF に正規化するか | **決定（D-011）**: 正規化しない |
+| F-5 | legacy の CRLF 3 件（`style.scss`・`_base.scss`・`script.js`）を LF に正規化するか | **決定（D-011、2026-10-27 変更）**: 正規化する。`eol=lf` により変換は避けられないため、コミット 1 で改行コードだけ LF 化する（中身は変えない） |
 | F-6 | Objective の WOFF2 化を P1 でやるか | **決定（D-011）**: WOFF2 化は P2。P1 は OTF をコピー。ライセンス確認は P2 着手前に行う |
 | F-7 | 本文の `"assets/` 参照の受け皿として `public/assets/` を用意するか（cms-integration C-7 の「プロジェクト基盤」側） | **決定（D-011）**: P1 では用意しない |
 | F-8 | Stylelint を P1 で入れるか、`.astro` の `<style>` も対象にするか | **決定（D-011）**: P1 で入れる（`.scss` のみ、`selector-class-pattern` は無効化） |

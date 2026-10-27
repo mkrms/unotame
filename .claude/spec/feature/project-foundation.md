@@ -281,8 +281,9 @@ Thumbs.db
 *.woff binary
 *.woff2 binary
 ```
-- `text=auto` は「**すでに CRLF でコミットされているファイルは変換しない**」ので、legacy の CRLF 3 件（`style.scss` ほか）は中身が変わらない。
-  legacy を正規化（LF 化）するかは F-5。推奨は「しない」（退避コミットを純粋な移動に保ち、旧テーマには手を入れない）。
+- `eol=lf` を付けているため、すでに CRLF でコミットされている legacy の 3 件（`style.scss`・`_base.scss`・`script.js`）も `git add` の際に LF へ変換される
+  （実装時に判明。当初の想定「変換されない」は誤り）。このためコミット 1 で 3 件を `git add --renormalize` し、改行コードだけを LF 化する（F-5）。
+  これで退避コミット（コミット 2）は純粋な移動（`R100`）に保てる。
 - SVG はテキストとして扱う（LF に統一されてよい）。
 
 **`.editorconfig`**
@@ -512,7 +513,7 @@ git status                     # renamed: のみであることを確認
 | F-2 | コミットの分け方 | **決定（D-011）**: 4 コミットに分ける |
 | F-3 | **Node のメジャー**（24 か 26 か）と固定方法 | **決定（D-011）**: Node 24 ＋ `.nvmrc` |
 | F-4 | TypeScript の厳しさ（`strict` か `strictest` か） | **決定（D-011）**: `strict` |
-| F-5 | legacy の CRLF 3 件（`style.scss`・`_base.scss`・`script.js`）を LF に正規化するか | **決定（D-011）**: 正規化しない |
+| F-5 | legacy の CRLF 3 件（`style.scss`・`_base.scss`・`script.js`）を LF に正規化するか | **決定（D-011、2026-10-27 変更）**: 正規化する。`eol=lf` により変換は避けられないため、コミット 1 で改行コードだけ LF 化する（中身は変えない） |
 | F-6 | Objective の WOFF2 化を P1 でやるか | **決定（D-011）**: WOFF2 化は P2。P1 は OTF をコピー。ライセンス確認は P2 着手前に行う |
 | F-7 | 本文の `"assets/` 参照の受け皿として `public/assets/` を用意するか（cms-integration C-7 の「プロジェクト基盤」側） | **決定（D-011）**: P1 では用意しない |
 | F-8 | Stylelint を P1 で入れるか、`.astro` の `<style>` も対象にするか | **決定（D-011）**: P1 で入れる（`.scss` のみ、`selector-class-pattern` は無効化） |

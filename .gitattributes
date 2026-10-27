@@ -1,0 +1,15 @@
+# テキストはリポジトリ内で LF に統一（core.autocrlf=true の環境でも作業ツリーは LF になる）
+* text=auto eol=lf
+
+# バイナリ（改行変換・差分の対象外）
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.webp binary
+*.avif binary
+*.ico  binary
+*.otf  binary
+*.ttf  binary
+*.woff binary
+*.woff2 binary

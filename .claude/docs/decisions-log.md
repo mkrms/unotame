@@ -92,7 +92,7 @@
   - コミットは 4 つ（準備 / 退避のみ / Astro 初期化 / lint・format・test 導入）に分ける。
   - Astro 7 系（`^7`、lock で固定）を手動で導入。TypeScript は `strict`、ツール対応のため TypeScript 本体は 6.0 系に固定する。
   - Node 24 系（`.nvmrc`・`engines`・`engine-strict`）。パッケージマネージャは npm（`package-lock.json` をコミット、CI は `npm ci`）。
-  - ESLint（flat config）・Prettier・Stylelint（`.scss` のみ）・Vitest を P1 で導入。`.gitattributes` で LF に統一。
+  - ESLint（flat config）・Prettier・Stylelint（`.scss` のみ）・Vitest を P1 で導入。`.gitattributes` で LF に統一（legacy の CRLF 3 件もコミット 1 で LF 化する。当初の「変換しない」から変更）。
   - 開発環境は Git Bash 前提。npm scripts 内で環境変数を前置する必要が出たら `cross-env` を入れる。
   - Objective フォントの WOFF2 化は P2（着手前にライセンスを確認）。FLOCSS に Utility（`u-`）層を追加する。
 - **背景**: 退避と導入を分けて履歴を追いやすくし、ローカル・CI で同じコマンドと同じ版で動く土台を最初に作るため。

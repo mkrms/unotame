@@ -4,6 +4,8 @@
 > 引き継いで確定させる。url-design の内容は変更していない（変更が必要と思われる点は「未決事項」に挙げた）。
 > **2026-10-27 変更（D-012）**: P1 のページ仕様の承認に合わせ、`Profile` 型（top-page T-6）、プロフィールの受け入れ条件（top-page T-7）、
 > Latest の取得（works-detail D-1）、C-8（works-detail D-5）、C-16（works-list L-2）を更新した。
+> **2026-10-27 変更（実装・レビューの反映）**: 実装時の判断とレビュー指摘に合わせ、取得の流れ（検証 → 変換の順）、description の自動生成、
+> 本文の加工の範囲、`totalCount` の照合、環境変数を読む場所と開発時の判定方法、0 件の扱いを更新し、未決事項 C-17 を追加した。
 
 ## 目的
 - Works（実績）とカテゴリを microCMS で管理し、**ビルド時に API から取得して静的生成**する仕組みを定める（D-004）。
@@ -81,6 +83,7 @@
 - `thumbnail`（画像・必須）: 現行のアイキャッチ。一覧・トップ・Latest・詳細ヘッダーで使う。OGP 画像にも流用する（P2）。
 - `description`（テキストエリア・任意、最大 120 文字）: 一覧には出さず、`<meta name="description">` と OGP の説明に使う（P2）。
   未入力の場合は、本文 HTML からタグを除いた先頭 100 文字程度を使う（変換層で `description` を必ず埋める）。
+  本文が画像だけなどでテキストが空になる場合は `title` を使う（2026-10-27 変更。レビュー指摘）。
 - OGP 専用画像のフィールドは**作らない**（サムネイルで足りる。必要になったら任意フィールドで追加）。
 - 画像の `alt`: 現行は空。microCMS の画像フィールドに代替テキストが付けられるかは要確認（未決 C-8）。P1 ではドメイン型に `alt` を持たせ、
   値が無ければ空文字にする（カード内ではタイトルが隣にあるため、装飾画像として空でも可）。
@@ -129,10 +132,11 @@ P2「パフォーマンス / a11y」でサムネイルを J に切り替える�
 切り替えは表示側のコンポーネント 1 つ（例 `c-work-thumb`）と `image.ts` に閉じる。
 
 本文中の画像:
-- microCMS にアップロードした画像（`https://images.microcms-assets.io/...`）は、変換層で `<img>` に `loading="lazy"` と
-  `decoding="async"` を付ける（既に付いていれば触らない）。URL へのリサイズのパラメータ付与は P2 で判断する。
+- 本文のすべての `<img>` に、変換層で `loading="lazy"` と `decoding="async"` を付ける（既に付いていれば触らない）。
+  （2026-10-27 変更。旧: microCMS にアップロードした画像だけ。受け入れ条件の書き方に合わせた。属性値に `>` を含む `<img>` でも壊れないよう、引用符を考慮して検出する）URL へのリサイズのパラメータ付与は P2 で判断する。
 - 現行の `"assets/` で始まるテーマ同梱画像への相対参照は、**移行時に microCMS のメディアへアップロードし直して URL を置き換える**のを推奨する
-  （本文の参照先を CMS の中で完結させる）。安全策として、変換層は `"assets/` を `"/assets/` に置き換え、さらに**ビルドで警告**を出す
+  （本文の参照先を CMS の中で完結させる）。安全策として、変換層は `src`・`href`・`srcset`・`poster` の属性値の `"assets/` を `"/assets/` に置き換え
+  （2026-10-27 変更: 本文中のコードの文字列には当てない）、さらに**ビルドで警告**を出す
   （どのコンテンツに残っているかを表示）。新サイトで `/assets/` に何を置くかは未決 C-7。
 
 ## データ構造案
@@ -251,15 +255,15 @@ src/lib/
 │  ├─ work.ts            … Work / Category / ImageAsset 型
 │  └─ profile.ts         … Profile 型（src/data/profile.ts が使う）
 ├─ cms/
-│  ├─ index.ts           … ページから使う公開関数（下記）。メモ化もここ
-│  ├─ config.ts          … 環境変数を読んで CmsConfig にする純粋関数 resolveCmsConfig(env, { isDev })
+│  ├─ index.ts           … ページから使う公開関数（下記）。メモ化と、環境変数・開発時の判定の読み取りもここ
+│  ├─ config.ts          … env オブジェクトを CmsConfig にする純粋関数 resolveCmsConfig(env, { isDev })（自分では環境変数を読まない）
 │  ├─ source.ts          … CmsSource インターフェース
 │  ├─ microcms-source.ts … SDK を使う実装（SDK を import するのはここだけ）
 │  ├─ fixture-source.ts  … フィクスチャ JSON を返す実装
 │  ├─ raw-types.ts       … 生のレスポンス型
 │  ├─ transform.ts       … RawWork / RawCategory → ドメイン型（純粋関数）
 │  ├─ body.ts            … 本文 HTML の加工・description の自動生成（純粋関数）
-│  ├─ validate.ts        … ビルド時の検証（slug.ts を使う。違反をまとめて CmsValidationError で投げる）
+│  ├─ validate.ts        … ビルド時の検証（生データに対して行う。slug.ts を使う。違反をまとめて CmsValidationError で投げる）
 │  └─ image.ts           … cmsImageUrl()
 ├─ profile.ts            … getProfile()
 ├─ routes.ts             … （url-design）
@@ -298,10 +302,13 @@ export function loadContent(source: CmsSource, config: CmsConfig): Promise<{ wor
 2. `loadContent()` が `CmsSource.listCategories()` と `listWorks()` を並行に呼ぶ。
    - `listWorks` は SDK の `getAllContents({ endpoint: 'works', queries: { depth: 1 } })` を使う（内部で `limit=100` 単位にページング）。
      自前で書く場合も `offset` を 100 ずつ進め、`offset >= totalCount` で止める。取得件数が `totalCount` と一致しない場合はエラー。
+     （2026-10-27: SDK の `getAllContents` は件数を照合しないため、microCMS 版では照合しない。フィクスチャ版は `totalCount` と件数を照合する）
+   - `richEditorFormat: 'html'` を明示し、SDK の `retry: true` で一時的なエラーを再試行する。
    - API の `limit` 上限は 100、レスポンスが約 5MB を超えるとエラーになる（公式ドキュメント）。本文が大きくなったら 1 回の件数を下げる。
 3. 開発時で下書きプレビューが指定されていれば、`getDraftWork(id, draftKey)` で取って一覧に差し込む（同じ ID があれば置き換える）。
-4. `transform.ts` で生データ → ドメイン型。`body.ts` で本文を加工し、`description` を埋める。`date` は JST の `YYYY-MM-DD` にする。
-5. `validate.ts` で検証（下記）。違反があれば**全部まとめて** `CmsValidationError` を投げる → ビルド失敗。
+4. `validate.ts` で**生データを**検証（下記）。違反があれば**全部まとめて** `CmsValidationError` を投げる → ビルド失敗。
+   （2026-10-27 変更。旧: 変換 → 検証。参照切れや必須項目の欠けがあると変換できないため、検証を先にした）
+5. `transform.ts` で生データ → ドメイン型。`body.ts` で本文を加工し、`description` を埋める。`date` は JST の `YYYY-MM-DD` にする。
 6. `date` 降順（→ `publishedAt` 降順 → `id` 昇順）に並べる。
 7. 結果を Promise としてモジュール内に保持し、同じビルド中の 2 回目以降はそれを返す（メモ化）。開発サーバーでは毎リクエスト取り直す
    （CMS の更新をすぐ見られるように。開発時の API 呼び出し回数が気になれば未決 C-10）。
@@ -329,7 +336,7 @@ export async function getStaticPaths() {
 | works の必須項目 | `title`（空白のみ不可）・`thumbnail`（URL・幅・高さあり）・`body`（空でない）・`date`（日付として解釈できる） |
 | categories.slug | 必須・パターン（`^[a-z0-9]+(?:-[a-z0-9]+)*$`）・重複なし |
 | categories.legacyWpSlugs | 各要素が同じパターン・ほかのカテゴリの `slug` / `legacyWpSlugs` と重複しない |
-| 件数 | **本番ビルド（`astro build`）で works が 0 件ならエラー**。API の不調などで空のサイトを rsync `--delete` で公開してしまう事故を防ぐ。開発時は警告のみ |
+| 件数 | **本番ビルド（`astro build`）で works が 0 件ならエラー**。API の不調などで空のサイトを rsync `--delete` で公開してしまう事故を防ぐ。開発時は警告のみ。取得元（microcms / fixture）は問わない |
 | 旧 ID 件数 | url-design の「生成リダイレクト件数が期待件数を下回ったら失敗」と同じ仕組み（実装は redirects 側） |
 
 警告（ビルドは続行）: 本文に `"assets/` が残っている、`description` が 120 文字を超えている（CMS の制限漏れ）。
@@ -361,9 +368,13 @@ export async function getStaticPaths() {
 - `.env` は `.gitignore` に入れる（現状の `.gitignore` には無いので「プロジェクト基盤」で追加）。
 - API キーの権限: 既定権限は **GET のみ**。POST / PUT / PATCH / DELETE と「下書きの全取得」は付けない。
   無料プランは API キーが 1 個のため、ローカルと CI で同じキーを使うことになる。だからこそ書き込み・下書き全取得の権限は付けない。
-- 環境変数はクライアント側に出さない（`PUBLIC_` を付けない）。読むのは `config.ts` だけ。`config.ts` は
-  `resolveCmsConfig(env, { isDev })` という純粋関数にし、Vitest から任意の env を渡してテストできるようにする
-  （`isDev` は `import.meta.env.DEV` から渡す）。
+- 環境変数はクライアント側に出さない（`PUBLIC_` を付けない）。読むのは `index.ts` だけ（2026-10-27 変更。旧: `config.ts`）。`config.ts` は
+  `resolveCmsConfig(env, { isDev })` という純粋関数にし、Vitest から任意の env を渡してテストできるようにする。
+- `isDev` は `import.meta.env.DEV` を**使わない**（2026-10-27 変更。レビュー指摘）。`NODE_ENV=development` や `--devOutput` 付きの
+  `astro build` でも DEV が true になり、下書きと 0 件の 2 つのガードが外れるため。代わりに、Astro インテグレーションが
+  `astro:config:setup` の `command === 'dev'` を見てビルド時定数を注入し、それを使う（`astro build` では必ず false）。
+  実装は `src/integrations/dev-server-flag.ts` が `import.meta.env.UNOTAME_IS_DEV_SERVER` を注入し、`index.ts` の `isDevServer()` が
+  厳密に `true` のときだけ開発時とみなす（注入されていない場合も本番扱いにして、ガードを外さない）。
 
 ### ローカル開発
 
@@ -378,6 +389,7 @@ export async function getStaticPaths() {
 - `MICROCMS_PREVIEW_DRAFTS` が設定された状態で `isDev === false`（`astro build` / `astro preview` 用のビルド）なら、**取得を始める前にエラーで止める**
   （黙って無視しない。本番ビルドに下書きが混ざる経路を作らない）。
 - `CMS_SOURCE=fixture` との併用はエラー。
+- 同じ ID を重ねて指定した場合（`w1:k1,w1:k2`）はエラーにせず、後に書いたほうが優先される（2026-10-27。テストで固定）。
 - 差し込んだ実績は `isDraftPreview: true`。表示側は開発時だけ「DRAFT」表示を出してよい（任意）。
 - 下書きの確認手順: `.env` に設定 → `npm run dev` → `/works/{slug}/` を開く。公開前の最終確認は設定を外して `npm run build && npm run preview`。
 - draftKey は秘密情報に準じて扱う（コミットしない。`.env` にのみ書く）。
@@ -432,9 +444,11 @@ export async function getStaticPaths() {
 - [ ] `legacyWpSlugs: "old-a, old-b"` → `['old-a', 'old-b']`（前後の空白を除く）、未入力 → `[]`。
 - [ ] `legacyWpId` 未入力 → `Work.legacyWpId` は `undefined`。
 - [ ] `date: "2023-03-31T15:00:00.000Z"` → `'2023-04-01'`（JST）。
-- [ ] `description` 未入力のとき、本文からタグを除いた先頭 100 文字程度（空白を詰め、末尾に `…`）になる。入力ありならその値。
-- [ ] 本文の `src="assets/img/a.png"` が `src="/assets/img/a.png"` に置き換わり、警告が 1 件出る（コンテンツ ID を含む）。
-- [ ] 本文の `<img>` に `loading="lazy"`・`decoding="async"` が付く。既に `loading` 属性がある場合は変えない。
+- [ ] `description` 未入力のとき、本文からタグを除いた先頭 100 文字程度（空白を詰め、100 文字を超えて切り詰めたときだけ末尾に `…`）になる。入力ありならその値。
+      本文のテキストが空なら `title` になる。
+- [ ] 本文の `src="assets/img/a.png"` が `src="/assets/img/a.png"` に置き換わり、警告が 1 件出る（コンテンツ ID を含む）。属性値でない `"assets/`（コードの文字列など）は置き換えない。
+- [ ] 本文の `<img>` に `loading="lazy"`・`decoding="async"` が付く。既に `loading` 属性がある場合は変えない。`alt` に `>` を含む `<img>` も壊れない。
+- [ ] 範囲外の数値文字参照（例 `&#99999999;`）があっても例外にならず、そのまま残る。
 - [ ] `thumbnail` の alt が無い場合 `alt === ''`。
 
 ### 並び順・公開関数
@@ -446,13 +460,14 @@ export async function getStaticPaths() {
 
 ### 全件取得
 - [ ] 250 件を返すモック（100 件ずつ）で `listWorks` が 3 回のページ取得をして 250 件を返す（自前ページングの場合。SDK の場合は `getAllContents` に `endpoint: 'works'`・`depth: 1` を渡していることを確認）。
-- [ ] 取得件数が `totalCount` と一致しないとエラーになる（自前ページングの場合）。
+- [ ] 取得件数が `totalCount` と一致しないとエラーになる（自前ページングの場合とフィクスチャ版）。
 
 ### 検証
 - [ ] slug 規則違反・slug 重複・`legacyWpId` 重複・カテゴリ参照切れ（`null`／一覧に無い ID）・必須項目欠落（title / thumbnail / body / date）・
       カテゴリ slug 重複・`legacyWpSlugs` の重複のそれぞれで `CmsValidationError` が投げられ、メッセージに該当のコンテンツ ID と slug が含まれる。
 - [ ] 違反が複数あるとき、**最初の 1 件で止まらず全件**がメッセージに含まれる。
 - [ ] works 0 件のとき、`isDev: false` ではエラー、`isDev: true` では警告のみで空配列を返す。
+- [ ] `NODE_ENV=development` を付けた `astro build` でも `isDev` は false になる（下書きと 0 件のガードが働く）。
 - [ ] `CMS_SOURCE=microcms` で異常系のデータを返すソースを使った `npm run build` 相当（`loadContent`）が失敗する。ビルド用フィクスチャ（`fixtures/microcms/`）は検証を通る。
 
 ### 設定・秘密情報
@@ -463,6 +478,7 @@ export async function getStaticPaths() {
 - [ ] 下書きプレビュー時、同じ ID の公開版は下書き版に置き換わり、新規の下書きは追加され、どちらも `isDraftPreview: true` になる。
 - [ ] `CMS_SOURCE=fixture` と `MICROCMS_PREVIEW_DRAFTS` の併用でエラー。
 - [ ] API エラー（モックで 401 / 500 を投げる）時、`loadContent` が失敗し、エラーメッセージ・ログに API キーの値が含まれない。
+      キーの値を含むエラーを投げる偽の SDK クライアントで、`microcms-source.ts` を通した取得の流れでも伏せられることを確かめる。
 - [ ] リポジトリに `.env.example` があり上記 4 変数が値なしで並ぶ。`.env` が `.gitignore` に含まれる。`src/` 内で `microcms-js-sdk` を import しているのは `microcms-source.ts` だけ（grep で確認）。
 
 ### 画像
@@ -502,4 +518,5 @@ export async function getStaticPaths() {
 | C-13 | `description` の上限（120 文字）と自動生成の長さ（100 文字程度） | SEO / OGP 仕様（P2）で調整してよい |
 | C-14 | microCMS の最終確定（D-004 は「P1 冒頭で確定」） | **決定（D-010）**: microCMS で確定 |
 | C-15 | 料金ページに無い項目（Webhook・API プレビュー・管理画面の並べ替え・商用利用）の確認 | 管理画面またはヘルプで確認する（本書では要確認のまま） |
+| C-17 | richEditorV2 が実際に出す HTML（画像を `<figure>` で包むか、`width` / `height` を付けるか、コードブロックの形など） | コンテンツが 0 件のため未確認（2026-10-27）。最初の実績を入れたら確かめ、本文の加工（`<img>` の検出・`"assets/` の置換）と詳細ページのスタイルを合わせる。あわせて、`"assets/` の置換が対象外にしている形（`srcset` の 2 つ目以降の候補、単一引用符、`=` の前後の空白）を直すかを判断する（2026-10-27 検証時の指摘） |
 | C-16 | 現行一覧の表示件数（`posts_per_page` 未指定 = 「表示設定」の値）。新サイトは全件表示にする想定 | **決定（2026-10-27、D-012。works-list L-2）**: 新サイトの一覧は全件表示（ページ分割なし）。本番 WP の「表示設定」の確認は不要 |

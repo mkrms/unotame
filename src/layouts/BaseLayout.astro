@@ -1,0 +1,56 @@
+---
+// 全ページ共通の骨格（layout.md）。CSS は destyle → style.scss の順に読み込む（この順で出力される）。
+import 'destyle.css';
+import '../styles/style.scss';
+import BaseHead from '../components/layout/BaseHead.astro';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import Loader from '../components/common/Loader.astro';
+import { site } from '../data/site';
+import { buildPageTitle } from '../lib/meta';
+
+type Props = {
+  /** ページ名。未指定ならサイト名だけ（トップ） */
+  title?: string;
+  /** 未指定なら site.description */
+  description?: string;
+  /** 404 で true */
+  noindex?: boolean;
+  /** トップだけ true（現行どおり） */
+  loader?: boolean;
+};
+
+const { title, description, noindex = false, loader = false } = Astro.props;
+const pathname = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang={site.locale}>
+  <head>
+    <BaseHead
+      title={buildPageTitle(title)}
+      description={description ?? site.description}
+      noindex={noindex}
+      pathname={pathname}
+    />
+    {loader && (
+      <noscript>
+        {/* JS が無効のときはローダーを最初から出さない（style 要素は head にだけ置ける。Astro に処理させないよう is:inline） */}
+        <style is:inline>
+          .c-loader {
+            display: none !important;
+          }
+        </style>
+      </noscript>
+    )}
+    <slot name="head" />
+  </head>
+  <body>
+    {loader && <Loader />}
+    <Header pathname={pathname} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer pathname={pathname} />
+  </body>
+</html>

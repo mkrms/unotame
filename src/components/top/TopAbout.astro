@@ -1,0 +1,62 @@
+---
+// トップの About（プロフィール・SNS）。top-page「About」。id="about" はヘッダーの ABOUT（/#about）の着地点。
+import { Image } from 'astro:assets';
+import type { Profile, SocialLink } from '../../lib/domain/profile';
+
+type Props = {
+  about: Profile['about'];
+  socials: SocialLink[];
+};
+
+const { about, socials } = Astro.props;
+---
+
+<section id="about" class="p-front-page-about l-container" aria-labelledby="top-about-heading">
+  <h2 id="top-about-heading" class="l-section-title">
+    ABOUT
+  </h2>
+  <div class="p-front-page-about__card">
+    {/* 表示は 15rem（150px）角。2 倍密度で 300px に縮小する */}
+    <Image
+      class="p-front-page-about__photo"
+      src={about.photo.src}
+      width={300}
+      height={300}
+      alt={about.photo.alt}
+    />
+    <div class="p-front-page-about__profile">
+      <h3 class="p-front-page-about__name">{about.nameJa}</h3>
+      <p class="p-front-page-about__name-en">{about.nameEn}</p>
+      <p class="p-front-page-about__bio">
+        {about.bio.map((line, index) => (
+          <>
+            {index > 0 && <br />}
+            {line}
+          </>
+        ))}
+      </p>
+    </div>
+    <ul class="p-front-page-about__logos">
+      {socials.map((social) => (
+        <li class="p-front-page-about__logo">
+          <a
+            class="p-front-page-about__logo-link"
+            href={social.url}
+            target="_blank"
+            rel="noopener"
+            aria-label={`${social.label}（新しいタブで開きます）`}
+          >
+            {/* 名前はリンクの aria-label で付けるので、画像は alt 空。表示 3rem（30px）→ 2 倍密度 */}
+            <Image
+              class="p-front-page-about__logo-img"
+              src={social.icon}
+              width={60}
+              height={60}
+              alt=""
+            />
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

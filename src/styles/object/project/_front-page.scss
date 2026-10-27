@@ -1,0 +1,174 @@
+// トップページ（p-front-page-*）。legacy/assets/css/Object/Project/_front-page.scss から移植。
+// legacy の要素セレクタ（h1・span・main・aside など）は、top-page.md のマークアップに合わせて BEM のクラスに置き換えた（値は変えない）。
+// 実績カード 1 枚分は object/component/_work-card.scss（S-3）。ここには並べ方（グリッド）だけを残す。
+@use '../../foundation/variables' as *;
+@use '../../foundation/mixins' as *;
+
+// kv ----------------
+.p-front-page-kv {
+  padding-top: 8rem;
+
+  &__name {
+    @include objective;
+
+    font-size: 8rem;
+    line-height: 1.5;
+    margin-top: 8rem;
+
+    @include sp {
+      margin-top: 5rem;
+      line-height: 1.2;
+    }
+  }
+
+  // legacy は <span>（インライン・line-height: 1）。行ボックスの高さは親（body）の行の高さ
+  // ＝ body の font-size × 1.75（PC 1.6rem → 2.8rem、SP 1.2rem → 2.1rem）で決まっていた。
+  // <p> では自分の line-height が行の高さになるので、その値をそのまま指定して legacy と同じ高さにする
+  // （line-height: 1 だと 0.8rem 詰まり、継承の 1.75 だと 2rem × 1.75 = 3.5rem で 0.7rem 広がる）
+  &__role {
+    @include objective;
+
+    font-size: 2rem;
+    line-height: 2.8rem;
+
+    @include sp {
+      line-height: 2.1rem;
+    }
+  }
+
+  &__skills {
+    margin-top: 5rem;
+    margin-left: 2rem;
+  }
+
+  &__skill {
+    list-style: circle;
+
+    &:not(:first-child) {
+      margin-top: 0.8rem;
+    }
+  }
+}
+
+// message --------------------
+// legacy の .p-front-page-message main → __body（S-9）、aside → __signature
+.p-front-page-message {
+  &__body {
+    width: 70%;
+    margin: 0 auto;
+
+    @include sp {
+      width: 100%;
+    }
+  }
+
+  &__heading {
+    font-size: 4.8rem;
+    padding-bottom: 3rem;
+
+    @include sp {
+      font-size: 2.8rem;
+    }
+  }
+
+  &__text {
+    font-size: 2.4rem;
+    line-height: 2;
+
+    @include sp {
+      font-size: 1.4rem;
+    }
+  }
+
+  &__signature {
+    @include objective;
+
+    text-align: right;
+    margin-top: 2rem;
+    font-size: 2rem;
+
+    @include sp {
+      font-size: 1.2rem;
+    }
+  }
+}
+
+// works -------------------------
+.p-front-page-works {
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.33%;
+    row-gap: 2rem;
+  }
+
+  // カードの影・比率は c-work-card 側（画像）に移した（style-migration「ほかの P1 仕様からの要件」L-5）
+  &__item {
+    width: 32%;
+
+    @include sp {
+      width: 100%;
+    }
+  }
+}
+
+// about -------------------------
+.p-front-page-about {
+  &__card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    flex-wrap: wrap;
+    border-radius: 2rem;
+    padding: 3rem;
+    gap: 3rem;
+
+    @include sp {
+      flex-direction: column;
+    }
+  }
+
+  &__photo {
+    width: 15rem;
+    height: 15rem;
+    object-fit: cover;
+    border-radius: 999rem;
+  }
+
+  &__profile {
+    @include sp {
+      text-align: center;
+    }
+  }
+
+  // 和名（h3）と英名を横に並べる（legacy の h3 / span の inline-block）
+  &__name {
+    display: inline-block;
+    padding: 1.5rem 0;
+  }
+
+  &__name-en {
+    display: inline-block;
+    margin-left: 2rem;
+  }
+
+  &__logos {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+  }
+
+  &__logo-link {
+    display: block;
+    width: 3rem;
+    aspect-ratio: 1 / 1;
+  }
+
+  &__logo-img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+}
